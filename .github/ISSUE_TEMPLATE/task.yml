@@ -1,0 +1,22 @@
+name: Công việc kỹ thuật
+description: Đề xuất một thay đổi có phạm vi và tiêu chí hoàn thành.
+body:
+  - type: input
+    id: objective
+    attributes:
+      label: Mục tiêu
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Phạm vi và module liên quan
+    validations:
+      required: true
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Tiêu chí hoàn thành
+      description: Kết quả cần đạt và cách kiểm chứng.
+    validations:
+      required: true

@@ -1,0 +1,3 @@
+# Separate from the recorded versions used by the original learning exercises.
+opencv-python>=4.10,<6
+numpy>=1.26,<3

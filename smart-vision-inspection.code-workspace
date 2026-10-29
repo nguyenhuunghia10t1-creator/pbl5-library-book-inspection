@@ -1,0 +1,6 @@
+{
+  "folders": [
+    { "name": "smart-vision-inspection", "path": "." },
+    { "name": "ESP32 (PlatformIO)", "path": "firmware/esp32" }
+  ]
+}

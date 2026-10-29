@@ -1,0 +1,67 @@
+# Local Python environment and generated files
+.venv/
+.venv*/
+venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local configuration and database files
+.env
+.env.*
+!.env.example
+*.db
+*.sqlite
+*.sqlite3
+
+# Captured data, training output, and model weights
+/data/*
+!/data/README.md
+!/data/opencv/
+/data/opencv/*
+!/data/opencv/README.md
+datasets/
+runs/
+weights/
+*.pt
+*.pth
+*.onnx
+*.engine
+*.tflite
+*.h5
+*.ckpt
+
+# PlatformIO / generated builds
+.pio/
+build/
+dist/
+*.elf
+*.bin
+
+# Credentials, local archives, recordings and diagnostic logs
+*.pem
+*.key
+credentials*.json
+client_secret*.json
+service-account*.json
+*.zip
+*.7z
+*.tar.gz
+*.log
+*.mp4
+*.avi
+*.mkv
+
+# Editor and operating system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Local workstation guidance and working notes
+/AGENTS.md
+/docs/ROADMAP_SOURCE.md
+/docs/RESTRUCTURE.md

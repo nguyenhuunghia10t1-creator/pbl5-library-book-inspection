@@ -1,0 +1,2 @@
+# Current runnable Python application. AI/backend dependencies are not installed yet.
+-r vision/opencv/requirements.txt
