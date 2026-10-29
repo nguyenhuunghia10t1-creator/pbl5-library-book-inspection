@@ -2,6 +2,8 @@
 
 Cập nhật: 2026-10-29.
 
+Repository: [pbl5-library-book-inspection](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection). Kiểm tra tự động: [GitHub Actions](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml).
+
 | Hạng mục | Trạng thái | Kết quả |
 |---|---|---|
 | Cấu trúc repository và hướng dẫn nhóm | Hoàn thành | Tách firmware, vision, software, ví dụ và test |

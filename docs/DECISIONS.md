@@ -14,6 +14,7 @@ Cập nhật: 2026-10-29.
 | D16 | Collector hỗ trợ PBL5-B + 2–6 chữ số và LIB1:copy_id | Tương thích mã bìa đã in; chưa thay thế tra cứu DB |
 | D17 | Crop mặc định 630×888; lưu raw/crop/debug và metadata | Chuẩn hóa ảnh nhưng bảo toàn nguồn |
 | D18 | Tách firmware, vision, software, tests, scripts, examples và data | Phát triển theo module và review độc lập |
+| D19 | Repository public quản lý mã và tài liệu kỹ thuật; main dùng PR/review/CI | Dữ liệu camera, weights, credentials và hồ sơ cục bộ nằm ngoài Git |
 
 ## Trạng thái dữ liệu
 
