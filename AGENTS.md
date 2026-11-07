@@ -27,6 +27,8 @@ Theo [ARCHITECTURE](docs/ARCHITECTURE.md) và DECISIONS:
 
 ## Cuối phiên
 
+Hoàn tất mỗi task đã được kiểm tra thì commit, push nhánh và mở/cập nhật PR ngay trong phiên, không chờ người dùng nhắc. Bàn giao link nhánh mới nhất và link tải ZIP để team tải đúng bản; nếu push bị chặn phải báo rõ commit/nhánh đang có. Giữ quy tắc không merge.
+
 Chạy kiểm tra; cập nhật TASKS, STATE, thêm SESSION_LOG (giữ lịch sử); commit đúng file, push nhánh, mở/cập nhật PR, không merge (D19). Không tự bắt đầu task kế tiếp. Bàn giao kết quả, giới hạn, câu hỏi và một việc tiếp theo; xem WORKFLOW để phục hồi phiên đứt/PR chưa merge. Chỉ đọc/lập kế hoạch thì bàn giao trong chat.
 
 Cấm commit dữ liệu thật, weights, credentials; force-push; bịa bằng chứng phần cứng; vượt phạm vi; thêm dependency nặng khi chưa có DECISION phù hợp. Không sửa bộ nhớ/cấu hình toàn cục để lưu tiến độ.

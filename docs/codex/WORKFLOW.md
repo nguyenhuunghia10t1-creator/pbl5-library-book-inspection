@@ -29,6 +29,10 @@ Chỉ dẫn hiện tại của người dùng ưu tiên hơn quy ước repo. Đ
 
 Đối với phiên chỉ đọc/lập kế hoạch, báo điểm tiếp tục trong chat, không ghi/commit trái chế độ.
 
+## Đồng bộ để team cùng làm
+
+Sau mỗi task đã được kiểm tra, commit và push nhánh ngay trong phiên, mở/cập nhật PR rồi xác minh SHA remote. Không đợi người dùng yêu cầu push lại. Bàn giao link tree của nhánh, PR và archive ZIP của đúng nhánh hiện tại; main có thể chưa chứa task khi PR chưa merge. Nếu team đã clone repo, chỉ dẫn fetch và checkout đúng nhánh sau khi kiểm working tree. Không gửi dữ liệu thật, weights, credentials hoặc runtime logs riêng lên GitHub. Khi mạng/quyền chặn push, giữ commit local và báo lỗi cụ thể; không nói đã đồng bộ. Không merge.
+
 ## Kiểm tra và ghi bằng chứng
 
 Dùng interpreter đã xác minh. Ví dụ PowerShell khi có venv tại root:

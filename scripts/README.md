@@ -4,6 +4,7 @@
 |---|---|
 | capture_covers.py | Chạy collector từ thư mục bất kỳ |
 | check_repository.py | Kiểm cú pháp nguồn Python, link tài liệu và workspace |
+| benchmark_preview.py | So lịch UI trước/sau với delay phân tích synthetic; không đo webcam thật |
 | windows/CaptureCovers.cmd | Chạy collector với venv tại root trên Windows |
 | windows/camera-priority | Tiện ích tùy chọn quản lý camera A4tech |
 

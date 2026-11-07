@@ -27,3 +27,8 @@ Kết quả trên một bố trí không được dùng làm độ chính xác t
 & '.\.venv\Scripts\python.exe' scripts/check_repository.py
 & '.\.venv\Scripts\python.exe' -m unittest discover -s tests -v
 ```
+
+
+## Bổ sung 2026-11-07 — preview V02
+
+Các kết quả cũ phía trên là lịch sử trước V02. Kết quả và giới hạn mới xem [PREVIEW_VALIDATION.md](PREVIEW_VALIDATION.md): 71 tests PASS, benchmark scheduling và GUI synthetic; chưa kiểm webcam/thiết bị thật.

@@ -86,7 +86,7 @@ Cấu hình tại [cover_capture.json](../vision/opencv/configs/cover_capture.js
 
 Timestamp là lúc OpenCV trả khung; bộ đệm driver và độ trễ phơi sáng chưa được hiệu chuẩn. Hướng QR mặc định giả định in cùng chiều bìa; dùng R hoặc tắt orient_by_qr nếu giả định này không phù hợp.
 
-Preview hiện còn chờ xử lý QR. Bộ chọn tứ giác có thể nhầm đường ron nền hoặc mép hình in với mép giấy; cần kiểm tra crop trước khi lưu và chưa thu hàng loạt khi góc không ổn định.
+Preview live cập nhật độc lập geometry/QR. Crop/QR bên phải thuộc frame có nhãn Analyzed và tuổi frame; không ghép góc/QR của frame đó lên một frame live mới. Khi worker bận, bỏ qua các frame phân tích trung gian thay vì xếp hàng. S/D chờ frame sau yêu cầu, lưu cùng raw/crop/QR/properties; kết quả quá hạn hoặc thuộc camera/cấu hình cũ bị bỏ. Khi chưa kịp có kết quả trong 3 giây, yêu cầu lưu bị hủy và có thông báo. M giữ đúng ảnh đóng băng; Q/đóng cửa sổ không chờ decoder hoàn tất. Ghi PNG/metadata vẫn đồng bộ nên thao tác lưu có thể gây một khoảng dừng ngắn do ổ đĩa. Bộ chọn tứ giác có thể nhầm đường ron nền hoặc mép hình in với mép giấy; cần kiểm tra crop trước khi lưu và chưa thu hàng loạt khi góc không ổn định.
 
 ## Ảnh có sẵn
 
@@ -96,3 +96,27 @@ Preview hiện còn chờ xử lý QR. Bộ chọn tứ giác có thể nhầm �
 ```
 
 Ảnh tệp mặc định được đánh dấu imported; fixture tự tạo dùng source-kind synthetic. [Kiểm chứng](COVER_CAPTURE_VALIDATION.md) · [Tiến độ](../PROGRESS.md).
+
+
+## Thử nhanh preview V02 trên webcam
+
+Đây là kiểm tra riêng hành vi preview/lưu/thoát, chưa thay gate camera/crop V03 hoặc tiêu chí định lượng chưa duyệt. Tại root nhánh fix/preview-v02, dùng Python venv đã xác minh:
+
+```powershell
+& '.\.venv\Scripts\python.exe' -m vision.opencv --camera 0
+```
+
+Nếu dùng worktree không có venv riêng trên máy hiện tại, thay interpreter bằng đường dẫn venv của checkout chính. Đóng ứng dụng khác đang chiếm camera; thử --camera 1 hoặc --backend msmf nếu sai index/backend.
+
+1. Đưa tay hoặc di chuyển sách: xem số Live frame và hình tiếp tục cập nhật trong khi số Analyzed/crop có thể chậm hơn. Không coi chênh số frame là lỗi ghép ảnh.
+2. Bấm B lúc nền trống, đặt một bìa và giữ yên. Khi đủ điều kiện, bấm S một lần; kiểm raw.png, cover.png, QR/capture_seq/camera_session_id trong metadata.json thuộc đúng lần thu. Nếu chưa READY, dùng D để lưu riêng review, không coi đó là sách không lỗi.
+3. Thử R và M/chọn bốn góc; kết quả trước thay đổi không được xuất hiện trở lại; M dùng đúng frame đã đóng băng.
+4. Rút/cắm lại webcam nếu phù hợp thiết bị: khi mất frame không tiếp tục hiện QR cũ; sau kết nối lại cần hiệu chuẩn nền lại. Bấm Q hoặc đóng cửa sổ để thoát.
+
+Gửi video ngắn thấy Live/Analyzed và thao tác S/Q, thông tin camera/backend/resolution, runtime.log và bundle raw/cover/debug/metadata ngoài Git. Ghi thao tác nào đạt/chưa đạt và mô tả treo/lag nếu có. Không đăng ảnh riêng lên PR public.
+
+Benchmark lập lịch synthetic, không mở camera/cửa sổ và không đo độ chính xác QR:
+
+```powershell
+& '.\.venv\Scripts\python.exe' scripts/benchmark_preview.py --baseline-ref 4d3b402 --frames 15 --delay 0.2
+```

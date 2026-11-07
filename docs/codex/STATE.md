@@ -1,40 +1,40 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: chore/codex-harness
-Last green commit: 37d98d2031996b424c8441633617ddd49223b061
+Branch: fix/preview-v02
+Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
 
 ## Resume notes
 
-Để theo dõi nhanh, xem chú giải và ký hiệu trước tên task trong [TASKS.md](TASKS.md); Status vẫn là nguồn trạng thái chuẩn.
+Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
 
-Đọc TASKS.md → WORKFLOW.md → đuôi ../SESSION_LOG.md → quyết định liên quan trong ../DECISIONS.md. Trạng thái task chỉ ở TASKS; không cập nhật bản sao tại đây.
+Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
 
-Worktree harness riêng trên chore/codex-harness; checkout chính vẫn main với PROGRESS/SESSION_LOG sửa sẵn được giữ nguyên, không đưa vào PR. Commit gốc và remote main đã đọc cùng SHA d431f10fbb79dc086c8912702552463ca20262ab. Không reset/stash/checkout đè thay đổi cũ. PR harness: [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5), mở vào main, chưa merge; cần H02 review. Toàn bộ thay đổi phiên nằm trong worktree của nhánh harness, không ở checkout chính đang có sửa sẵn.
+Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
 
-Task CODEX kế tiếp đề xuất: **V02**, tách preview khỏi geometry/QR bằng fixture chậm/lỗi và ràng buộc frame. V01 cần mẫu hồi quy được xác nhận H04. Không tự bắt đầu V02 khi kết thúc phiên harness. Nếu PR nền chưa merge, fetch rồi tạo nhánh fix/preview-v02 dựa trên origin/chore/codex-harness và PR xếp tầng base chore/codex-harness; ghi dependency PR, không merge thay người. Nếu đã merge, tạo nhánh từ origin/main mới nhất. Kiểm working tree trước mọi chuyển nhánh; chọn worktree sạch khi cần.
-
-Lệnh bắt đầu sau khi xác minh checkout sạch và PR nền (PowerShell, PYTHON là interpreter đã kiểm):
+Lệnh bắt đầu ở phiên tiếp theo, sau khi kiểm working tree/PR:
 
 ```powershell
 git status --short --branch
 git fetch origin
-git switch -c fix/preview-v02 origin/chore/codex-harness
+git switch -c feature/capture-bundle-audit-v05 origin/fix/preview-v02
 & $PYTHON scripts/check_repository.py
 & $PYTHON scripts/check_codex_state.py
 & $PYTHON -m unittest discover -s tests -v
 ```
 
-Chỉ sau baseline và chọn V02 mới đổi TASKS sang IN_PROGRESS và Active task sang V02. Lệnh trên không được tự thực hiện trong phiên H01.
+Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự chuyển task trong phiên hiện tại.
 
 ## Baseline đã đo
 
-Last green commit ở đầu tệp là commit harness 37d98d2031996b424c8441633617ddd49223b061 đã tồn tại và được kiểm nguyên trạng trên worktree sạch lúc 2026-11-07T09:03:20–09:03:25+07:00: check_repository PASS (23 source), check_codex_state PASS, unittest discovery PASS 54 tests/0 failures/0 errors/0 skips (4.515s), git diff --check PASS. Commit metadata sau đó chỉ ghi kết quả/PR/task; không ghi SHA tự tham chiếu.
+Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
 
-Baseline gốc d431f10 lúc 08:53:10+07:00: checker PASS 21 source và 22 tests PASS. Những lượt kiểm khi đang sửa được ghi HEAD + working-tree changes trong SESSION_LOG, không coi là kiểm HEAD nguyên trạng.
+Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
 
-Windows 11, PowerShell 5.1, venv Python 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; dùng interpreter của checkout chính cho worktree sạch, không cài dependency mới. Build scaffold và 23 test policy camera mô phỏng cũng PASS; xem lệnh/thời điểm/giới hạn trong [SESSION_LOG](../SESSION_LOG.md). Đây không phải kiểm chứng camera/cơ cấu thật hoặc kết quả CI remote của PR mới.
+Môi trường E1 Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; không thêm dependency. GUI thật với ảnh synthetic và benchmark scheduling PASS; webcam/thiết bị thật NOT_RUN. Chi tiết [PREVIEW_VALIDATION](../PREVIEW_VALIDATION.md) và [SESSION_LOG](../SESSION_LOG.md).
 
 ## Human actions pending
+
+- **Thử riêng V02, có thể làm ngay:** chạy webcam ở nhánh này theo [COVER_CAPTURE](../COVER_CAPTURE.md#thử-nhanh-preview-v02-trên-webcam). Gửi video thấy Live/Analyzed, thao tác S/D/Q, runtime.log và một bundle ngoài Git; ghi camera/backend/resolution. Đây là kiểm hành vi preview/lưu/thoát, không thay gate đầy đủ V03 và không tự đổi trạng thái nghiệm thu hardware.
 
 - **H04 + H05, ưu tiên dữ liệu:** gửi vị trí gói raw/crop/debug/metadata ngoài Git, mã cuốn/điều kiện chụp và ví dụ nhãn rách/bẩn/ca biên được xác nhận. Mở khóa V01 rồi A01 sau pilot; không đăng ảnh riêng vào PR.
 - **H03, ưu tiên phần cứng:** ảnh/model board, danh mục sensor/driver/motor/servo, điện áp/nguồn/tải, hành trình/home/endstop/feedback, kết nối PC. Gửi bảng IO và tài liệu thiết bị; mở khóa thiết kế S05/F01, chưa nạp khi chưa review.

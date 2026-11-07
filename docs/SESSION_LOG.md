@@ -87,3 +87,40 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 
 - Kiểm sau sửa lúc 2026-11-07T09:19:27+07:00, E1, HEAD 5347e17 + working-tree changes: cùng interpreter chạy scripts/check_repository.py và scripts/check_codex_state.py đều exit 0 PASS; git diff --check exit 0 PASS. Đối chiếu từng hàng: 53 task cũ chỉ thêm icon, các cột còn lại giữ nguyên; H13 là task tài liệu mới. Mọi icon khớp Status. Không thêm test mới cho thay đổi trình bày.
 - Kết thúc H13 theo bằng chứng trên; Active task NONE, Last green commit giữ hash đã được kiểm nguyên trạng. V02 vẫn chưa bắt đầu. Tiếp tục push cùng PR #5 đang mở, không merge.
+
+
+## 2026-11-07 — Phiên 4 — V02: Preview độc lập geometry/QR
+
+- Bắt đầu 2026-11-07T09:32:43+07:00; nhánh fix/preview-v02 từ origin/chore/codex-harness tại 4d3b402a843f6240ccd31fbbc8e27ed8be658dd4. PR nền #5 OPEN/chưa merge được kiểm bằng API; nhánh tạo trước sửa file, không đổi main hay thay đổi có sẵn ở checkout gốc.
+- Chọn V02 vì H01 DONE và không cần mẫu thật/IO/ngưỡng chưa duyệt. Phạm vi: worker phân tích, UI/capture liên kết frame, test/benchmark synthetic và tài liệu liên quan; không sửa geometry/parser/bundle schema hay firmware.
+- Baseline E1 Windows/PowerShell, interpreter D:/smart-vision-inspection/.venv/Scripts/python.exe, worktree sạch tại commit gốc. 2026-11-07T09:30:57–09:31:02+07:00: scripts/check_repository.py exit 0 PASS (23 source); -m unittest discover -s tests -v exit 0 PASS 54 tests/0 failures/0 errors/0 skips, 5.035s.
+- Mô hình triển khai: chỉ một worker sở hữu CoverVision, không hàng đợi frame cũ; UI đọc camera/render/event riêng. Kết quả chứa frame/properties/config revision để không ghép crop/QR cũ vào ảnh mới; S/D đợi frame sau yêu cầu. Đổi camera/calibration/flip/manual vô hiệu hóa kết quả cũ.
+- Chưa chạy webcam hoặc thiết bị thật. Kết quả fixture không là nghiệm thu V03.
+
+- Hồi quy lần đầu sau sửa: 69 tests được tìm; 68 PASS, test cũ AppTests.test_save_uses_frame_after_keypress FAIL vì giả định S ở vòng 1 và Q ở vòng 2 đã lưu xong. Đây là lỗi tương thích test do V02, không có ở baseline. Một việc sửa tiếp theo đã thực hiện: test đợi bundle hoàn tất trước Q, vẫn bắt buộc capture_seq > frame lúc bấm S; bổ sung test mới so raw/crop/QR/properties cùng frame.
+
+- Sau sửa test S, chạy toàn bộ unittest exit 0 PASS 69 tests/0 failures/errors/skips trong 5.713s lúc 09:38:11–09:38:17+07:00. Hai test bổ sung calibration/config và D làm tổng cuối 71 tests.
+- Benchmark lúc 2026-11-07T09:38:17–09:38:21+07:00, E1, HEAD 4d3b402 + working-tree changes: `& D:/smart-vision-inspection/.venv/Scripts/python.exe scripts/benchmark_preview.py` exit 0 PASS. Delay analysis synthetic 200ms; 15 preview frames; trước UI 3.1701s/median gap 211.040ms, sau UI 0.2111s/median gap 10.774ms. Renderer/camera/analysis fake: không dùng làm FPS/accuracy thật. Giá trị đầy đủ trong PREVIEW_VALIDATION.
+- GUI smoke cuối lúc 2026-11-07T09:40:32–09:40:35+07:00: cùng interpreter `-m vision.opencv --image $env:TEMP/pbl5-v02-smoke-20261107/fixture.png --source-kind synthetic --output $env:TEMP/pbl5-v02-smoke-20261107/collection --duration 2 --screenshot $env:TEMP/pbl5-v02-smoke-20261107/ui.png`, exit 0 PASS; đã xem ảnh ui.png: READY, crop/QR PBL5-B04, nhãn Frame/Analyzed rõ. Sửa nhãn frame chồng ảnh trước lượt cuối. Không webcam.
+- Bộ kiểm cuối source lúc 2026-11-07T09:41:08–09:41:20+07:00, E1, HEAD + working-tree changes: scripts/check_repository.py exit 0 PASS (26 source); scripts/check_codex_state.py exit 0 PASS; -m unittest discover -s tests -q exit 0 PASS 71 tests/0 failures/0 errors/0 skips, 10.961s; git diff --check exit 0 PASS. Lệnh dùng interpreter E1 đã ghi; không sửa dependency/vision pipeline/schema/firmware.
+- Ghi V02 DONE theo acceptance phần mềm và bằng chứng PREVIEW_VALIDATION; Active task NONE. Đây không là DONE-HW hay PASS camera thật. Đã thêm bài thử webcam cụ thể vào COVER_CAPTURE và Human actions pending; không tự chốt ngưỡng.
+- Việc tiếp theo duy nhất: V05 kiểm bundle/manifest/provenance bằng fixtures; không bắt đầu trong phiên này. PR V02 sẽ mở base chore/codex-harness vì PR nền #5 chưa merge.
+
+
+### Commit, push, PR và bàn giao — 2026-11-07T09:45:28+07:00
+
+- Commit triển khai 6a0e1bbb2421b250297cfe6081cc53607ccc80fe. Kiểm nguyên trạng khi git status sạch, E1, 2026-11-07T09:43:51–09:44:03+07:00: `& D:/smart-vision-inspection/.venv/Scripts/python.exe scripts/check_repository.py` exit 0 PASS (26 source), cùng interpreter `scripts/check_codex_state.py` exit 0 PASS, `-m unittest discover -s tests -q` exit 0 PASS 71 tests/0 failures/0 errors/0 skips, 11.165s; `git diff --check` exit 0 PASS.
+- `git push -u origin fix/preview-v02`: exit 0; `git ls-remote origin refs/heads/fix/preview-v02 refs/heads/chore/codex-harness refs/heads/main`: exit 0, V02 đúng 6a0e1bb, harness vẫn 4d3b402, main vẫn d431f10. Không force-push/merge.
+- GitHub REST GET pulls theo head rồi POST pulls: thành công, [PR #6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, head fix/preview-v02, base chore/codex-harness. PR xếp tầng phụ thuộc #5; không đóng issue #2 vì nghiệm thu camera còn ở V03.
+- Cập nhật metadata URL và Last green commit sang 6a0e1bb đã được kiểm sạch; không ghi hash tự tham chiếu của commit metadata. V02 DONE phần mềm theo TASKS; Active task NONE; V05 là việc CODEX kế tiếp, chưa bắt đầu.
+- CI remote sẽ kiểm sau push metadata; không suy PASS từ test local. Webcam thật vẫn NOT_RUN. Người dùng thử theo COVER_CAPTURE và gửi video/runtime.log/bundle ngoài Git, không cần quyết định phần cứng mới cho bài smoke V02.
+
+- Kiểm metadata lúc 2026-11-07T09:45:28+07:00, E1, HEAD 6a0e1bb + working-tree changes chỉ tài liệu: scripts/check_repository.py và scripts/check_codex_state.py cùng interpreter E1 đều exit 0 PASS, git diff --check exit 0 PASS. Toàn bộ 14 đường dẫn thuộc V02; không có ảnh/log runtime/dữ liệu thật được stage. Chỉ dẫn webcam và V05 đã có trong STATE, không còn CODEX IN_PROGRESS.
+
+
+## 2026-11-07 — Phiên 5 — Đồng bộ bàn giao V02 cho team
+
+- Yêu cầu người dùng: hoàn tất task nào thì kiểm tra/commit/push ngay và đưa bản mới để team tải. Xác minh worktree sạch trên fix/preview-v02 tại 9cde7af99149d989b9939ac6f66e8ab4dffa6da1; remote đã có cùng SHA. Không có code V02 bị bỏ lại local.
+- Baseline E1 Windows/PowerShell, interpreter D:/smart-vision-inspection/.venv/Scripts/python.exe, commit sạch 9cde7af, 2026-11-07T09:49:40–09:49:47+07:00: scripts/check_repository.py exit 0 PASS (26 source và validator); -m unittest discover -s tests -q exit 0 PASS 71 tests/0 failures/0 errors/0 skips trong 5.797s.
+- Bổ sung quy ước đã được người dùng xác nhận vào AGENTS và WORKFLOW: push ngay sau mỗi task được kiểm, mở/cập nhật PR, xác minh remote và cung cấp link nhánh/ZIP; không merge. Không sửa code hoặc trạng thái nghiệp vụ; Active task NONE, V05 chưa bắt đầu.
+- Bản team cần lấy là nhánh fix/preview-v02 (gồm kế hoạch/harness và V02), không phải main hoặc bản chỉ có kế hoạch. PR #6 vẫn là PR của phần V02; có thể tải archive ZIP của đúng nhánh khi không dùng Git.
