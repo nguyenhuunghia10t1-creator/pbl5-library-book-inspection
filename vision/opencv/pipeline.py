@@ -34,6 +34,25 @@ def corner_motion(a, b):
     return min(float(np.max(np.linalg.norm(a - np.roll(b, k, axis=0), axis=1))) for k in range(4))
 
 
+def color_boundary_edges(smooth_bgr):
+    """Retain faint/chromatic boundaries that disappear in fixed-threshold gray edges.
+
+    Thresholds follow the median gradient of each smoothed BGR channel, with a
+    noise floor to avoid amplifying quantization on a nearly uniform background.
+    These are detector defaults, not calibrated hardware acceptance thresholds.
+    """
+    edges = np.zeros(smooth_bgr.shape[:2], np.uint8)
+    for channel in cv2.split(smooth_bgr):
+        if int(channel.max()) - int(channel.min()) < 3:
+            continue
+        dx = cv2.Sobel(channel, cv2.CV_32F, 1, 0, ksize=3)
+        dy = cv2.Sobel(channel, cv2.CV_32F, 0, 1, ksize=3)
+        noise = float(np.median(np.abs(dx) + np.abs(dy)))
+        high = max(12.0, 3.0 * noise)
+        edges |= cv2.Canny(channel, 0.4 * high, high)
+    return cv2.morphologyEx(edges, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
+
+
 @dataclass
 class QRResult:
     status: str = "UNREADABLE"
@@ -139,7 +158,8 @@ class CoverVision:
         edges = cv2.Canny(cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY), 45, 130)
         edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
         candidates = []
-        for source, binary in (("background", mask), ("edges", edges)):
+        for source, binary in (("background", mask), ("edges", edges),
+                               ("color_edges", color_boundary_edges(smooth))):
             contours, _ = cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
             for contour in sorted(contours, key=cv2.contourArea, reverse=True)[:35]:
                 area = cv2.contourArea(contour)

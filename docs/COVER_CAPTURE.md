@@ -22,6 +22,8 @@ Hoặc mở `scripts/windows/CaptureCovers.cmd`. Khi dùng launcher `scripts/cap
 
 Chọn cửa sổ ứng dụng trước khi dùng phím.
 
+Bìa vàng nhạt, xanh nhạt hoặc trắng: vẫn hiệu chuẩn **B khi bàn hoàn toàn trống**, cố định camera và ánh sáng trước khi đặt sách. Detector kết hợp khác màu nền Lab, biên xám và biên ba kênh màu BGR; không yêu cầu bìa phải tối. Phần biên màu có ngưỡng theo gradient/nhiễu để giữ đường viền ít tương phản. Nếu bìa gần như trùng màu nền, đổi sang nền tương phản, tránh bóng/lóa hoặc chọn góc M; không thể khôi phục mép không có tín hiệu trong ảnh. Xem [kiểm chứng V07](LIGHT_COVER_VALIDATION.md).
+
 | Phím | Chức năng |
 |---|---|
 | S | Lưu khung mới đạt điều kiện hình học/chất lượng/QR |

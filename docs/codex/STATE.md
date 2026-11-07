@@ -1,30 +1,32 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: fix/preview-v02
-Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
+Branch: fix/light-cover-detection-v07
+Last green commit: 8f9198f0c78030dd21000f4562a0492556c1dce2
 
 ## Resume notes
 
 Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
 
-Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
+Nhánh fix/light-cover-detection-v07 từ origin/fix/preview-v02 tại 8f9198f. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN/chưa merge, base chore/codex-harness; #5 cũng chưa merge. V07 có PR riêng base fix/preview-v02, không trộn code audit V05. Nhánh V05 vẫn được giữ ở 525ca41 và [PR #7](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7) trên fork; không xóa dữ liệu camera cục bộ, không sửa config DroidCam ở checkout cũ. Baseline nhánh V07 là 71 tests vì chưa chứa 21 test audit của PR #7.
 
-Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
+V07 đạt acceptance phần mềm theo yêu cầu sửa nhận bìa vàng nhạt/xanh nhạt. Người dùng xác nhận chưa bấm B với nền trống. Bổ sung biên ba kênh BGR với ngưỡng theo gradient/nhiễu, giữ mask nền Lab và biên xám cũ, vẫn lọc tứ giác/diện tích/tỉ lệ và bảo vệ chạm biên/nhiều bìa/quality/QR. Không thay parser, schema, crop 630×888, YOLO hoặc firmware. Fixture không tạo viền đen giả khi warp. V01 vẫn chờ mẫu thật H04; không suy test tổng hợp thành nghiệm thu camera V03. Chi tiết [LIGHT_COVER_VALIDATION](../LIGHT_COVER_VALIDATION.md).
 
-Lệnh bắt đầu ở phiên tiếp theo, sau khi kiểm working tree/PR:
+Lệnh kiểm lại trong phiên này:
 
 ```powershell
 git status --short --branch
-git fetch origin
-git switch -c feature/capture-bundle-audit-v05 origin/fix/preview-v02
 & $PYTHON scripts/check_repository.py
 & $PYTHON scripts/check_codex_state.py
 & $PYTHON -m unittest discover -s tests -v
 ```
 
-Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự chuyển task trong phiên hiện tại.
+V07 sẽ commit/push fork và mở PR riêng trong phiên, không merge. B01 chỉ đề xuất, chưa bắt đầu. Preview bản mới đã được mở với camera 1/MSMF; tại lần quan sát ảnh đầu vào đen dù Live/Analyzed tăng, chưa thử được mép bìa thật. Chờ người dùng mở DroidCam/cung cấp nguồn hình rõ và thử B với nền trống.
 
 ## Baseline đã đo
+
+V07 source trên HEAD 8f9198f + working-tree changes, 2026-11-07T11:02:30–11:02:40+07:00: checker PASS (27 source), validator PASS, 85 tests = 71 baseline + 14 mới PASS/0 failures/0 errors/0 skips (8.816s), git diff --check PASS. GUI và headless synthetic vàng nhạt PASS/READY/PBL5-B04 lúc 11:04:07–11:04:11+07:00. Kiểm camera chỉ xác nhận mở backend, không chứng minh bìa thật đạt gate.
+
+Phiên V07, Windows 11 build 26300/PowerShell 7.6.9, Python 3.13.14/OpenCV 5.0.0/NumPy 2.5.4, venv checkout cũ: commit sạch 8f9198f lúc 2026-11-07T10:55:40–10:55:47+07:00, checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips (6.342s), git diff --check PASS. Trước đổi nhánh, 525ca41 cũng đã baseline 92 tests PASS. Xem SESSION_LOG phiên 7 để phân biệt.
 
 Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
 
@@ -33,6 +35,8 @@ Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lư�
 Môi trường E1 Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; không thêm dependency. GUI thật với ảnh synthetic và benchmark scheduling PASS; webcam/thiết bị thật NOT_RUN. Chi tiết [PREVIEW_VALIDATION](../PREVIEW_VALIDATION.md) và [SESSION_LOG](../SESSION_LOG.md).
 
 ## Human actions pending
+
+- **Thử bìa sáng V07:** mở DroidCam và giữ màn hình điện thoại sáng khi preview đen. Camera cố định, đưa sách ra khỏi khung, bấm B lúc bàn trống; thử vàng nhạt/xanh nhạt/trắng và kiểm mép ngoài/crop/QR. Gửi ví dụ lỗi/đúng qua nguồn riêng ngoài Git để bổ sung H04; không tự đổi V01/V03/V06 chỉ từ fixture hoặc backend mở được.
 
 - **Thử riêng V02, có thể làm ngay:** chạy webcam ở nhánh này theo [COVER_CAPTURE](../COVER_CAPTURE.md#thử-nhanh-preview-v02-trên-webcam). Gửi video thấy Live/Analyzed, thao tác S/D/Q, runtime.log và một bundle ngoài Git; ghi camera/backend/resolution. Đây là kiểm hành vi preview/lưu/thoát, không thay gate đầy đủ V03 và không tự đổi trạng thái nghiệm thu hardware.
 
