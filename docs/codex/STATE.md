@@ -64,3 +64,7 @@ HMI đã có câu trả lời: HTML/CSS/JS, qua backend/adapter; giữ hướng 
 ## Quyết định chờ
 
 H06: bảng route/reason và semantics HOLD/STOP (D05/D09/D10 + ví dụ Bước 9 local). H07: mục tiêu/cỡ mẫu/KPI (PLAN phần nghiệm thu). H03: board/IO/giao tiếp (DECISIONS phần cần xác minh và issue #3). H05: quy tắc nhãn (D06/D11 và issue #4). H12: enum QR (D16 + CODEBASE_MAP C1). Chỉ sau phản hồi mới ghi quyết định chính thức vào DECISIONS trong task được phép; phiên H01 giữ nguyên file đó.
+
+## Ghi chú kết nối DroidCam 2026-11-07
+
+Đã nhận khung 1280×720 với camera 1/backend msmf và khởi chạy GUI V07; DirectShow camera 1 không mở được trên máy kiểm tra. Headless một khung trả NO_COVER, QR UNREADABLE: chưa nghiệm thu nhận dạng sách/QR. Người dùng xác nhận client có hình điện thoại; tiếp tục bài thử H04/V01/V03 hiện có, không đổi trạng thái hoàn thành phần cứng. Lệnh dùng lại trong COVER_CAPTURE mục Camera điện thoại qua DroidCam; chỉ số cần kiểm lại theo máy/backend. Không bắt đầu B01 trong phiên hỗ trợ camera.

@@ -45,6 +45,24 @@ Mẫu chọn góc bằng M lưu đúng ảnh đã đóng băng, không theo dõi
 
 Probe thử từng chỉ số trong tiến trình riêng có timeout. Chỉ số OpenCV có thể đổi khi cắm/rút và không phải tên thiết bị. Backend auto thử DirectShow rồi MSMF trên cùng chỉ số. Nếu camera không mở, đóng ứng dụng khác đang sử dụng nó và kiểm tra quyền camera Windows.
 
+## Camera điện thoại qua DroidCam
+
+1. Mở DroidCam trên điện thoại và DroidCam Client trên Windows; kết nối tới khi client có hình. Với Wi-Fi, hai thiết bị dùng cùng mạng. Giữ client chạy khi dùng ứng dụng.
+2. Thử nguồn camera bằng MSMF:
+
+```powershell
+& '.\.venv\Scripts\python.exe' -m vision.opencv --probe --probe-count 3 --backend msmf
+& '.\.venv\Scripts\python.exe' -m vision.opencv --camera 1 --backend msmf
+```
+
+Số 1 là ví dụ đã kiểm trên máy phát triển ngày 2026-11-07, không phải định danh cố định của DroidCam. Nếu worktree không có .venv, thay đường dẫn Python bằng interpreter venv đã cài requirements. Trên máy này DirectShow không mở được DroidCam nhưng MSMF nhận khung 1280×720. Không suy chỉ số giữa hai backend hoặc máy khác nhau; kiểm tra lại khi đổi thiết bị.
+
+3. Dùng camera sau, cố định điện thoại nhìn xuống, chừa đủ nền quanh bìa A6. Bấm B khi bàn trống rồi đặt một cuốn vào; xem góc ngoài/crop/QR, bấm S khi READY. Di chuyển điện thoại thì hiệu chuẩn lại. Q thoát ứng dụng, không đóng client trước khi xong.
+
+Đọc được khung camera chưa chứng minh độ chính xác nhận dạng hoặc chất lượng dữ liệu. Kiểm chứng nhiều bìa/nền và gửi raw/crop/debug/metadata/log theo bài thử V07; không commit dữ liệu camera.
+
+Tham khảo: [DroidCam Windows Client](https://droidcam.app/windows/) và [hướng dẫn kết nối](https://droidcam.app/help/).
+
 ## Trạng thái
 
 | Trạng thái | Xử lý |
