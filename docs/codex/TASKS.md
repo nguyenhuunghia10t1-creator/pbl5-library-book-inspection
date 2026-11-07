@@ -8,7 +8,7 @@ BLOCKED ghi đầu vào bên ngoài thiết yếu còn thiếu; TODO có thể c
 
 | ID | Task | Who | Depends | Acceptance | Status | Evidence |
 |---|---|---|---|---|---|---|
-| H01 | Thiết lập harness, audit và PR nền | CODEX | - | Đọc inventory tracked/issues; tài liệu nhất quán; validator và fixture unittest PASS; diff đúng allowlist; nhánh được push và có PR vào main, không merge | IN_PROGRESS | - |
+| H01 | Thiết lập harness, audit và PR nền | CODEX | - | Đọc inventory tracked/issues; tài liệu nhất quán; validator và fixture unittest PASS; diff đúng allowlist; nhánh được push và có PR vào main, không merge | DONE | Commit 37d98d2; SESSION_LOG phiên 2: checker/validator và 54 tests PASS trên commit sạch; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5 mở vào main, remote SHA đã xác minh |
 | H02 | Review PR harness | REVIEW | H01 | Người review xác nhận phạm vi, bằng chứng và khả năng tiếp tục bằng review trên PR | TODO | - |
 | H03 | Cung cấp và xác nhận danh sách phần cứng/IO | USER-HW | - | Gửi model/ảnh board, sensor, driver, nguồn/điện áp/tải, cơ cấu/hành trình, feedback, giao tiếp; xác nhận bảng IO trước mã điều khiển | BLOCKED | Chờ người dùng cung cấp Q2; issue #3 chưa có bảng IO |
 | H04 | Cung cấp mẫu bìa hồi quy có nguồn gốc | USER-DATA | - | Gửi raw/crop/debug B08 và nhiều bìa kèm mã sách, điều kiện chụp, quyền dùng nội bộ và vị trí lưu ngoài Git; xác nhận đâu là mép đúng | BLOCKED | Chờ bộ mẫu được xác nhận Q8; ảnh không có trong clean checkout |

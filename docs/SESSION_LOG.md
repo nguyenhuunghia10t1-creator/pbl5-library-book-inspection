@@ -65,3 +65,14 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - `git diff --check`: exit 0, PASS. Cảnh báo Git chuyển CRLF sang LF của file sửa không phải lỗi whitespace; không format hàng loạt.
 - Review phạm vi: chỉ 11 đường dẫn allowlist; PROGRESS/SESSION_LOG bảo toàn byte nội dung commit gốc và chỉ append; không đổi vision/software/firmware/config/CI/dependency hoặc file cấm. AGENTS 3,725 byte UTF-8, dưới 5 KB.
 - Baseline còn lỗi: không có lỗi test repository; warning firmware cũ đã ghi riêng. Chưa kiểm chứng webcam, AI/model, PnP thật, cơ cấu, end-to-end hardware và CI remote của PR mới.
+
+
+### Commit sạch, push và PR — 2026-11-07T09:04:54+07:00
+
+- Commit triển khai đã tồn tại: 37d98d2031996b424c8441633617ddd49223b061, chore/codex-harness. Kiểm lại nguyên trạng khi git status sạch, E1, 2026-11-07T09:03:20–09:03:25+07:00: `& D:/smart-vision-inspection/.venv/Scripts/python.exe scripts/check_repository.py` exit 0 PASS (23 source); cùng interpreter `scripts/check_codex_state.py` exit 0 PASS; `-m unittest discover -s tests -v` exit 0 PASS 54 tests/0 failures/0 errors/0 skips, 4.515s; `git diff --check` exit 0 PASS.
+- `git push -u origin chore/codex-harness`: exit 0; `git ls-remote origin refs/heads/chore/codex-harness refs/heads/main`: exit 0, nhánh harness đúng 37d98d2, main vẫn d431f10. Không force-push, không merge.
+- GitHub REST GET pulls theo head/base rồi POST pulls: thành công, [PR #5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) OPEN, head chore/codex-harness, base main, merged=false. Không có PR trùng và không sửa issue. Nội dung PR có scope, test, baseline warning/giới hạn, câu hỏi Q1–Q9 và V02 kế tiếp.
+- Metadata: H01 có bằng chứng DONE; Active task NONE; Last green commit trỏ 37d98d2 đã kiểm sạch; PR được thêm vào Resume notes. Không ghi hash của chính commit metadata. H02 vẫn chờ người review; V02 chỉ đề xuất, chưa bắt đầu.
+- CI remote của PR tại thời điểm ghi: NOT_RUN bởi phiên này; kết quả workflow đang chờ truy vấn. Không gán PASS CI từ test local. Phần cứng/model/camera vẫn NOT_RUN.
+
+- Kiểm metadata sau PR lúc 2026-11-07T09:04:54+07:00, E1, 37d98d2 + working-tree changes: cùng interpreter chạy scripts/check_repository.py (23 source) và scripts/check_codex_state.py đều exit 0 PASS; git diff --check exit 0 PASS. Đây là thay đổi tài liệu; không đổi mã từ bộ 54 tests đã chạy trên commit sạch. Chạy lại checker/validator trước commit metadata để kiểm liên kết và ledger cuối.
