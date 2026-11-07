@@ -87,3 +87,21 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 
 - Kiểm sau sửa lúc 2026-11-07T09:19:27+07:00, E1, HEAD 5347e17 + working-tree changes: cùng interpreter chạy scripts/check_repository.py và scripts/check_codex_state.py đều exit 0 PASS; git diff --check exit 0 PASS. Đối chiếu từng hàng: 53 task cũ chỉ thêm icon, các cột còn lại giữ nguyên; H13 là task tài liệu mới. Mọi icon khớp Status. Không thêm test mới cho thay đổi trình bày.
 - Kết thúc H13 theo bằng chứng trên; Active task NONE, Last green commit giữ hash đã được kiểm nguyên trạng. V02 vẫn chưa bắt đầu. Tiếp tục push cùng PR #5 đang mở, không merge.
+
+
+## 2026-11-07 — Phiên 4 — V02: Preview độc lập geometry/QR
+
+- Bắt đầu 2026-11-07T09:32:43+07:00; nhánh fix/preview-v02 từ origin/chore/codex-harness tại 4d3b402a843f6240ccd31fbbc8e27ed8be658dd4. PR nền #5 OPEN/chưa merge được kiểm bằng API; nhánh tạo trước sửa file, không đổi main hay thay đổi có sẵn ở checkout gốc.
+- Chọn V02 vì H01 DONE và không cần mẫu thật/IO/ngưỡng chưa duyệt. Phạm vi: worker phân tích, UI/capture liên kết frame, test/benchmark synthetic và tài liệu liên quan; không sửa geometry/parser/bundle schema hay firmware.
+- Baseline E1 Windows/PowerShell, interpreter D:/smart-vision-inspection/.venv/Scripts/python.exe, worktree sạch tại commit gốc. 2026-11-07T09:30:57–09:31:02+07:00: scripts/check_repository.py exit 0 PASS (23 source); -m unittest discover -s tests -v exit 0 PASS 54 tests/0 failures/0 errors/0 skips, 5.035s.
+- Mô hình triển khai: chỉ một worker sở hữu CoverVision, không hàng đợi frame cũ; UI đọc camera/render/event riêng. Kết quả chứa frame/properties/config revision để không ghép crop/QR cũ vào ảnh mới; S/D đợi frame sau yêu cầu. Đổi camera/calibration/flip/manual vô hiệu hóa kết quả cũ.
+- Chưa chạy webcam hoặc thiết bị thật. Kết quả fixture không là nghiệm thu V03.
+
+- Hồi quy lần đầu sau sửa: 69 tests được tìm; 68 PASS, test cũ AppTests.test_save_uses_frame_after_keypress FAIL vì giả định S ở vòng 1 và Q ở vòng 2 đã lưu xong. Đây là lỗi tương thích test do V02, không có ở baseline. Một việc sửa tiếp theo đã thực hiện: test đợi bundle hoàn tất trước Q, vẫn bắt buộc capture_seq > frame lúc bấm S; bổ sung test mới so raw/crop/QR/properties cùng frame.
+
+- Sau sửa test S, chạy toàn bộ unittest exit 0 PASS 69 tests/0 failures/errors/skips trong 5.713s lúc 09:38:11–09:38:17+07:00. Hai test bổ sung calibration/config và D làm tổng cuối 71 tests.
+- Benchmark lúc 2026-11-07T09:38:17–09:38:21+07:00, E1, HEAD 4d3b402 + working-tree changes: `& D:/smart-vision-inspection/.venv/Scripts/python.exe scripts/benchmark_preview.py` exit 0 PASS. Delay analysis synthetic 200ms; 15 preview frames; trước UI 3.1701s/median gap 211.040ms, sau UI 0.2111s/median gap 10.774ms. Renderer/camera/analysis fake: không dùng làm FPS/accuracy thật. Giá trị đầy đủ trong PREVIEW_VALIDATION.
+- GUI smoke cuối lúc 2026-11-07T09:40:32–09:40:35+07:00: cùng interpreter `-m vision.opencv --image $env:TEMP/pbl5-v02-smoke-20261107/fixture.png --source-kind synthetic --output $env:TEMP/pbl5-v02-smoke-20261107/collection --duration 2 --screenshot $env:TEMP/pbl5-v02-smoke-20261107/ui.png`, exit 0 PASS; đã xem ảnh ui.png: READY, crop/QR PBL5-B04, nhãn Frame/Analyzed rõ. Sửa nhãn frame chồng ảnh trước lượt cuối. Không webcam.
+- Bộ kiểm cuối source lúc 2026-11-07T09:41:08–09:41:20+07:00, E1, HEAD + working-tree changes: scripts/check_repository.py exit 0 PASS (26 source); scripts/check_codex_state.py exit 0 PASS; -m unittest discover -s tests -q exit 0 PASS 71 tests/0 failures/0 errors/0 skips, 10.961s; git diff --check exit 0 PASS. Lệnh dùng interpreter E1 đã ghi; không sửa dependency/vision pipeline/schema/firmware.
+- Ghi V02 DONE theo acceptance phần mềm và bằng chứng PREVIEW_VALIDATION; Active task NONE. Đây không là DONE-HW hay PASS camera thật. Đã thêm bài thử webcam cụ thể vào COVER_CAPTURE và Human actions pending; không tự chốt ngưỡng.
+- Việc tiếp theo duy nhất: V05 kiểm bundle/manifest/provenance bằng fixtures; không bắt đầu trong phiên này. PR V02 sẽ mở base chore/codex-harness vì PR nền #5 chưa merge.

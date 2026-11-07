@@ -86,4 +86,4 @@ Mỗi thay đổi thực hiện trên nhánh riêng, gửi pull request vào `ma
 
 ## Hạn chế hiện tại
 
-Preview còn phụ thuộc thời gian xử lý QR. Trên nền có đường ron hoặc bìa có viền gần màu nền, bộ chọn góc có thể nhảy giữa các ứng viên. Cần xử lý hai vấn đề này trước khi thu dữ liệu hàng loạt. Nhãn ảnh đạt điều kiện thu không đồng nghĩa với kết luận sách không có lỗi.
+Preview đọc frame mới độc lập với worker geometry/QR. Crop/QR hiển thị kèm số frame đã phân tích; bấm S/D sẽ đợi xử lý một frame mới sau yêu cầu. Trên nền có đường ron hoặc bìa có viền gần màu nền, bộ chọn góc có thể nhảy giữa các ứng viên. Cần xử lý hai vấn đề này trước khi thu dữ liệu hàng loạt. Nhãn ảnh đạt điều kiện thu không đồng nghĩa với kết luận sách không có lỗi.

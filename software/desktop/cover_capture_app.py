@@ -16,6 +16,7 @@ from vision.opencv.camera import CameraAdapter, Frame, wait_for_frame
 from vision.opencv.config import ROOT, load_config
 from vision.opencv.dataset import DatasetWriter, annotate, read_image, rebuild_manifest
 from vision.opencv.pipeline import CoverVision, Result, order_quad
+from software.desktop.analysis_worker import AnalysisRequest, AnalysisWorker
 
 
 WINDOW = "PBL5 | A6 Cover Capture"
@@ -53,12 +54,19 @@ HINTS = {
 
 
 def render(packet, result, camera_status, message, properties, manual_points=None,
-           mask_mode=False, fps=0, frozen=False):
+           mask_mode=False, fps=0, frozen=False, analysis_packet=None):
     canvas = np.full((SIZE[1], SIZE[0], 3), (28, 24, 20), np.uint8)
     text(canvas, "PBL5 / A6 COVER CAPTURE", (24, 35), 0.85, (110, 220, 245))
-    text(canvas, "FROZEN SNAPSHOT" if frozen else camera_status, (24, 64), 0.52)
+    caption = "FROZEN SNAPSHOT" if frozen else camera_status
+    if packet:
+        caption += f" | Frame #{packet.sequence}"
+    if mask_mode and analysis_packet and result.mask is not None:
+        caption = f"MASK | Analyzed #{analysis_packet.sequence}"
+    text(canvas, caption, (24, 64), 0.52)
     text(canvas, "RECTIFIED A6 / 630 x 888 default", (904, 64), 0.47)
-    image = None if packet is None else annotate(packet.image, result)
+    same_frame = packet is not None and analysis_packet is not None and (
+        packet.camera_session_id, packet.sequence) == (analysis_packet.camera_session_id, analysis_packet.sequence)
+    image = None if packet is None else (annotate(packet.image, result) if same_frame else packet.image)
     if mask_mode and result.mask is not None:
         image = cv2.cvtColor(result.mask, cv2.COLOR_GRAY2BGR)
     placement = fit_image(canvas, image, (20, 82, 860, 505))
@@ -70,6 +78,12 @@ def render(packet, result, camera_status, message, properties, manual_points=Non
             cv2.circle(canvas, point, 7, (0, 180, 255), -1)
             text(canvas, str(i + 1), (point[0] + 10, point[1]))
     fit_image(canvas, result.crop, (906, 82, 354, 500))
+    if analysis_packet:
+        age = max(0, time.monotonic() - analysis_packet.monotonic)
+        text(canvas, f"Analyzed #{analysis_packet.sequence} | age {age:.2f}s", (906, 600), 0.43)
+    else:
+        text(canvas, "Waiting for analysis...", (906, 600), 0.43)
+
     color = (100, 235, 110) if result.status == "READY" else (60, 190, 255)
     text(canvas, result.status, (24, 615), 0.75, color)
     text(canvas, "ID: " + (result.qr.book_id or "--") + "   QR: " + result.qr.status, (24, 646), 0.55)
@@ -78,23 +92,15 @@ def render(packet, result, camera_status, message, properties, manual_points=Non
         center = m["center_px"]
         text(canvas, f"Center ({center[0]:.0f}, {center[1]:.0f})px | Angle {m['angle_deg']:.1f}deg | "
              f"Sharp {m['sharpness']:.0f} | Light {m['brightness']:.0f} | Stable {result.stable_count}", (24, 675), 0.48)
-    text(canvas, ", ".join(result.issues) or HINTS.get(result.status, "Check camera index, Windows privacy and other camera apps."),
+    hint = "Frozen snapshot: S saves this image; M selects corners." if frozen and result.status == "READY" else (
+        HINTS.get(result.status, "Check camera index, Windows privacy and other camera apps."))
+    text(canvas, ", ".join(result.issues) or hint,
          (24, 701), 0.46)
     text(canvas, message[:142], (24, 728), 0.47, (110, 220, 245))
     text(canvas, "S Save | D Review | B Empty background | M Freeze/pick 4 corners | R Flip 180 | V Mask | Q Quit", (24, 759), 0.48)
     text(canvas, f"[ / ] Background tolerance | C Clear calibration | Pipeline {fps:.1f} fps | "
          f"Camera {properties.get('camera_index', '--')}", (24, 785), 0.45)
     return canvas, placement
-
-
-def process_snapshot(vision, packet, flip, manual=False):
-    result = vision.process(packet.image, decode=True, flip=flip)
-    if manual and result.crop is not None:
-        # A deliberately frozen snapshot has no temporal stability measurement.
-        result.stable_count = 0
-        result.status = "QUALITY_WARNING" if result.issues else (
-            "READY" if result.qr.status == "VALID_FORMAT" else "QR_" + result.qr.status)
-    return result
 
 
 def run_ui(config, args):
@@ -109,22 +115,40 @@ def run_ui(config, args):
     logger.setLevel(logging.INFO)
     logger.propagate = False
     logger.info("Session %s; output %s", writer.session_id, writer.root)
-    vision = CoverVision(config)
-    camera = None
+    camera = worker = None
     packet, properties, packet_properties = None, {}, {}
-    result = Result("STARTING_CAMERA")
+    result, analysis = Result("STARTING_CAMERA"), None
     message = "Remove books, press B once to calibrate the empty tabletop."
     frozen = bool(args.image)
-    manual_selecting, selected, placement = False, [], None
+    manual_selecting, selected, placement, manual_points = False, [], None, None
     flip, mask_mode = False, False
-    background_path = None
+    background, background_path = None, None
     save_request = None
-    last_key, last_processed, last_decode = None, None, 0.0
+    revision, live_session = 0, None
+    last_submitted, last_submit_time = None, 0.0
     status, fps = "IMAGE_INPUT" if args.image else "STARTING_CAMERA", 0.0
     started = time.monotonic()
 
+    def invalidate(state="WAITING_FOR_ANALYSIS"):
+        nonlocal revision, result, analysis, last_submitted, save_request
+        revision += 1
+        result, analysis, last_submitted, save_request = Result(state), None, None, None
+
+    def save_completion(completion, review):
+        nonlocal message
+        request = completion.request
+        try:
+            saved = writer.save(request.packet, completion.result, request.properties,
+                                review, request.background_path,
+                                time.monotonic() - request.packet.monotonic, frozen=request.frozen)
+            message = writer.manifest_warning or ("Saved " + saved.name + (" [REVIEW]" if review else " [ACCEPTED]"))
+            logger.info(message)
+        except (ValueError, OSError) as error:
+            message = str(error)
+            logger.warning(message)
+
     def mouse(event, x, y, flags, userdata):
-        nonlocal message, result, last_decode, manual_selecting
+        nonlocal message, manual_selecting, manual_points
         if event != cv2.EVENT_LBUTTONDOWN or not manual_selecting or not placement or packet is None:
             return
         left, top, width, height = placement
@@ -135,23 +159,22 @@ def run_ui(config, args):
         message = f"Pick corner {len(selected) + 1}/4 (any order). M cancels." if len(selected) < 4 else "Corners selected."
         if len(selected) == 4:
             try:
-                vision.manual_points = order_quad(selected)
-                result = process_snapshot(vision, packet, flip, manual=True)
+                manual_points = order_quad(selected)
                 manual_selecting = False
+                invalidate()
                 message = "Manual snapshot: check crop; S saves; M returns to live."
             except ValueError as error:
                 selected.clear()
                 message = str(error) + "; pick four outer corners again."
 
     try:
+        worker = AnalysisWorker()
         if args.image:
             image = read_image(args.image)
             packet = Frame(image, datetime.now(timezone.utc).isoformat(), time.monotonic(), 1, str(uuid.uuid4()))
             properties = {"input_file": str(Path(args.image).resolve()), "actual_frame_size": [image.shape[1], image.shape[0]]}
             packet_properties = properties.copy()
-            # Static imported input bypasses movement gate without claiming a live-camera test.
-            for _ in range(config.stable_frames):
-                result = vision.process(image, flip=flip)
+            result = Result("WAITING_FOR_ANALYSIS")
             message = "Imported image. S saves; M selects corners; Q quits."
         else:
             camera = CameraAdapter(config).start()
@@ -165,49 +188,71 @@ def run_ui(config, args):
                 incoming, status, properties = camera.capture()
                 if not frozen:
                     if incoming is None or now - incoming.monotonic > config.max_frame_age_seconds:
-                        packet = None
+                        if packet is not None or live_session is not None:
+                            invalidate("WAITING_FOR_FRESH_FRAME")
+                            if live_session is not None:
+                                background, background_path = None, None
+                        packet, live_session = None, None
                         result = Result("WAITING_FOR_FRESH_FRAME")
-                        vision.reset_tracking()
                     else:
-                        key = (incoming.camera_session_id, incoming.sequence)
-                        if last_key and key[0] != last_key[0]:
-                            vision.reset_tracking()
-                            vision.background = None
-                            background_path = None
-                        due = now - last_decode >= config.qr_interval_seconds or save_request is not None
-                        if key != last_key and due:
-                            packet = incoming
-                            packet_properties = properties.copy()
-                            if save_request and packet.monotonic <= save_request[1]:
-                                continue
-                            result = process_snapshot(vision, packet, flip)
-                            ended = time.monotonic()
-                            fps = 0 if last_processed is None else 1 / max(0.001, ended - last_processed)
-                            last_processed, last_decode, last_key = ended, ended, key
-                            if save_request:
-                                review = save_request[0]
-                                save_request = None
-                                try:
-                                    saved = writer.save(packet, result, packet_properties, review, background_path,
-                                                        time.monotonic() - packet.monotonic)
-                                    message = "Saved " + saved.name + (" [REVIEW]" if review else " [ACCEPTED]")
-                                    logger.info(message)
-                                    if writer.manifest_warning:
-                                        message = writer.manifest_warning
-                                        logger.warning(message)
-                                except (ValueError, OSError) as error:
-                                    message = str(error)
-                                    logger.warning(message)
+                        if incoming.camera_session_id != live_session:
+                            invalidate()
+                            background, background_path = None, None
+                            live_session = incoming.camera_session_id
+                        # Live preview advances on every fresh read, independently of analysis.
+                        packet, packet_properties = incoming, properties.copy()
                 if now - started > 20 and packet is None and not args.duration:
                     message = "No frames. Q to quit; try --camera 1 or --backend msmf. See runtime.log."
+
             if save_request and now - save_request[1] > 3:
                 save_request = None
-                message = "Save cancelled: no fresh frame received."
+                message = "Save cancelled: analysis/frame did not arrive in time."
+            completed = worker.poll()
+            if completed is not None:
+                request = completed.request
+                matching = (packet is not None and request.revision == revision and
+                            request.packet.camera_session_id == packet.camera_session_id and
+                            (not frozen or request.packet.sequence == packet.sequence))
+                fresh = request.frozen or time.monotonic() - request.packet.monotonic <= config.max_frame_age_seconds
+                if matching and fresh:
+                    if completed.error:
+                        result, analysis = Result("PROCESSING_ERROR", issues=[completed.error]), None
+                        last_submitted = None
+                        message = "Analysis failed; retrying. " + completed.error
+                        logger.warning(message)
+                        if request.save_request == save_request:
+                            save_request = None
+                    else:
+                        analysis, result = completed, completed.result
+                        fps = 1 / max(0.001, completed.elapsed)
+                        if save_request is not None and request.save_request == save_request:
+                            review, requested_at = save_request
+                            save_request = None
+                            if request.frozen or request.packet.monotonic > requested_at:
+                                save_completion(completed, review)
+                elif save_request is not None and request.save_request == save_request:
+                    # Retry a fresh frame; never persist an expired completion.
+                    last_submitted = None
+            if analysis is not None and not frozen and (
+                    time.monotonic() - analysis.request.packet.monotonic > config.max_frame_age_seconds):
+                analysis, result = None, Result("WAITING_FOR_ANALYSIS")
+
+            if packet is not None and not manual_selecting:
+                request_key = (revision, packet.camera_session_id, packet.sequence)
+                due = frozen or save_request is not None or now - last_submit_time >= config.qr_interval_seconds
+                after_keypress = (save_request is None or frozen or packet.monotonic > save_request[1])
+                if request_key != last_submitted and due and after_keypress:
+                    request = AnalysisRequest(packet, packet_properties.copy(), replace(config), revision,
+                                              flip, manual_points, background, background_path, frozen,
+                                              bool(args.image) and manual_points is None, save_request)
+                    if worker.submit(request):
+                        last_submitted, last_submit_time = request_key, now
+
+            analyzed_packet = None if analysis is None else analysis.request.packet
             canvas, placement = render(packet, result, status, message, properties,
-                                        selected, mask_mode, fps, frozen)
+                                        selected, mask_mode, fps, frozen, analysis_packet=analyzed_packet)
             cv2.imshow(WINDOW, canvas)
-            if args.screenshot:
-                # One preview artifact, explicitly requested; never a dataset sample.
+            if args.screenshot and analysis is not None:
                 ok, encoded = cv2.imencode(".png", canvas)
                 if ok:
                     Path(args.screenshot).write_bytes(encoded.tobytes())
@@ -218,50 +263,46 @@ def run_ui(config, args):
             if key in (ord("v"), ord("V")):
                 mask_mode = not mask_mode
             elif key in (ord("b"), ord("B")) and packet and not frozen:
-                vision.calibrate(packet.image)
-                background_path = writer.save_background(packet.image)
+                background = packet.image.copy()
+                background_path = writer.save_background(background)
+                invalidate()
                 message = "Background calibrated. Place one cover in view. Press C if calibrated with a book present."
                 logger.info("Background reference %s", background_path)
             elif key in (ord("c"), ord("C")):
-                vision.background, background_path = None, None
-                vision.reset_tracking()
+                background, background_path = None, None
+                invalidate()
                 message = "Background calibration cleared; using frame border color."
             elif key in (ord("["), ord("]")):
                 config.background_tolerance = min(100, max(1, config.background_tolerance + (2 if key == ord("]") else -2)))
-                vision.reset_tracking()
+                invalidate()
                 message = f"Background tolerance: {config.background_tolerance:.0f} (session only). V shows mask."
             elif key in (ord("r"), ord("R")):
                 flip = not flip
-                if packet:
-                    result = process_snapshot(vision, packet, flip, manual=vision.manual_points is not None)
+                invalidate()
                 message = "Manual 180-degree flip " + ("ON" if flip else "OFF")
             elif key in (ord("m"), ord("M")) and packet:
-                save_request = None
-                if manual_selecting or vision.manual_points is not None:
-                    manual_selecting, selected, vision.manual_points = False, [], None
+                if manual_selecting or manual_points is not None:
+                    manual_selecting, selected, manual_points = False, [], None
                     frozen = bool(args.image)
-                    vision.reset_tracking()
+                    invalidate()
                     message = "Manual selection cleared."
                 else:
                     frozen, manual_selecting, selected, mask_mode = True, True, [], False
-                    result = Result("PICK_4_OUTER_CORNERS")
+                    invalidate("PICK_4_OUTER_CORNERS")
                     message = "Click four outer cover corners in the left frozen image (any order). M cancels."
             elif key in (ord("s"), ord("S"), ord("d"), ord("D")):
                 review = key in (ord("d"), ord("D"))
                 if packet is None or manual_selecting:
                     message = "No usable frame / finish selecting four corners first."
-                elif frozen:
-                    try:
-                        saved = writer.save(packet, result, packet_properties, review, background_path,
-                                            time.monotonic() - packet.monotonic, frozen=True)
-                        message = writer.manifest_warning or ("Saved frozen snapshot " + saved.name)
-                        logger.info(message)
-                    except (ValueError, OSError) as error:
-                        message = str(error)
+                elif frozen and analysis is not None:
+                    save_completion(analysis, review)
                 else:
                     save_request = (review, time.monotonic())
-                    message = "Waiting for next fresh camera frame..."
+                    last_submitted = None
+                    message = "Waiting for analyzed frozen snapshot..." if frozen else "Waiting for next fresh camera frame..."
     finally:
+        if worker:
+            worker.close()
         if camera:
             camera.release()
         cv2.destroyAllWindows()

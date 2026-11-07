@@ -125,3 +125,8 @@ vision/opencv/pipeline.py
 vision/opencv/requirements.txt
 vision/yolo/README.md
 ```
+
+
+## Delta V02 — 2026-11-07
+
+Inventory baseline phía trên được giữ làm căn cứ audit ban đầu. V02 bổ sung software/desktop/analysis_worker.py (AnalysisWorker, SnapshotProcessor; gọi từ run_ui, config snapshot, stdlib/thread + CoverVision), tests/opencv/test_async_preview.py (17 regressions synthetic) và scripts/benchmark_preview.py (entry CLI, delay/frames/baseline-ref; dùng dependency hiện có, không camera). Đã đọc/review các tệp mới và diff UI/tests cũ. Luồng live hiện là camera → preview mới nhất song song worker → completion gắn frame → writer; preview không chờ geometry/QR. Xem [báo cáo V02](../PREVIEW_VALIDATION.md), trạng thái chỉ trong TASKS. Các nhận định đồng bộ ở phần baseline không mô tả phiên bản sau V02.

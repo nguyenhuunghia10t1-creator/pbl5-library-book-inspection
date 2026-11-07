@@ -281,17 +281,24 @@ class AppTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as folder:
             config = Config(output_dir=folder, stable_frames=1)
             fake = FakeCamera()
+            deadline = time.monotonic() + 5
+            def keys(delay):
+                time.sleep(0.001)
+                if fake.sequence == 1:
+                    return ord("s")
+                saved = list((Path(folder) / "captures").glob("*/metadata.json"))
+                return ord("q") if saved or time.monotonic() > deadline else -1
             with patch("software.desktop.cover_capture_app.load_config", return_value=config), \
                  patch("software.desktop.cover_capture_app.CameraAdapter", return_value=fake), \
                  patch("cv2.namedWindow"), patch("cv2.setMouseCallback"), \
                  patch("cv2.imshow"), patch("cv2.destroyAllWindows"), \
                  patch("cv2.getWindowProperty", return_value=1), \
-                 patch("cv2.waitKey", side_effect=[ord("s"), ord("q")]):
+                 patch("cv2.waitKey", side_effect=keys):
                 self.assertEqual(main(["--source-kind", "synthetic"]), 0)
             metadata = list((Path(folder) / "captures").glob("*/metadata.json"))
             self.assertEqual(len(metadata), 1)
             record = json.loads(metadata[0].read_text(encoding="utf-8"))
-            self.assertEqual(record["capture_seq"], 2)
+            self.assertGreater(record["capture_seq"], 1)
             self.assertEqual(record["source_kind"], "synthetic")
             self.assertTrue(fake.released)
 
