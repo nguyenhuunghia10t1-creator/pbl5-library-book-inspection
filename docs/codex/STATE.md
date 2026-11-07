@@ -1,7 +1,7 @@
 Active task: NONE
 Last updated: 2026-11-07
 Branch: fix/light-cover-detection-v07
-Last green commit: 8f9198f0c78030dd21000f4562a0492556c1dce2
+Last green commit: 6c4619af1bb5aea64487174a1b6f402772b51231
 
 ## Resume notes
 
@@ -20,15 +20,17 @@ git status --short --branch
 & $PYTHON -m unittest discover -s tests -v
 ```
 
-V07 sẽ commit/push fork và mở PR riêng trong phiên, không merge. B01 chỉ đề xuất, chưa bắt đầu. Preview bản mới đã được mở với camera 1/MSMF; tại lần quan sát ảnh đầu vào đen dù Live/Analyzed tăng, chưa thử được mép bìa thật. Chờ người dùng mở DroidCam/cung cấp nguồn hình rõ và thử B với nền trống.
+V07 đã commit/push lên [nhánh fork](https://github.com/truongthinh994/pbl5-library-book-inspection/tree/fix/light-cover-detection-v07), mở [PR #8](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/8) về fix/preview-v02; xác minh OPEN/chưa merge và head đúng commit triển khai. Team tải [ZIP đúng nhánh V07](https://github.com/truongthinh994/pbl5-library-book-inspection/archive/refs/heads/fix/light-cover-detection-v07.zip). B01 chỉ đề xuất, chưa bắt đầu. Preview bản mới đã được mở với camera 1/MSMF; tại lần quan sát ảnh đầu vào đen dù Live/Analyzed tăng, chưa thử được mép bìa thật. Chờ người dùng mở DroidCam/cung cấp nguồn hình rõ và thử B với nền trống. CI remote chưa có check trong statusCheckRollup khi xác minh; chưa kết luận PASS.
 
 ## Baseline đã đo
+
+Last green commit 6c4619af1bb5aea64487174a1b6f402772b51231 đã được kiểm nguyên trạng, status sạch trước/sau, lúc 2026-11-07T11:06:54–11:07:06+07:00: checker PASS (27 source), validator PASS, unittest PASS 85 tests/0 failures/0 errors/0 skips (9.926s), git diff --check PASS. Commit metadata tiếp theo chỉ ghi URL/bằng chứng, không tự tham chiếu hash của chính nó.
 
 V07 source trên HEAD 8f9198f + working-tree changes, 2026-11-07T11:02:30–11:02:40+07:00: checker PASS (27 source), validator PASS, 85 tests = 71 baseline + 14 mới PASS/0 failures/0 errors/0 skips (8.816s), git diff --check PASS. GUI và headless synthetic vàng nhạt PASS/READY/PBL5-B04 lúc 11:04:07–11:04:11+07:00. Kiểm camera chỉ xác nhận mở backend, không chứng minh bìa thật đạt gate.
 
 Phiên V07, Windows 11 build 26300/PowerShell 7.6.9, Python 3.13.14/OpenCV 5.0.0/NumPy 2.5.4, venv checkout cũ: commit sạch 8f9198f lúc 2026-11-07T10:55:40–10:55:47+07:00, checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips (6.342s), git diff --check PASS. Trước đổi nhánh, 525ca41 cũng đã baseline 92 tests PASS. Xem SESSION_LOG phiên 7 để phân biệt.
 
-Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
+Lịch sử V02: commit 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
 
 Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
 
