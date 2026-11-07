@@ -5,6 +5,8 @@ Last green commit: 37d98d2031996b424c8441633617ddd49223b061
 
 ## Resume notes
 
+Để theo dõi nhanh, xem chú giải và ký hiệu trước tên task trong [TASKS.md](TASKS.md); Status vẫn là nguồn trạng thái chuẩn.
+
 Đọc TASKS.md → WORKFLOW.md → đuôi ../SESSION_LOG.md → quyết định liên quan trong ../DECISIONS.md. Trạng thái task chỉ ở TASKS; không cập nhật bản sao tại đây.
 
 Worktree harness riêng trên chore/codex-harness; checkout chính vẫn main với PROGRESS/SESSION_LOG sửa sẵn được giữ nguyên, không đưa vào PR. Commit gốc và remote main đã đọc cùng SHA d431f10fbb79dc086c8912702552463ca20262ab. Không reset/stash/checkout đè thay đổi cũ. PR harness: [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5), mở vào main, chưa merge; cần H02 review. Toàn bộ thay đổi phiên nằm trong worktree của nhánh harness, không ở checkout chính đang có sửa sẵn.

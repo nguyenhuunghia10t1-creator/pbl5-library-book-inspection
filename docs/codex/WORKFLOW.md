@@ -58,7 +58,7 @@ Một bảng chuẩn dưới “Tasks”, đúng bảy cột `ID, Task, Who, Dep
 - DONE-SIM: hành vi đạt acceptance trên simulator.
 - DONE-HW: người dùng cung cấp bằng chứng thiết bị thật đủ acceptance; build, ACK hay simulator không thay thế.
 
-Mọi trạng thái hoàn thành cần Evidence cụ thể, không rỗng/placeholder, và tất cả Depends hoàn thành. Tách task simulator và task hardware nếu cần nghiệm thu riêng. Không dùng DONE để tránh gate hardware. Kết quả kiểm tra PASS/FAIL/SKIPPED/NOT_RUN không phải Status task.
+Mọi trạng thái hoàn thành cần Evidence cụ thể, không rỗng/placeholder, và tất cả Depends hoàn thành. Tách task simulator và task hardware nếu cần nghiệm thu riêng. Không dùng DONE để tránh gate hardware. Kết quả kiểm tra PASS/FAIL/SKIPPED/NOT_RUN không phải Status task. Ký hiệu đầu ô Task chỉ minh họa Status theo chú giải TASKS; khi đổi Status phải cập nhật ký hiệu cùng lúc. Không thêm emoji vào ID/Who/Depends/Status hoặc tạo bảng tiến độ thứ hai.
 
 STATE bắt đầu bằng đúng bốn trường: Active task, Last updated, Branch, Last green commit. Active task khớp task CODEX IN_PROGRESS duy nhất; không có thì NONE. Ngày là ngày lịch thực tế YYYY-MM-DD theo múi giờ làm việc. Branch phản ánh nhánh thực, không phải nhánh mong muốn.
 

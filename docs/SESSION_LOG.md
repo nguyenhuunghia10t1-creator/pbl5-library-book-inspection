@@ -76,3 +76,14 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - CI remote của PR tại thời điểm ghi: NOT_RUN bởi phiên này; kết quả workflow đang chờ truy vấn. Không gán PASS CI từ test local. Phần cứng/model/camera vẫn NOT_RUN.
 
 - Kiểm metadata sau PR lúc 2026-11-07T09:04:54+07:00, E1, 37d98d2 + working-tree changes: cùng interpreter chạy scripts/check_repository.py (23 source) và scripts/check_codex_state.py đều exit 0 PASS; git diff --check exit 0 PASS. Đây là thay đổi tài liệu; không đổi mã từ bộ 54 tests đã chạy trên commit sạch. Chạy lại checker/validator trước commit metadata để kiểm liên kết và ledger cuối.
+
+
+## 2026-11-07 — Phiên 3 — H13: Ký hiệu tiến độ dễ đọc
+
+- Yêu cầu: thêm đánh dấu để người dùng dễ thấy task đã làm/chưa làm. Nhánh chore/codex-harness, commit gốc 5347e171d7666f09639fae70610028349cd8c866; worktree sạch. PR #5 đã kiểm vẫn OPEN, chưa merge, đúng head SHA.
+- Môi trường E1 như phiên 2: Windows/PowerShell, interpreter D:/smart-vision-inspection/.venv/Scripts/python.exe. Baseline commit sạch lúc 2026-11-07T09:18:33–09:18:38+07:00: chạy scripts/check_repository.py exit 0 PASS (23 source, gồm validator); -m unittest discover -s tests -q exit 0 PASS, 54 tests/0 failures/0 errors/0 skips trong 4.422s.
+- Thay đổi lúc 2026-11-07T09:19:27+07:00: TASKS có chú giải và icon trong tên task; giữ đủ bảy cột, ID/Who/Depends/Status không đổi. Thêm H13 cho yêu cầu tài liệu này; phân biệt DONE/DONE-SIM/DONE-HW. WORKFLOW nhắc cập nhật icon cùng Status; STATE dẫn cách đọc nhanh.
+- Không đổi code, dependency hoặc trạng thái nghiệm thu nghiệp vụ. Icon BLOCKED là đang chờ đầu vào, không phải FAIL. Không có kiểm chứng phần cứng mới; V02 vẫn là việc nghiệp vụ tiếp theo, chưa bắt đầu.
+
+- Kiểm sau sửa lúc 2026-11-07T09:19:27+07:00, E1, HEAD 5347e17 + working-tree changes: cùng interpreter chạy scripts/check_repository.py và scripts/check_codex_state.py đều exit 0 PASS; git diff --check exit 0 PASS. Đối chiếu từng hàng: 53 task cũ chỉ thêm icon, các cột còn lại giữ nguyên; H13 là task tài liệu mới. Mọi icon khớp Status. Không thêm test mới cho thay đổi trình bày.
+- Kết thúc H13 theo bằng chứng trên; Active task NONE, Last green commit giữ hash đã được kiểm nguyên trạng. V02 vẫn chưa bắt đầu. Tiếp tục push cùng PR #5 đang mở, không merge.
