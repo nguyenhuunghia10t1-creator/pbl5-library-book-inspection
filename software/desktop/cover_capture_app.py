@@ -17,15 +17,17 @@ from vision.opencv.config import ROOT, load_config
 from vision.opencv.dataset import DatasetWriter, annotate, read_image, rebuild_manifest
 from vision.opencv.pipeline import CoverVision, Result, order_quad
 from software.desktop.analysis_worker import AnalysisRequest, AnalysisWorker
+from software.desktop.ui_text import draw_text
+from software.desktop.ui_vietnamese import state_label, qr_label, issue_label, save_error_label
 
 
-WINDOW = "PBL5 | A6 Cover Capture"
+WINDOW = "PBL5 | Thu ảnh bìa sách A6"
 SIZE = (1280, 800)
 logger = logging.getLogger("cover_capture")
 
 
 def text(canvas, value, pos, size=0.55, color=(210, 220, 230)):
-    cv2.putText(canvas, str(value), pos, cv2.FONT_HERSHEY_SIMPLEX, size, color, 1, cv2.LINE_AA)
+    draw_text(canvas, value, pos, size, color)
 
 
 def fit_image(canvas, image, box):
@@ -40,33 +42,43 @@ def fit_image(canvas, image, box):
 
 
 HINTS = {
-    "NO_COVER": "Keep one whole A6 cover in view. B: calibrate empty background; M: pick corners.",
-    "MULTIPLE_COVERS": "Remove extra covers. Only one book per capture.",
-    "TOUCHING_FRAME": "Move the entire cover away from the image edges.",
-    "QUALITY_WARNING": "Improve focus/light/distance. D saves separately for review.",
-    "MOVING": "Hold the cover still for a moment.",
-    "QR_UNREADABLE": "Make QR larger, sharp, glare-free, with a clean white border.",
-    "QR_AMBIGUOUS": "Multiple QR codes found. Keep only one on the cover.",
-    "QR_INVALID_FORMAT": "Expected PBL5-B04 or LIB1:<copy_id>; check the printed payload.",
-    "QR_INVALID_NAMESPACE": "QR payload is outside the supported PBL5/LIB1 formats.",
-    "READY": "S: save the NEXT fresh frame. Check the crop and ID first.",
+    "NO_COVER": "Đặt trọn một bìa A6 trong khung. B: ghi nền trống; M: chọn góc thủ công.",
+    "MULTIPLE_COVERS": "Lấy bìa thừa ra. Mỗi lần chỉ chụp một cuốn sách.",
+    "TOUCHING_FRAME": "Đưa toàn bộ bìa vào giữa, chừa nền quanh bốn cạnh.",
+    "QUALITY_WARNING": "Kiểm tra nét, ánh sáng và khoảng cách. D: lưu riêng để xem lại.",
+    "MOVING": "Giữ yên điện thoại và sách, chờ các góc bìa ổn định.",
+    "QR_UNREADABLE": "Đưa QR gần hơn, lấy nét, tránh lóa và giữ viền trắng quanh mã.",
+    "QR_AMBIGUOUS": "Có nhiều QR. Chỉ để một mã trên bìa trong khung.",
+    "QR_INVALID_FORMAT": "Mã cần có dạng PBL5-B04 hoặc LIB1:<copy_id>. Kiểm tra nội dung QR đã in.",
+    "QR_INVALID_NAMESPACE": "Nội dung QR chưa thuộc định dạng PBL5/LIB1 được hỗ trợ.",
+    "QR_DECODE_ERROR": "Chưa giải mã được QR. Chỉnh nét hoặc xem runtime.log.",
+    "QR_PENDING": "Đang đọc mã QR, vui lòng chờ.",
+    "READY": "S: lưu ảnh mới đủ điều kiện. Kiểm tra góc bìa và mã sách trước khi lưu.",
+    "PICK_4_OUTER_CORNERS": "Bấm vào 4 góc ngoài của bìa trên ảnh bên trái. M: hủy.",
+    "WAITING_FOR_ANALYSIS": "Đang phân tích ảnh, vui lòng chờ.",
+    "WAITING_FOR_FRESH_FRAME": "Đang chờ camera gửi ảnh mới. Kiểm tra kết nối điện thoại.",
+    "STARTING_CAMERA": "Đang mở nguồn camera, vui lòng chờ.",
+    "PROCESSING_ERROR": "Phân tích thất bại. Đang thử lại; xem runtime.log nếu lỗi lặp lại.",
 }
 
 
 def render(packet, result, camera_status, message, properties, manual_points=None,
            mask_mode=False, fps=0, frozen=False, analysis_packet=None):
     canvas = np.full((SIZE[1], SIZE[0], 3), (28, 24, 20), np.uint8)
-    text(canvas, "PBL5 / A6 COVER CAPTURE", (24, 35), 0.85, (110, 220, 245))
-    caption = "FROZEN SNAPSHOT" if frozen else camera_status
+    text(canvas, "PBL5 / THU ẢNH BÌA SÁCH A6", (24, 35), 0.85, (110, 220, 245))
+    caption = "ẢNH ĐÃ ĐÓNG BĂNG" if frozen else state_label(camera_status)
     if packet:
-        caption += f" | Frame #{packet.sequence}"
+        caption += f" | Khung #{packet.sequence}"
     if mask_mode and analysis_packet and result.mask is not None:
-        caption = f"MASK | Analyzed #{analysis_packet.sequence}"
+        caption = f"MẶT NẠ TÁCH NỀN | Khung #{analysis_packet.sequence}"
     text(canvas, caption, (24, 64), 0.52)
-    text(canvas, "RECTIFIED A6 / 630 x 888 default", (904, 64), 0.47)
+    text(canvas, "BÌA ĐÃ CĂN / 630 × 888 px mặc định", (904, 64), 0.47)
     same_frame = packet is not None and analysis_packet is not None and (
         packet.camera_session_id, packet.sequence) == (analysis_packet.camera_session_id, analysis_packet.sequence)
-    image = None if packet is None else (annotate(packet.image, result) if same_frame else packet.image)
+    image = None if packet is None else packet.image
+    if same_frame:
+        image = annotate(packet.image, result, show_status=False)
+        text(image, state_label(result.status), (15, 30), 0.7, (0, 100, 255))
     if mask_mode and result.mask is not None:
         image = cv2.cvtColor(result.mask, cv2.COLOR_GRAY2BGR)
     placement = fit_image(canvas, image, (20, 82, 860, 505))
@@ -80,33 +92,33 @@ def render(packet, result, camera_status, message, properties, manual_points=Non
     fit_image(canvas, result.crop, (906, 82, 354, 500))
     if analysis_packet:
         age = max(0, time.monotonic() - analysis_packet.monotonic)
-        text(canvas, f"Analyzed #{analysis_packet.sequence} | age {age:.2f}s", (906, 600), 0.43)
+        text(canvas, f"Đã xử lý #{analysis_packet.sequence} | Cách đây {age:.2f}s", (906, 600), 0.43)
     else:
-        text(canvas, "Waiting for analysis...", (906, 600), 0.43)
+        text(canvas, "Đang chờ phân tích...", (906, 600), 0.43)
 
     color = (100, 235, 110) if result.status == "READY" else (60, 190, 255)
-    text(canvas, result.status, (24, 615), 0.75, color)
-    text(canvas, "ID: " + (result.qr.book_id or "--") + "   QR: " + result.qr.status, (24, 646), 0.55)
+    text(canvas, state_label(result.status), (24, 615), 0.75, color)
+    text(canvas, "Mã sách: " + (result.qr.book_id or "--") + "   QR: " + qr_label(result.qr.status), (24, 646), 0.55)
     m = result.metrics
     if m:
         center = m["center_px"]
-        text(canvas, f"Center ({center[0]:.0f}, {center[1]:.0f})px | Angle {m['angle_deg']:.1f}deg | "
-             f"Sharp {m['sharpness']:.0f} | Light {m['brightness']:.0f} | Stable {result.stable_count}", (24, 675), 0.48)
+        text(canvas, f"Tâm ({center[0]:.0f}, {center[1]:.0f})px | Góc {m['angle_deg']:.1f}° | "
+             f"Độ nét {m['sharpness']:.0f} | Độ sáng {m['brightness']:.0f}/255 | Ổn định {result.stable_count} lượt", (24, 675), 0.48)
         if "focus_measurable" in m:
-            focus = f"{m['detail_sharpness']:.0f}" if m["focus_measurable"] else "unverified"
-            text(canvas, f"Detail focus: {focus}", (906, 625), 0.44)
-            text(canvas, f"Clip high/low: {100*m['clipped_high_fraction']:.1f}% / "
+            focus = f"{m['detail_sharpness']:.0f}" if m["focus_measurable"] else "chưa xác minh"
+            text(canvas, f"Nét tại vùng chi tiết: {focus}", (906, 625), 0.44)
+            text(canvas, f"Trắng/đen bão hòa: {100*m['clipped_high_fraction']:.1f}% / "
                  f"{100*m['clipped_low_fraction']:.1f}%", (906, 649), 0.41)
-    hint = "Frozen snapshot: S saves this image; M selects corners." if frozen and result.status == "READY" else (
-        HINTS.get(result.status, "Check camera index, Windows privacy and other camera apps."))
+    hint = "Ảnh đã đóng băng: S lưu ảnh này; M chọn góc hoặc về trực tiếp." if frozen and result.status == "READY" else (
+        HINTS.get(result.status, "Kiểm tra nguồn camera, quyền camera Windows và ứng dụng đang dùng camera."))
     if "FOCUS_UNVERIFIED" in result.issues:
-        hint = ", ".join(result.issues) + " | Too little detail to verify focus; D: review."
-    text(canvas, (hint if "FOCUS_UNVERIFIED" in result.issues else ", ".join(result.issues)) or hint,
+        hint = "; ".join(issue_label(issue) for issue in result.issues) + ". D: lưu xem lại."
+    text(canvas, (hint if "FOCUS_UNVERIFIED" in result.issues else "; ".join(issue_label(issue) for issue in result.issues)) or hint,
          (24, 701), 0.46)
-    text(canvas, message[:142], (24, 728), 0.47, (110, 220, 245))
-    text(canvas, "S Save | D Review | B Empty background | M Freeze/pick 4 corners | R Flip 180 | V Mask | Q Quit", (24, 759), 0.48)
-    text(canvas, f"[ / ] Background tolerance | C Clear calibration | Pipeline {fps:.1f} fps | "
-         f"Camera {properties.get('camera_index', '--')}", (24, 785), 0.45)
+    text(canvas, message, (24, 728), 0.47, (110, 220, 245))
+    text(canvas, "S Lưu ảnh | D Lưu xem lại | B Ghi nền trống | M Chọn 4 góc | R Lật 180° | V Xem mặt nạ | Q Thoát", (24, 759), 0.48)
+    text(canvas, f"[ / ] Ngưỡng tách nền | C Xóa nền đã ghi | Xử lý {fps:.1f} lượt/giây | "
+         f"Nguồn camera {properties.get('camera_index', '--')}", (24, 785), 0.45)
     return canvas, placement
 
 
@@ -125,7 +137,7 @@ def run_ui(config, args):
     camera = worker = None
     packet, properties, packet_properties = None, {}, {}
     result, analysis = Result("STARTING_CAMERA"), None
-    message = "Remove books, press B once to calibrate the empty tabletop."
+    message = "Lấy sách ra, bấm B để ghi nền bàn trống; sau đó đặt sách vào."
     frozen = bool(args.image)
     manual_selecting, selected, placement, manual_points = False, [], None, None
     flip, mask_mode = False, False
@@ -148,11 +160,11 @@ def run_ui(config, args):
             saved = writer.save(request.packet, completion.result, request.properties,
                                 review, request.background_path,
                                 time.monotonic() - request.packet.monotonic, frozen=request.frozen)
-            message = writer.manifest_warning or ("Saved " + saved.name + (" [REVIEW]" if review else " [ACCEPTED]"))
-            logger.info(message)
+            message = ("Đã lưu ảnh nhưng chưa cập nhật danh sách. Xem runtime.log; dùng --rebuild-manifest." if writer.manifest_warning else "Đã lưu " + saved.name + (" [CẦN XEM LẠI]" if review else " [ĐẠT ĐIỀU KIỆN THU ẢNH]"))
+            logger.info("Saved capture %s; review=%s; manifest_warning=%s", saved.name, review, writer.manifest_warning)
         except (ValueError, OSError) as error:
-            message = str(error)
-            logger.warning(message)
+            message = save_error_label(error)
+            logger.warning("Save failed: %s", error)
 
     def mouse(event, x, y, flags, userdata):
         nonlocal message, manual_selecting, manual_points
@@ -163,16 +175,16 @@ def run_ui(config, args):
             return
         selected.append([(x - left) / width * packet.image.shape[1],
                          (y - top) / height * packet.image.shape[0]])
-        message = f"Pick corner {len(selected) + 1}/4 (any order). M cancels." if len(selected) < 4 else "Corners selected."
+        message = f"Chọn góc {len(selected) + 1}/4 (thứ tự tùy ý). M: hủy." if len(selected) < 4 else "Đã chọn đủ 4 góc."
         if len(selected) == 4:
             try:
                 manual_points = order_quad(selected)
                 manual_selecting = False
                 invalidate()
-                message = "Manual snapshot: check crop; S saves; M returns to live."
+                message = "Đã chọn góc: kiểm tra ảnh bìa. S: lưu; M: về trực tiếp."
             except ValueError as error:
                 selected.clear()
-                message = str(error) + "; pick four outer corners again."
+                message = "Bốn góc chưa hợp lệ. Chọn lại 4 góc ngoài khác nhau, tạo thành hình tứ giác."
 
     try:
         worker = AnalysisWorker()
@@ -182,7 +194,7 @@ def run_ui(config, args):
             properties = {"input_file": str(Path(args.image).resolve()), "actual_frame_size": [image.shape[1], image.shape[0]]}
             packet_properties = properties.copy()
             result = Result("WAITING_FOR_ANALYSIS")
-            message = "Imported image. S saves; M selects corners; Q quits."
+            message = "Ảnh từ tệp. S: lưu; M: chọn góc; Q: thoát."
         else:
             camera = CameraAdapter(config).start()
         cv2.namedWindow(WINDOW, cv2.WINDOW_AUTOSIZE)
@@ -209,11 +221,11 @@ def run_ui(config, args):
                         # Live preview advances on every fresh read, independently of analysis.
                         packet, packet_properties = incoming, properties.copy()
                 if now - started > 20 and packet is None and not args.duration:
-                    message = "No frames. Q to quit; try --camera 1 or --backend msmf. See runtime.log."
+                    message = "Chưa có ảnh. Q: thoát; thử --camera 1 hoặc --backend msmf. Xem runtime.log."
 
             if save_request and now - save_request[1] > 3:
                 save_request = None
-                message = "Save cancelled: analysis/frame did not arrive in time."
+                message = "Đã hủy lưu vì chưa nhận ảnh hoặc kết quả kịp thời. Bấm S/D để thử lại."
             completed = worker.poll()
             if completed is not None:
                 request = completed.request
@@ -225,8 +237,8 @@ def run_ui(config, args):
                     if completed.error:
                         result, analysis = Result("PROCESSING_ERROR", issues=[completed.error]), None
                         last_submitted = None
-                        message = "Analysis failed; retrying. " + completed.error
-                        logger.warning(message)
+                        message = "Phân tích lỗi, đang thử lại. Xem chi tiết trong runtime.log."
+                        logger.warning("Analysis failed: %s", completed.error)
                         if request.save_request == save_request:
                             save_request = None
                     else:
@@ -273,40 +285,40 @@ def run_ui(config, args):
                 background = packet.image.copy()
                 background_path = writer.save_background(background)
                 invalidate()
-                message = "Background calibrated. Place one cover in view. Press C if calibrated with a book present."
+                message = "Đã ghi nền. Đặt một bìa vào khung. Nếu ghi nhầm lúc có sách, bấm C rồi ghi lại bằng B."
                 logger.info("Background reference %s", background_path)
             elif key in (ord("c"), ord("C")):
                 background, background_path = None, None
                 invalidate()
-                message = "Background calibration cleared; using frame border color."
+                message = "Đã xóa nền ghi trước đó; dùng màu ở mép khung hình để tách nền."
             elif key in (ord("["), ord("]")):
                 config.background_tolerance = min(100, max(1, config.background_tolerance + (2 if key == ord("]") else -2)))
                 invalidate()
-                message = f"Background tolerance: {config.background_tolerance:.0f} (session only). V shows mask."
+                message = f"Ngưỡng tách nền: {config.background_tolerance:.0f} (chỉ phiên này). V: xem mặt nạ."
             elif key in (ord("r"), ord("R")):
                 flip = not flip
                 invalidate()
-                message = "Manual 180-degree flip " + ("ON" if flip else "OFF")
+                message = "Lật ảnh 180°: " + ("BẬT" if flip else "TẮT")
             elif key in (ord("m"), ord("M")) and packet:
                 if manual_selecting or manual_points is not None:
                     manual_selecting, selected, manual_points = False, [], None
                     frozen = bool(args.image)
                     invalidate()
-                    message = "Manual selection cleared."
+                    message = "Đã bỏ chọn góc thủ công."
                 else:
                     frozen, manual_selecting, selected, mask_mode = True, True, [], False
                     invalidate("PICK_4_OUTER_CORNERS")
-                    message = "Click four outer cover corners in the left frozen image (any order). M cancels."
+                    message = "Bấm 4 góc ngoài bìa ở ảnh đóng băng bên trái (thứ tự tùy ý). M: hủy."
             elif key in (ord("s"), ord("S"), ord("d"), ord("D")):
                 review = key in (ord("d"), ord("D"))
                 if packet is None or manual_selecting:
-                    message = "No usable frame / finish selecting four corners first."
+                    message = "Chưa có ảnh để lưu, hoặc chưa chọn đủ 4 góc. Hoàn tất chọn góc trước."
                 elif frozen and analysis is not None:
                     save_completion(analysis, review)
                 else:
                     save_request = (review, time.monotonic())
                     last_submitted = None
-                    message = "Waiting for analyzed frozen snapshot..." if frozen else "Waiting for next fresh camera frame..."
+                    message = "Đang chờ phân tích ảnh đóng băng..." if frozen else "Đang chờ ảnh mới từ camera để lưu..."
     finally:
         if worker:
             worker.close()

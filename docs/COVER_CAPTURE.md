@@ -12,6 +12,18 @@ Tại root repository:
 
 Hoặc mở `scripts/windows/CaptureCovers.cmd`. Khi dùng launcher `scripts/capture_covers.py` từ thư mục khác, truyền đường dẫn tuyệt đối tới Python và script.
 
+## Giao diện tiếng Việt
+
+Trên Windows, giao diện hiển thị tiếng Việt có dấu bằng font Segoe UI có sẵn; không cần cài thêm thư viện. Phím S/D/B/C/M/R/V/Q và [ / ] giữ nguyên. Trạng thái, thông số và hướng dẫn thao tác trên màn hình đã dịch; mã kỹ thuật trong metadata, headless JSON và ảnh debug lưu vẫn giữ để tương thích.
+
+- **SẴN SÀNG LƯU ẢNH**: đạt điều kiện thu mẫu hiện có; chưa kết luận sách không rách/bẩn.
+- **CHƯA ỔN ĐỊNH**: giữ yên camera và sách, chờ các góc ổn định; góc nhảy cũng gây trạng thái này.
+- **QR: Sai định dạng mã**: kiểm tra nội dung QR, ví dụ PBL5-B04 hoặc LIB1:<copy_id>; chữ in cạnh QR chưa chứng minh payload.
+- **Độ sáng**: trung bình thang 0–255, không phải lux. **Độ nét/Nét tại vùng chi tiết**: chỉ số ảnh, không phải phần trăm.
+- **Trắng/đen bão hòa**: tỷ lệ pixel gần trắng/đen tuyệt đối. **Cách đây**: tuổi khung đã xử lý. **Xử lý ... lượt/giây**: ước tính từ lượt phân tích vừa xong, không phải FPS camera.
+
+Hướng dẫn và lỗi phổ biến có giải thích tiếng Việt; lỗi hệ thống chi tiết nằm trong runtime.log. Chuỗi quá dài được rút gọn bằng dấu … để không tràn khung. Nền tảng ngoài Windows dùng chữ Việt không dấu để các công cụ headless/test vẫn chạy với OpenCV hiện có. Font Windows dùng GDI [TextOutW](https://learn.microsoft.com/en-us/windows/win32/api/wingdi/nf-wingdi-textoutw); không đổi thuật toán nhận dạng hoặc ngưỡng.
+
 ## Quy trình thu
 
 1. Cố định camera, bố trí ánh sáng đều và chừa nền quanh toàn bộ bìa.

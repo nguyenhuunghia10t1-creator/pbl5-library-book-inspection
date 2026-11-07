@@ -146,3 +146,12 @@ Baseline inventory và các mâu thuẫn ở trên được giữ làm lịch s�
 | scripts/benchmark_cover_geometry.py | CLI so baseline Git với hiện tại trên cùng fixtures | baseline-ref/repeats/processing-width; stdlib/OpenCV/NumPy | Lệnh benchmark, 50 ca và báo sai góc; chưa camera |
 
 Luồng camera → worker → geometry/quality/QR → crop/bundle vẫn nối như V02; B so nền theo vị trí và bù dịch Lab chung, mép cần bằng chứng cả bốn cạnh/tương phản gần-xa. Không đổi DB/AI/controller/firmware chưa có. Các mô tả baseline dùng Canny cố định và brightness trung bình chặn trực tiếp đã được thay ở V07; chẩn đoán cũ vẫn giữ để đối chiếu. Enum QR C1/H12 chưa được tự quyết. Không có raw lỗi sáng mới do người dùng cung cấp; H04/V01/V03 chưa được nghiệm thu.
+
+## Bổ sung V08 — lớp hiển thị tiếng Việt
+
+| Đường dẫn | Mục đích | Bên gọi | Config/dependency | Test |
+|---|---|---|---|---|
+| software/desktop/ui_text.py | Vẽ Unicode có dấu, giới hạn cache, thu hồi GDI handle, rút gọn chữ dài | cover_capture_app.text | Font Segoe UI và Windows GDI qua ctypes stdlib; NumPy/OpenCV đã có; ngoài Windows dùng không dấu | tests/opencv/test_vietnamese_ui.py |
+| software/desktop/ui_vietnamese.py | Dịch trạng thái/QR/issues/lỗi lưu tại lớp hiển thị | cover_capture_app.render/run_ui | Không thêm dependency/config; không đổi enum/schema | tests/opencv/test_vietnamese_ui.py |
+
+`vision/opencv/dataset.annotate` bổ sung keyword tùy chọn show_status, mặc định True: debug bundle vẫn giữ nhãn kỹ thuật, GUI chọn False rồi tự vẽ nhãn Việt. Không có thay đổi pipeline, parser hoặc acceptance thiết bị thật.
