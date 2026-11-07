@@ -1,6 +1,6 @@
 # Kiểm chứng preview bất đồng bộ — V02
 
-Ngày đo: 2026-11-07, Windows 11 / Windows PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3. Baseline source 4d3b402a843f6240ccd31fbbc8e27ed8be658dd4. Kết quả sau sửa dưới đây được đo với HEAD + working-tree changes; commit triển khai/PR được ghi ở SESSION_LOG sau khi tồn tại.
+Ngày đo: 2026-11-07, Windows 11 / Windows PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3. Baseline source 4d3b402a843f6240ccd31fbbc8e27ed8be658dd4. Kết quả sau sửa dưới đây được đo với HEAD + working-tree changes; commit triển khai 6a0e1bb sau đó được kiểm sạch: 71 tests PASS trong 11.165s và checker/validator/diff PASS. [PR V02 #6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) dựa trên PR nền #5, chưa merge.
 
 ## Hành vi được kiểm tra
 

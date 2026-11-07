@@ -1,13 +1,13 @@
 Active task: NONE
 Last updated: 2026-11-07
 Branch: fix/preview-v02
-Last green commit: 4d3b402a843f6240ccd31fbbc8e27ed8be658dd4
+Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
 
 ## Resume notes
 
 Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
 
-Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 đang chuẩn bị, sẽ bổ sung URL sau khi tạo. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
+Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
 
 Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
 
@@ -26,7 +26,9 @@ Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự ch
 
 ## Baseline đã đo
 
-Last green commit hiện giữ commit gốc 4d3b402 được kiểm trên worktree sạch lúc 2026-11-07T09:30:57–09:31:02+07:00: repository checker PASS (23 source) và unittest 54 tests PASS, 0 failures/errors/skips, 5.035s. Bộ kiểm sau sửa V02 lúc 09:41:08–09:41:20+07:00 trên HEAD + working-tree changes: checker/validator/diff PASS, 71 tests PASS, 0 failures/errors/skips, 10.961s. Sau khi có commit kiểm sạch mới cập nhật Last green, không ghi hash tự tham chiếu.
+Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
+
+Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
 
 Môi trường E1 Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; không thêm dependency. GUI thật với ảnh synthetic và benchmark scheduling PASS; webcam/thiết bị thật NOT_RUN. Chi tiết [PREVIEW_VALIDATION](../PREVIEW_VALIDATION.md) và [SESSION_LOG](../SESSION_LOG.md).
 

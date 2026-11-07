@@ -105,3 +105,14 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - Bộ kiểm cuối source lúc 2026-11-07T09:41:08–09:41:20+07:00, E1, HEAD + working-tree changes: scripts/check_repository.py exit 0 PASS (26 source); scripts/check_codex_state.py exit 0 PASS; -m unittest discover -s tests -q exit 0 PASS 71 tests/0 failures/0 errors/0 skips, 10.961s; git diff --check exit 0 PASS. Lệnh dùng interpreter E1 đã ghi; không sửa dependency/vision pipeline/schema/firmware.
 - Ghi V02 DONE theo acceptance phần mềm và bằng chứng PREVIEW_VALIDATION; Active task NONE. Đây không là DONE-HW hay PASS camera thật. Đã thêm bài thử webcam cụ thể vào COVER_CAPTURE và Human actions pending; không tự chốt ngưỡng.
 - Việc tiếp theo duy nhất: V05 kiểm bundle/manifest/provenance bằng fixtures; không bắt đầu trong phiên này. PR V02 sẽ mở base chore/codex-harness vì PR nền #5 chưa merge.
+
+
+### Commit, push, PR và bàn giao — 2026-11-07T09:45:28+07:00
+
+- Commit triển khai 6a0e1bbb2421b250297cfe6081cc53607ccc80fe. Kiểm nguyên trạng khi git status sạch, E1, 2026-11-07T09:43:51–09:44:03+07:00: `& D:/smart-vision-inspection/.venv/Scripts/python.exe scripts/check_repository.py` exit 0 PASS (26 source), cùng interpreter `scripts/check_codex_state.py` exit 0 PASS, `-m unittest discover -s tests -q` exit 0 PASS 71 tests/0 failures/0 errors/0 skips, 11.165s; `git diff --check` exit 0 PASS.
+- `git push -u origin fix/preview-v02`: exit 0; `git ls-remote origin refs/heads/fix/preview-v02 refs/heads/chore/codex-harness refs/heads/main`: exit 0, V02 đúng 6a0e1bb, harness vẫn 4d3b402, main vẫn d431f10. Không force-push/merge.
+- GitHub REST GET pulls theo head rồi POST pulls: thành công, [PR #6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, head fix/preview-v02, base chore/codex-harness. PR xếp tầng phụ thuộc #5; không đóng issue #2 vì nghiệm thu camera còn ở V03.
+- Cập nhật metadata URL và Last green commit sang 6a0e1bb đã được kiểm sạch; không ghi hash tự tham chiếu của commit metadata. V02 DONE phần mềm theo TASKS; Active task NONE; V05 là việc CODEX kế tiếp, chưa bắt đầu.
+- CI remote sẽ kiểm sau push metadata; không suy PASS từ test local. Webcam thật vẫn NOT_RUN. Người dùng thử theo COVER_CAPTURE và gửi video/runtime.log/bundle ngoài Git, không cần quyết định phần cứng mới cho bài smoke V02.
+
+- Kiểm metadata lúc 2026-11-07T09:45:28+07:00, E1, HEAD 6a0e1bb + working-tree changes chỉ tài liệu: scripts/check_repository.py và scripts/check_codex_state.py cùng interpreter E1 đều exit 0 PASS, git diff --check exit 0 PASS. Toàn bộ 14 đường dẫn thuộc V02; không có ảnh/log runtime/dữ liệu thật được stage. Chỉ dẫn webcam và V05 đã có trong STATE, không còn CODEX IN_PROGRESS.
