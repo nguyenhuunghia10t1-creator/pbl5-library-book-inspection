@@ -5,7 +5,7 @@ Last green commit: 91237589588c8023fd9420994e7fef8290ff9436
 
 ## Resume notes
 
-Phiên V08 Việt hóa giao diện theo yêu cầu trực tiếp, nhánh feat/vietnamese-capture-ui từ V07 9123758; PR riêng sẽ base fix/cover-color-background, không merge. Mở lại ứng dụng trên worktree này để dùng bản Việt: `$PYTHON -m vision.opencv --camera 1 --backend msmf` (xác minh lại index nếu đổi thiết bị). Xem COVER_CAPTURE mục Giao diện tiếng Việt. V08 không sửa QR parser, nên mã PBL5-A04 vẫn chưa hợp lệ theo D16; chưa có quyết định đổi chuẩn QR.
+Phiên V08 Việt hóa giao diện theo yêu cầu trực tiếp, nhánh feat/vietnamese-capture-ui từ V07 9123758; PR riêng [#10](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/10) OPEN, base fix/cover-color-background, không merge. Mở lại ứng dụng trên worktree này để dùng bản Việt: `$PYTHON -m vision.opencv --camera 1 --backend msmf` (xác minh lại index nếu đổi thiết bị). Xem COVER_CAPTURE mục Giao diện tiếng Việt. V08 không sửa QR parser, nên mã PBL5-A04 vẫn chưa hợp lệ theo D16; chưa có quyết định đổi chuẩn QR.
 
 
 Đọc TASKS → đuôi SESSION_LOG → COLOR_BACKGROUND_VALIDATION/COVER_CAPTURE và DECISIONS liên quan. Chỉ TASKS giữ tiến độ; không tự chuyển task IN_PROGRESS khi phiên đã bàn giao.
@@ -75,3 +75,5 @@ H06: bảng route/reason và semantics HOLD/STOP (D05/D09/D10 + ví dụ Bước
 ## Baseline V08
 
 Commit gốc 91237589588c8023fd9420994e7fef8290ff9436 đã chạy checker và 88 unittest PASS trước sửa, xem SESSION_LOG phiên 8. Các lượt sau sửa khi chưa commit là HEAD + working-tree changes. Webcam bản Việt chưa kiểm; trạng thái đọc frame không xác minh nội dung hình.
+
+Bản V08 cho team: [nhánh](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/tree/feat/vietnamese-capture-ui) · [ZIP](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/archive/refs/heads/feat/vietnamese-capture-ui.zip). Commit nguồn ef4e8987d855a29d990a95b0da5f9a062cf1c084 đã push và xác minh remote. B01 vẫn chỉ là task kế tiếp; không IN_PROGRESS.
