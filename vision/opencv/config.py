@@ -29,6 +29,15 @@ class Config:
     stable_motion_pixels: float = 8.0
     max_frame_age_seconds: float = 1.5
     qr_interval_seconds: float = 0.15
+    edge_min_threshold: float = 8.0
+    edge_noise_factor: float = 4.0
+    min_side_support: float = 0.50
+    min_boundary_delta: float = 2.0
+    geometry_ring_pixels: int = 5
+    background_noise_factor: float = 4.0
+    min_foreground_delta: float = 3.0
+    min_detail_contrast: float = 12.0
+    max_clipped_fraction: float = 0.98
     orient_by_qr: bool = True
     output_dir: str = "data/opencv/collection"
 
@@ -59,6 +68,13 @@ class Config:
             raise ValueError("Invalid brightness thresholds")
         if min(self.stable_motion_pixels, self.max_frame_age_seconds, self.qr_interval_seconds) <= 0:
             raise ValueError("Motion/age/interval must be positive")
+        if min(self.edge_min_threshold, self.edge_noise_factor, self.min_boundary_delta,
+               self.background_noise_factor, self.min_foreground_delta, self.min_detail_contrast) <= 0:
+            raise ValueError("Edge/background/detail thresholds must be positive")
+        if not 0 < self.min_side_support <= 1 or not 0 < self.max_clipped_fraction < 1:
+            raise ValueError("Support/clipping fractions must be between zero and one")
+        if self.geometry_ring_pixels < 1 or self.geometry_ring_pixels > 20:
+            raise ValueError("geometry_ring_pixels must be in 1..20")
         if not isinstance(self.output_dir, str) or not self.output_dir.strip():
             raise ValueError("output_dir must be a nonempty path")
         return self

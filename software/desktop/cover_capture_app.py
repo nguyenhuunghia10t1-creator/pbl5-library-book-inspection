@@ -92,9 +92,16 @@ def render(packet, result, camera_status, message, properties, manual_points=Non
         center = m["center_px"]
         text(canvas, f"Center ({center[0]:.0f}, {center[1]:.0f})px | Angle {m['angle_deg']:.1f}deg | "
              f"Sharp {m['sharpness']:.0f} | Light {m['brightness']:.0f} | Stable {result.stable_count}", (24, 675), 0.48)
+        if "focus_measurable" in m:
+            focus = f"{m['detail_sharpness']:.0f}" if m["focus_measurable"] else "unverified"
+            text(canvas, f"Detail focus: {focus}", (906, 625), 0.44)
+            text(canvas, f"Clip high/low: {100*m['clipped_high_fraction']:.1f}% / "
+                 f"{100*m['clipped_low_fraction']:.1f}%", (906, 649), 0.41)
     hint = "Frozen snapshot: S saves this image; M selects corners." if frozen and result.status == "READY" else (
         HINTS.get(result.status, "Check camera index, Windows privacy and other camera apps."))
-    text(canvas, ", ".join(result.issues) or hint,
+    if "FOCUS_UNVERIFIED" in result.issues:
+        hint = ", ".join(result.issues) + " | Too little detail to verify focus; D: review."
+    text(canvas, (hint if "FOCUS_UNVERIFIED" in result.issues else ", ".join(result.issues)) or hint,
          (24, 701), 0.46)
     text(canvas, message[:142], (24, 728), 0.47, (110, 220, 245))
     text(canvas, "S Save | D Review | B Empty background | M Freeze/pick 4 corners | R Flip 180 | V Mask | Q Quit", (24, 759), 0.48)
