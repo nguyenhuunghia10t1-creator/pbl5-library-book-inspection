@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 import re
 
+from check_codex_state import validate as validate_codex_state
+
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -37,10 +39,11 @@ def main():
     for folder in workspace["folders"]:
         if not (ROOT / folder["path"]).is_dir():
             errors.append(f"Workspace missing folder: {folder['path']}")
+    errors.extend(validate_codex_state(ROOT))
     if errors:
         print("\n".join(errors))
         return 1
-    print(f"PASS: {count} Python sources, current documentation links, VS Code workspace")
+    print(f"PASS: {count} Python sources, current documentation links, VS Code workspace, Codex task/state structure")
     return 0
 
 

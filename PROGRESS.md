@@ -30,3 +30,8 @@ Trong đợt kiểm tra 12 khung bìa B08, 5 khung đọc được QR; 7 khung d
 3. Kiểm tra pilot trên nhiều bìa và điều kiện chiếu sáng trước khi thu dataset.
 
 [Kiến trúc](docs/ARCHITECTURE.md) · [Kế hoạch](docs/PLAN.md) · [Kiểm chứng](docs/COVER_CAPTURE_VALIDATION.md)
+
+
+## Điểm tiếp tục từ 2026-11-07
+
+[docs/codex/TASKS.md](docs/codex/TASKS.md) là nguồn sự thật duy nhất về tiến độ task; [STATE.md](docs/codex/STATE.md) là điểm tiếp tục, [ROADMAP.md](docs/codex/ROADMAP.md) là kế hoạch và [WORKFLOW.md](docs/codex/WORKFLOW.md) là quy trình phiên. Các bảng phía trên được giữ như snapshot lịch sử ngày 2026-10-29, không cập nhật thành bản trạng thái song song. Đọc [CODEBASE_MAP.md](docs/codex/CODEBASE_MAP.md) để đối chiếu audit và giới hạn bằng chứng.
