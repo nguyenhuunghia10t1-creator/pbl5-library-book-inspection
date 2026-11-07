@@ -39,3 +39,5 @@ Trong đợt kiểm tra 12 khung bìa B08, 5 khung đọc được QR; 7 khung d
 Hướng dẫn thử bìa sáng/tối: [COVER_CAPTURE — V07](docs/COVER_CAPTURE.md#thử-bìa-sángtối-v07-trên-webcam). Kết quả phần mềm và giới hạn: [COLOR_BACKGROUND_VALIDATION](docs/COLOR_BACKGROUND_VALIDATION.md); tiến độ và điểm tiếp tục vẫn xem [TASKS](docs/codex/TASKS.md) và [STATE](docs/codex/STATE.md).
 
 Hướng dẫn dùng điện thoại: [DroidCam/MSMF](docs/COVER_CAPTURE.md#camera-điện-thoại-qua-droidcam). Tiến độ và phần kiểm chứng thực tế vẫn theo [TASKS](docs/codex/TASKS.md) và [STATE](docs/codex/STATE.md).
+
+Giao diện thu ảnh đã có hướng dẫn tiếng Việt: [cách dùng](docs/COVER_CAPTURE.md#giao-diện-tiếng-việt); theo dõi V08 tại [TASKS](docs/codex/TASKS.md), điểm tiếp tục tại [STATE](docs/codex/STATE.md).

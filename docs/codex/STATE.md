@@ -1,9 +1,12 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: fix/cover-color-background
-Last green commit: cd8b48c7afab2c700d36c6553a78598518453704
+Branch: feat/vietnamese-capture-ui
+Last green commit: 91237589588c8023fd9420994e7fef8290ff9436
 
 ## Resume notes
+
+Phiên V08 Việt hóa giao diện theo yêu cầu trực tiếp, nhánh feat/vietnamese-capture-ui từ V07 9123758; PR riêng [#10](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/10) OPEN, base fix/cover-color-background, không merge. Mở lại ứng dụng trên worktree này để dùng bản Việt: `$PYTHON -m vision.opencv --camera 1 --backend msmf` (xác minh lại index nếu đổi thiết bị). Xem COVER_CAPTURE mục Giao diện tiếng Việt. V08 không sửa QR parser, nên mã PBL5-A04 vẫn chưa hợp lệ theo D16; chưa có quyết định đổi chuẩn QR.
+
 
 Đọc TASKS → đuôi SESSION_LOG → COLOR_BACKGROUND_VALIDATION/COVER_CAPTURE và DECISIONS liên quan. Chỉ TASKS giữ tiến độ; không tự chuyển task IN_PROGRESS khi phiên đã bàn giao.
 
@@ -30,7 +33,7 @@ Xác định `$PYTHON` là interpreter venv của checkout thực tế, không g
 
 V07 bắt đầu từ commit sạch 8f9198f, 2026-11-07T11:12:05–11:12:13+07:00: checker PASS (26 source), 71 tests PASS/0 failures/errors/skips trong 6.459s. Lượt source trước commit ghi HEAD + working-tree changes, kết quả cuối tham chiếu SESSION_LOG phiên 6; không coi là kiểm nguyên trạng HEAD.
 
-Last green là commit nguồn V07 cd8b48c7afab2c700d36c6553a78598518453704, đã kiểm nguyên trạng khi working tree sạch lúc 2026-11-07T11:39:13–11:39:44+07:00: checker PASS (31 source), validator PASS, 88 tests PASS/0 failures/errors/skips trong 30.405s, git diff --check PASS. Commit metadata chỉ ghi URL/bằng chứng của commit đã tồn tại; không ghi hash của chính nó.
+Mốc V07 từng kiểm nguyên trạng là commit nguồn cd8b48c7afab2c700d36c6553a78598518453704, đã kiểm nguyên trạng khi working tree sạch lúc 2026-11-07T11:39:13–11:39:44+07:00: checker PASS (31 source), validator PASS, 88 tests PASS/0 failures/errors/skips trong 30.405s, git diff --check PASS. Commit metadata chỉ ghi URL/bằng chứng của commit đã tồn tại; không ghi hash của chính nó.
 
 Môi trường E1: Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3, không thêm dependency. Benchmark geometry xử lý OpenCV thật trên synthetic, benchmark UI scheduling fake và ba GUI synthetic được ghi riêng trong [báo cáo V07](../COLOR_BACKGROUND_VALIDATION.md). Webcam mới/ESP32/AI/KPI hardware NOT_RUN. H04/V01/V03 không hoàn thành bằng synthetic; mục tiêu thực tế là “đề xuất, chờ tôi xác nhận”.
 
@@ -68,3 +71,9 @@ H06: bảng route/reason và semantics HOLD/STOP (D05/D09/D10 + ví dụ Bước
 ## Ghi chú kết nối DroidCam 2026-11-07
 
 Đã nhận khung 1280×720 với camera 1/backend msmf và khởi chạy GUI V07; DirectShow camera 1 không mở được trên máy kiểm tra. Headless một khung trả NO_COVER, QR UNREADABLE: chưa nghiệm thu nhận dạng sách/QR. Người dùng xác nhận client có hình điện thoại; tiếp tục bài thử H04/V01/V03 hiện có, không đổi trạng thái hoàn thành phần cứng. Lệnh dùng lại trong COVER_CAPTURE mục Camera điện thoại qua DroidCam; chỉ số cần kiểm lại theo máy/backend. Không bắt đầu B01 trong phiên hỗ trợ camera.
+
+## Baseline V08
+
+Commit gốc 91237589588c8023fd9420994e7fef8290ff9436 đã chạy checker và 88 unittest PASS trước sửa, xem SESSION_LOG phiên 8. Các lượt sau sửa khi chưa commit là HEAD + working-tree changes. Webcam bản Việt chưa kiểm; trạng thái đọc frame không xác minh nội dung hình.
+
+Bản V08 cho team: [nhánh](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/tree/feat/vietnamese-capture-ui) · [ZIP](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/archive/refs/heads/feat/vietnamese-capture-ui.zip). Commit nguồn ef4e8987d855a29d990a95b0da5f9a062cf1c084 đã push và xác minh remote. B01 vẫn chỉ là task kế tiếp; không IN_PROGRESS.

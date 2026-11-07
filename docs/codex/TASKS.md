@@ -38,6 +38,7 @@ Ký hiệu chỉ minh họa cho **Status**, không tạo trạng thái riêng. K
 | H13 | ✅ Đánh dấu trực quan tiến độ task | CODEX | H01 | Mỗi task có ký hiệu đúng Status; có chú giải phân biệt chưa làm/đang làm/chờ/xong/mô phỏng/thiết bị; giữ bảy cột và enum; checker, validator, diff PASS | DONE | docs/SESSION_LOG.md phiên 3; checker và validator PASS; đối chiếu ký hiệu/enum và git diff --check PASS |
 | V01 | ⛔ Sửa chọn mép bìa bằng hồi quy | CODEX | H04 | Test ảnh được chia sẻ riêng tái hiện lỗi rồi PASS với mép ngoài đúng; test tổng hợp chống chạm biên; không đổi parser/bundle; HW nghiệm thu ở V03 | BLOCKED | Chờ H04; issue #1 |
 | V02 | ✅ Tách preview khỏi geometry/QR | CODEX | H01 | Test QR chậm/lỗi, frame cũ, đóng cửa sổ và mất camera; preview nhận frame mới độc lập; save liên kết đúng frame; đo latency trước/sau bằng fixture; không đặt ngưỡng HW | DONE | Commit 6a0e1bb; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6; docs/PREVIEW_VALIDATION.md; 71 tests PASS, GUI synthetic PASS; fixture median preview 211.040→10.774 ms; webcam NOT_RUN, gate riêng V03 |
+| V08 | ✅ Việt hóa giao diện thu ảnh bìa | CODEX | V02,V07 | Chữ Việt có dấu trên Windows; trạng thái, thông số, phím và lỗi dễ hiểu; không đổi enum/parser/bundle; hồi quy unittest và GUI synthetic có bằng chứng, không suy nghiệm thu HW | DONE | Commit ef4e898; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/10; SESSION_LOG phiên 8; checker/validator PASS; 93 tests PASS (0 failure/error/skip); GUI synthetic có dấu và các ca QR/cảnh báo đã xem; chưa nghiệm thu camera |
 | V03 | ⛔ Kiểm chứng camera và crop thực tế | USER-HW | V01,V02,H03,H07 | Người dùng gửi video/log/raw/crop/debug, resolution/FPS, thử mất camera và bộ bìa theo gate đã duyệt; đạt gate mới DONE-HW | BLOCKED | Chờ các đầu vào và thực nghiệm người dùng |
 | V04 | ⛔ Chuẩn hóa trạng thái QR tại biên module | CODEX | H12 | Test mọi enum/mapping và nhiều QR/QR lỗi; không dùng VALID_FORMAT làm identity VALID | BLOCKED | Chờ quyết định H12 |
 | V05 | ⬜ Kiểm tra bundle và báo cáo pilot | CODEX | H01 | Lệnh kiểm manifest, hash, nguồn ảnh, accepted/review, thống kê theo cuốn; fixtures lỗi/thiếu file; giữ raw bất biến | TODO | - |
@@ -92,7 +93,7 @@ Tham chiếu các ID trong bảng: V01/V04/V05; B01–B03; A01–A04; S01–S06;
 Nguồn được version control: [PLAN](../PLAN.md). Số M bám Bước trong roadmap local gốc; các đường dẫn gợi ý cũ không phải yêu cầu tạo stub. Không đặt trạng thái mốc thứ hai ở đây.
 
 - M01 → V02, V03; M02 → V01, V03, V07; M03 → V04, E02.
-- M04 → B01, B02; M05 → V05, V06.
+- M04 → B01, B02; M05 → V05, V06, V08.
 - M06 → H05, A01; M07 → A02; M08 → A03; M09 → H06, S01.
 - M10 → B03, S02; M11 → S03; M12 → S04; M13 → S05, S06.
 - M14 → F01, F02; M15 → F03, F04; M16 → F05, F06; M17 → F07, F08; M18 → F09, F10.

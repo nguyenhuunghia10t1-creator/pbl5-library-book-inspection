@@ -45,7 +45,8 @@ def write_json(path, data):
         os.fsync(stream.fileno())
 
 
-def annotate(frame, result):
+def annotate(frame, result, *, show_status=True):
+    """Default debug output stays technical; UI can supply its own Unicode label."""
     image = frame.copy()
     if result.corners is not None:
         cv2.polylines(image, [result.corners.astype(np.int32)], True, (70, 230, 100), 3)
@@ -54,7 +55,8 @@ def annotate(frame, result):
             cv2.putText(image, str(i), tuple(p.astype(int) + [8, 0]), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (0, 0, 255), 2)
         center = np.array(result.metrics.get("center_px", [0, 0])).astype(int)
         cv2.drawMarker(image, tuple(center), (0, 0, 255), cv2.MARKER_CROSS, 24, 2)
-    cv2.putText(image, result.status, (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 100, 255), 2)
+    if show_status:
+        cv2.putText(image, result.status, (15, 30), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 100, 255), 2)
     return image
 
 
