@@ -74,6 +74,8 @@ Raw là toàn khung camera trước annotation/warp, ghi PNG không mất pixel;
 
 Metadata ghi UUID, nguồn real/imported/synthetic, timestamp nhận khung UTC, sequence, QR, corners, metric/config, hướng crop và SHA256. accepted/review là tình trạng mẫu thu; nhãn lỗi AI chưa có và để null. Không dùng debug.png làm ảnh huấn luyện.
 
+Kiểm tra bundle, hash, manifest và thống kê accepted/review theo cuốn bằng [audit chỉ đọc V05](CAPTURE_AUDIT.md). Đóng collector trước khi audit; kết quả không xác nhận nhãn lỗi hoặc danh tính DB.
+
 Đóng các phiên thu trước khi xây lại manifest:
 
 ```powershell

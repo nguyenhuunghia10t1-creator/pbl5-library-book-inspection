@@ -3,6 +3,7 @@
 | Công cụ | Mục đích |
 |---|---|
 | capture_covers.py | Chạy collector từ thư mục bất kỳ |
+| audit_captures.py | Kiểm bundle/manifest/hash/provenance chỉ đọc và thống kê pilot theo cuốn; [hướng dẫn](../docs/CAPTURE_AUDIT.md) |
 | check_repository.py | Kiểm cú pháp nguồn Python, link tài liệu và workspace |
 | benchmark_preview.py | So lịch UI trước/sau với delay phân tích synthetic; không đo webcam thật |
 | windows/CaptureCovers.cmd | Chạy collector với venv tại root trên Windows |
