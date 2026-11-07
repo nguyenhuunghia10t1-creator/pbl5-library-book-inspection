@@ -1,15 +1,17 @@
 Active task: NONE
 Last updated: 2026-11-07
 Branch: fix/cover-color-background
-Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
+Last green commit: cd8b48c7afab2c700d36c6553a78598518453704
 
 ## Resume notes
 
 Đọc TASKS → đuôi SESSION_LOG → COLOR_BACKGROUND_VALIDATION/COVER_CAPTURE và DECISIONS liên quan. Chỉ TASKS giữ tiến độ; không tự chuyển task IN_PROGRESS khi phiên đã bàn giao.
 
-Nhánh V07 `fix/cover-color-background` từ V02 `8f9198f0c78030dd21000f4562a0492556c1dce2`. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) base chore/codex-harness và [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) base main còn OPEN khi xác minh GitHub. PR V07 sẽ mở base fix/preview-v02 sau kiểm cuối và push; URL được bổ sung trong commit metadata. Không merge. Main và sửa có sẵn trong checkout chính giữ nguyên.
+Nhánh V07 `fix/cover-color-background` từ V02 `8f9198f0c78030dd21000f4562a0492556c1dce2`. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) base chore/codex-harness và [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) base main còn OPEN khi xác minh GitHub. PR V07 [#9](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/9) OPEN, base fix/preview-v02, đã push và xác minh remote commit nguồn cd8b48c7afab2c700d36c6553a78598518453704. Không merge. Main và sửa có sẵn trong checkout chính giữ nguyên.
 
 GitHub đồng thời có [PR #7 V05](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7) và [PR #8 bìa sáng/UI](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/8) từ fork team, cùng base V02. Không chứa mã của hai PR này trong nhánh hiện tại, không tuyên bố đã test chúng. Review #8 vì chồng lấn detector/UI và hồ sơ V07; không merge cả hai bản mà chưa đối chiếu. Không thực hiện lặp V05.
+
+Bản tải team: [nhánh V07](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/tree/fix/cover-color-background) · [ZIP](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/archive/refs/heads/fix/cover-color-background.zip). Bản này chưa chứa V05/#7 hoặc UI/#8; tránh nhầm với main.
 
 Task CODEX kế tiếp đề xuất **B01** (SQLite/schema/migration với DB tạm): độc lập H04/H03, phụ thuộc H01 đã có bằng chứng. Không bắt đầu trong phiên V07. Đầu phiên sau xác minh lại PR/main mới nhất, baseline và ledger trên đúng nhánh; nếu các PR nền còn mở, có thể tạo nhánh B01 từ origin/fix/cover-color-background và PR base cùng nhánh đó, ghi quan hệ xếp tầng.
 
@@ -28,7 +30,7 @@ Xác định `$PYTHON` là interpreter venv của checkout thực tế, không g
 
 V07 bắt đầu từ commit sạch 8f9198f, 2026-11-07T11:12:05–11:12:13+07:00: checker PASS (26 source), 71 tests PASS/0 failures/errors/skips trong 6.459s. Lượt source trước commit ghi HEAD + working-tree changes, kết quả cuối tham chiếu SESSION_LOG phiên 6; không coi là kiểm nguyên trạng HEAD.
 
-Last green phía trên vẫn là commit V02 đã kiểm sạch 6a0e1bb (SESSION_LOG phiên 4: checker/validator, 71 tests, diff PASS). Chỉ nâng sang commit V07 sau khi commit tồn tại và kiểm sạch; không tạo vòng hash tự tham chiếu.
+Last green là commit nguồn V07 cd8b48c7afab2c700d36c6553a78598518453704, đã kiểm nguyên trạng khi working tree sạch lúc 2026-11-07T11:39:13–11:39:44+07:00: checker PASS (31 source), validator PASS, 88 tests PASS/0 failures/errors/skips trong 30.405s, git diff --check PASS. Commit metadata chỉ ghi URL/bằng chứng của commit đã tồn tại; không ghi hash của chính nó.
 
 Môi trường E1: Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3, không thêm dependency. Benchmark geometry xử lý OpenCV thật trên synthetic, benchmark UI scheduling fake và ba GUI synthetic được ghi riêng trong [báo cáo V07](../COLOR_BACKGROUND_VALIDATION.md). Webcam mới/ESP32/AI/KPI hardware NOT_RUN. H04/V01/V03 không hoàn thành bằng synthetic; mục tiêu thực tế là “đề xuất, chờ tôi xác nhận”.
 
