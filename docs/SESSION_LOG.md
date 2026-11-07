@@ -21,3 +21,47 @@ Camera DirectShow nhận ảnh 1280×720. Trong 12 khung, 5 khung đọc đượ
 - Kiểm tra lại 22 test trên snapshot xuất bản; workflow GitHub Actions đạt.
 - Main yêu cầu PR, một approval và kiểm tra python; chặn force-push và xóa nhánh.
 - Mở bốn issue cho hình học bìa, preview, IO ESP32 và pilot dữ liệu.
+
+
+## 2026-11-07 — Phiên 2 — H01: Audit và thiết lập Codex harness
+
+- Commit gốc: d431f10fbb79dc086c8912702552463ca20262ab. Origin: https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection.git; remote main cùng SHA theo git ls-remote. Legacy-origin không dùng. Branch mới chore/codex-harness được tạo bằng git switch -c sau khi tạo worktree sạch detached tại commit gốc.
+- Preflight checkout chính main có PROGRESS.md và docs/SESSION_LOG.md sửa sẵn từ phiên trước; giữ nguyên, không stash/reset/stage/copy vào worktree. Nhánh harness dùng worktree riêng, không thay lịch sử main. AGENTS local đã đọc và cập nhật có chọn lọc vào worktree; .gitignore không đổi, stage AGENTS có chủ đích bằng git add -f.
+- Inventory: git ls-files có 64 tệp baseline, đã đọc đầy đủ source/tests/scripts/config/CI và tài liệu; danh sách trong CODEBASE_MAP. Không audit .venv/.pio/vendor/generated/data thật/weights. Đọc 4 issue mở đầy đủ body; từng comments endpoint không có bình luận; pagination per_page=100 page=1 trả 4 issues và 0 pulls, các endpoint không có trang kế. Thời điểm GitHub audit 2026-11-07T08:53:36+07:00. Không tạo/sửa/đóng issues.
+- Môi trường E1: Windows-11-10.0.26200-SP0; Windows PowerShell 5.1.26100.9711 Desktop; Python 3.14.3 AMD64 trong venv của checkout chính; OpenCV 5.0.0, NumPy 2.5.3. Worktree dùng interpreter đã có, không cài dependency. Biến lệnh $py = 'D:/smart-vision-inspection/.venv/Scripts/python.exe'. Cwd mọi lệnh kiểm dưới đây là root worktree chore/codex-harness, không phải checkout chính đang bẩn.
+- Lệnh README gốc: `& '.\.venv\Scripts\python.exe' scripts/check_repository.py`; `& '.\.venv\Scripts\python.exe' -m unittest discover -s tests -v`; `pio run --project-dir firmware/esp32`. Lệnh thực chỉ đổi đường dẫn interpreter/PlatformIO để dùng môi trường sẵn có; vẫn Windows, không chuyển sang Linux.
+
+### Baseline trước thay đổi
+
+| Thời điểm +07:00 | Môi trường/cây nguồn | Lệnh thực chạy | Exit | Kết quả | Tests/failure/error/skip |
+|---|---|---|---|---|---|
+| 2026-11-07 08:53:10–08:53:15 | E1, d431f10 sạch tracked/untracked trước sửa | `& $py scripts/check_repository.py` | 0 | PASS: 21 nguồn Python, links, workspace | N/A: kiểm tĩnh |
+| 2026-11-07 08:53:10–08:53:15 | E1, d431f10 sạch trước sửa | `& $py -m unittest discover -s tests -v` | 0 | PASS; discovery có 22 tests, 4.101s | 22/0/0/0 |
+| 2026-11-07 08:53:56–08:54:29 | E1, source firmware d431f10; HEAD + working-tree changes chỉ harness đang được soạn | `& C:/Users/nguye/.platformio/penv/Scripts/platformio.exe run --project-dir firmware/esp32` | 0 | PASS build esp32dev, 29.79s; warning unused variable result có sẵn | N/A: build không phải hardware test |
+| 2026-11-07 08:53:56–08:54:29 | E1, source policy d431f10; HEAD + working-tree changes chỉ harness | `powershell -NoProfile -ExecutionPolicy Bypass -File scripts/windows/camera-priority/Test-CameraPriority.ps1` | 0 | PASS SIMULATION; không ghi PnP/task/ACL thật | 23/0/0/0 |
+
+- Không có lỗi baseline repository. Build warning main.cpp biến result chưa dùng có sẵn, ngoài phạm vi nên không sửa.
+- Diagnostic môi trường trước baseline: thử ZoneInfo('Asia/Ho_Chi_Minh') exit 1 do Windows venv không có tzdata; đây là lỗi lệnh chẩn đoán, không phải lỗi project. Đã dùng DateTimeOffset UTC+07 để ghi thời gian thực; không cài package. Lệnh exec sandbox ban đầu lỗi khởi tạo trong phiên trước nên phiên này dùng execution được phép cho read/test/write theo phạm vi.
+- Webcam/UI tương tác thiết bị, upload, cơ cấu, AI/model thật và end-to-end hardware: NOT_RUN; không có thiết bị/dataset/model được nghiệm thu trong worktree, phiên này chỉ harness. Chỉ số chất lượng thực: N/A. CI PR mới chưa chạy ở thời điểm baseline.
+
+### Thay đổi và điểm tiếp tục
+
+- Tạo CODEBASE_MAP/ROADMAP/TASKS/STATE/WORKFLOW; TASKS là nguồn Status duy nhất với 53 task và mapping M01–M27/issues. Câu hỏi Q1–Q9 giữ ở STATE, không tự chốt route/IO/KPI/nhãn.
+- Tạo validator standard library và 32 fixture unittest; checker cũ chỉ thêm lời gọi validator, giữ các kiểm tra cũ và CI hiện có. Validator không xác minh tính thật của evidence hoặc phần cứng.
+- AGENTS dưới 5 KB, dùng nhánh phù hợp từng task tương lai, không cấm sửa nghiệp vụ vĩnh viễn. PROGRESS chỉ thêm chỉ dẫn/liên kết; SESSION_LOG chỉ nối mục mới. Không sửa code nghiệp vụ, manifest, PLAN/ARCHITECTURE/DECISIONS/README/CONTRIBUTING.
+- Sai khác: enum QR PENDING/DECODE_ERROR ngoài danh sách DECISIONS (H12/V04); ví dụ policy local STOP_FAULT/GOOD khác enum quyết định (H06); issue #2 còn nhắc sleep 150 ms nhưng source hiện không có sleep đó; PROGRESS cũ và AGENTS ignored cần dẫn sang harness. Chi tiết CODEBASE_MAP.
+- Hành động người thật ưu tiên H04/H05 (mẫu/nhãn) và H03 (board/IO/feedback); phân công reviewer/hạn demo chưa có. Không ghi người thật IN_PROGRESS khi chưa nhận việc.
+- Task kế tiếp đề xuất V02, độc lập mẫu thật còn chờ H04. Chỉ bắt đầu ở phiên sau bằng nhánh fix/preview-v02 đúng base PR, baseline và đổi active task theo WORKFLOW. Không triển khai V02 trong phiên này.
+- Commit/PR: chưa tạo tại thời điểm ghi phần này; sẽ nối bằng chứng sau khi có kết quả thực.
+
+
+### Kiểm tra harness trước commit — 2026-11-07T09:02:16–09:02:22+07:00
+
+Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không gán các kết quả này cho HEAD nguyên trạng. Các lệnh thực chạy với `D:/smart-vision-inspection/.venv/Scripts/python.exe`:
+
+- `scripts/check_repository.py`: exit 0, PASS; 23 nguồn Python, links/workspace và cấu trúc task/state.
+- `scripts/check_codex_state.py`: exit 0, PASS; chỉ cấu trúc/nhất quán, không xác minh nội dung evidence/hardware.
+- `-m unittest discover -s tests -v`: exit 0, PASS; 54 tests = 22 cũ + 32 mới, 4.937s, failures=0, errors=0, skips=0. Discovery đã tìm đủ hai nhóm.
+- `git diff --check`: exit 0, PASS. Cảnh báo Git chuyển CRLF sang LF của file sửa không phải lỗi whitespace; không format hàng loạt.
+- Review phạm vi: chỉ 11 đường dẫn allowlist; PROGRESS/SESSION_LOG bảo toàn byte nội dung commit gốc và chỉ append; không đổi vision/software/firmware/config/CI/dependency hoặc file cấm. AGENTS 3,725 byte UTF-8, dưới 5 KB.
+- Baseline còn lỗi: không có lỗi test repository; warning firmware cũ đã ghi riêng. Chưa kiểm chứng webcam, AI/model, PnP thật, cơ cấu, end-to-end hardware và CI remote của PR mới.
