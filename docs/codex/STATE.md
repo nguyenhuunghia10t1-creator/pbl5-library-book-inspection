@@ -1,32 +1,34 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: fix/preview-v02
-Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
+Branch: feature/capture-bundle-audit-v05
+Last green commit: 8f9198f0c78030dd21000f4562a0492556c1dce2
 
 ## Resume notes
 
-Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
+Đọc TASKS → đuôi SESSION_LOG → CAPTURE_AUDIT và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
 
-Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
+Phiên V05 dùng worktree sạch, nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 tại 8f9198f. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) đã xác minh OPEN/chưa merge, base chore/codex-harness; PR harness [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) cũng OPEN/chưa merge. Tài khoản hiện tại không có quyền push kho gốc, đã tạo [fork](https://github.com/truongthinh994/pbl5-library-book-inspection); PR V05 sẽ từ fork về base fix/preview-v02 của kho nhóm. Checkout cũ và cấu hình DroidCam sửa sẵn được giữ nguyên, không đưa vào commit này.
 
-Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
+Phạm vi đã nhận: V05 kiểm bundle/manifest/hash/provenance và thống kê pilot theo cuốn bằng fixture. Metadata là nguồn chính; báo cáo tách bundle lỗi, lỗi manifest và staging chưa hoàn tất. Audit chỉ đọc, giữ raw/crop/debug/metadata/session/manifest nguyên trạng. Kiểm source chỉ đối chiếu khai báo, không chứng nhận nguồn thật, danh tính DB, crop đúng hoặc nhãn lỗi. Không thêm dependency và không đổi writer/schema, camera, geometry, QR hay firmware.
 
-Lệnh bắt đầu ở phiên tiếp theo, sau khi kiểm working tree/PR:
+V05 đã đạt acceptance phần mềm; xem [hướng dẫn audit](../CAPTURE_AUDIT.md) và SESSION_LOG phiên 6. B01 là một việc tiếp theo được đề xuất (Depends H01 DONE), chưa bắt đầu. Phiên sau kiểm worktree/PR/base thật trước khi tạo nhánh riêng rồi chạy baseline:
 
 ```powershell
-git status --short --branch
-git fetch origin
-git switch -c feature/capture-bundle-audit-v05 origin/fix/preview-v02
 & $PYTHON scripts/check_repository.py
 & $PYTHON scripts/check_codex_state.py
 & $PYTHON -m unittest discover -s tests -v
+git diff --check
 ```
 
-Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự chuyển task trong phiên hiện tại.
+Đã chạy baseline sạch rồi mới làm V05; bộ cuối source PASS 92 tests. Phiên này hoàn tất commit/push/PR xếp tầng và cập nhật URL sau khi GitHub xác nhận; không merge và không tự bắt đầu B01.
 
 ## Baseline đã đo
 
-Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
+V05 trên HEAD 8f9198f + working-tree changes lúc 2026-11-07T10:11:07–10:11:18+07:00: checker PASS (29 source), validator PASS, unittest discovery PASS 92 tests/0 failures/0 errors/0 skips (9.211s), git diff --check PASS. Các test dùng fixture synthetic và DB/collection tạm, không có bằng chứng camera/pilot thật mới.
+
+Baseline V05 trên commit sạch 8f9198f lúc 2026-11-07T09:57:25–09:57:35+07:00: checker PASS (26 source), validator PASS, unittest discovery PASS 71 tests/0 failures/0 errors/0 skips (8.500s), git diff --check PASS. Môi trường phiên này: Windows 11 build 26300, Python 3.13.14, OpenCV 5.0.0, NumPy 2.5.4; dùng venv đã có của checkout cũ, không cài dependency.
+
+Lịch sử V02: commit 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
 
 Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
 
