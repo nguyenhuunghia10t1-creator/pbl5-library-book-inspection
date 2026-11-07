@@ -66,10 +66,19 @@ def render(packet, result, camera_status, message, properties, manual_points=Non
     text(canvas, "RECTIFIED A6 / 630 x 888 default", (904, 64), 0.47)
     same_frame = packet is not None and analysis_packet is not None and (
         packet.camera_session_id, packet.sequence) == (analysis_packet.camera_session_id, analysis_packet.sequence)
-    image = None if packet is None else (annotate(packet.image, result) if same_frame else packet.image)
+    separate_analysis = not frozen and not mask_mode
+    image = None if packet is None else (
+        annotate(packet.image, result) if same_frame and not separate_analysis else packet.image)
     if mask_mode and result.mask is not None:
         image = cv2.cvtColor(result.mask, cv2.COLOR_GRAY2BGR)
-    placement = fit_image(canvas, image, (20, 82, 860, 505))
+    placement = fit_image(canvas, image, (20, 82, 420 if separate_analysis else 860, 505))
+    if separate_analysis:
+        label = f"DETECTED | Frame #{analysis_packet.sequence}" if analysis_packet else "DETECTED"
+        text(canvas, label, (460, 64), 0.48)
+        detected = annotate(analysis_packet.image, result) if analysis_packet else None
+        fit_image(canvas, detected, (460, 82, 420, 505))
+        if analysis_packet is None:
+            text(canvas, "Waiting for analysis...", (480, 340), 0.48)
     if packet and placement and manual_points:
         x, y, width, height = placement
         for i, p in enumerate(manual_points):
@@ -126,6 +135,7 @@ def run_ui(config, args):
     save_request = None
     revision, live_session = 0, None
     last_submitted, last_submit_time = None, 0.0
+    last_background_press = float("-inf")
     status, fps = "IMAGE_INPUT" if args.image else "STARTING_CAMERA", 0.0
     started = time.monotonic()
 
@@ -263,11 +273,20 @@ def run_ui(config, args):
             if key in (ord("v"), ord("V")):
                 mask_mode = not mask_mode
             elif key in (ord("b"), ord("B")) and packet and not frozen:
-                background = packet.image.copy()
-                background_path = writer.save_background(background)
-                invalidate()
-                message = "Background calibrated. Place one cover in view. Press C if calibrated with a book present."
-                logger.info("Background reference %s", background_path)
+                pressed_at = time.monotonic()
+                repeated = pressed_at - last_background_press < 1.0
+                last_background_press = pressed_at
+                if repeated:
+                    message = "Release B; press it once only when the table is empty."
+                elif analysis is not None and analysis.result.qr.status == "VALID_FORMAT":
+                    message = "Calibration blocked: book QR is still visible. Remove the book, wait for a fresh view, then press B."
+                    logger.warning(message)
+                else:
+                    background = packet.image.copy()
+                    background_path = writer.save_background(background)
+                    invalidate()
+                    message = "Background calibrated. Place one cover in view. Press C if calibrated with a book present."
+                    logger.info("Background reference %s", background_path)
             elif key in (ord("c"), ord("C")):
                 background, background_path = None, None
                 invalidate()

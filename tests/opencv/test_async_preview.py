@@ -411,14 +411,59 @@ class AsyncUITests(unittest.TestCase):
             self.assertEqual(record["collection_status"], "review")
             self.assertEqual(record["vision_status"], "QUALITY_WARNING")
 
-    def test_render_never_draws_old_corners_on_new_live_frame(self):
+    def test_render_keeps_live_and_annotated_source_separate(self):
         old, new = request(1).packet, request(2).packet
         result = ready(request(1))
-        with patch.object(app, "annotate", wraps=app.annotate) as annotate:
-            app.render(new, result, "LIVE", "", {}, analysis_packet=old)
+        marked = np.full_like(old.image, 99)
+        for live in (old, new):
+            with self.subTest(live_sequence=live.sequence), \
+                    patch.object(app, "annotate", return_value=marked) as annotate, \
+                    patch.object(app, "fit_image", wraps=app.fit_image) as fit:
+                app.render(live, result, "LIVE", "", {}, analysis_packet=old)
+                annotate.assert_called_once()
+                self.assertIs(annotate.call_args.args[0], old.image)
+                self.assertIs(fit.call_args_list[0].args[1], live.image)
+                rendered_analysis = [call for call in fit.call_args_list if call.args[1] is marked]
+                self.assertEqual(len(rendered_analysis), 1)
+                live_box, analyzed_box = fit.call_args_list[0].args[2], rendered_analysis[0].args[2]
+                self.assertLessEqual(live_box[0] + live_box[2], analyzed_box[0])
+
+    def test_live_without_analysis_has_no_geometry_overlay(self):
+        live = request().packet
+        with patch.object(app, "annotate", wraps=app.annotate) as annotate, \
+                patch.object(app, "fit_image", wraps=app.fit_image) as fit:
+            app.render(live, Result("WAITING_FOR_ANALYSIS"), "LIVE", "", {})
             annotate.assert_not_called()
-            app.render(old, result, "LIVE", "", {}, analysis_packet=old)
-            annotate.assert_called_once()
+            self.assertIs(fit.call_args_list[0].args[1], live.image)
+
+    def test_frozen_manual_selection_keeps_large_source_view(self):
+        packet = request().packet
+        _, placement = app.render(packet, Result("PICK_4_OUTER_CORNERS"), "LIVE", "", {},
+                                  manual_points=[[10, 10]], frozen=True)
+        self.assertGreater(placement[2], 420)
+
+    def test_calibration_is_rejected_when_recent_analysis_sees_book_qr(self):
+        attempted = []
+        def keys(ui):
+            if attempted:
+                return ord("q")
+            if ui.rendered[-1][2] is not None:
+                attempted.append(True)
+                return ord("b")
+            return -1
+        with tempfile.TemporaryDirectory() as folder:
+            ui = UIHarness(folder, ready, keys)
+            self.assertEqual(ui.run(), 0)
+            self.assertEqual(attempted, [True])
+            self.assertEqual(list(Path(folder).glob("sessions/*/background_*.png")), [])
+
+    def test_held_calibration_key_does_not_relearn_background_each_frame(self):
+        def keys(ui):
+            return ord("b") if ui.iterations <= 10 else ord("q")
+        with tempfile.TemporaryDirectory() as folder:
+            ui = UIHarness(folder, lambda req: Result("NO_COVER"), keys)
+            self.assertEqual(ui.run(), 0)
+            self.assertEqual(len(list(Path(folder).glob("sessions/*/background_*.png"))), 1)
 
 
 if __name__ == "__main__":

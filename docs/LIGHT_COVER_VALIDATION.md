@@ -39,3 +39,15 @@ Dùng venv đã xác minh và index/backend đã hoạt động. Ví dụ máy h
 3. Chỉ lưu S khi đúng; D là review. Khi đổi vị trí camera/ánh sáng/nền, lấy sách ra và hiệu chuẩn lại. Nếu phím tắt không nhận do bộ gõ, dùng bàn phím ENG; M bật/tắt ảnh đóng băng chọn góc.
 
 Chưa có mẫu thật H04 với mép chuẩn được xác nhận để kết luận V01 hoặc DONE-HW V03. Nền có đường ron, hình chữ nhật trên bìa, bóng đổ, lóa, nền gần cùng màu hoặc camera rung vẫn có thể gây sai. Không tự đổi trạng thái V01/V03/V06, không tự đặt KPI/cỡ mẫu; gửi bộ thử/video/bundle vào chỗ riêng ngoài Git khi nghiệm thu.
+
+## Theo phản hồi nhấp nháy sau khi thử thật
+
+Người dùng xác nhận phần chớp là khung xanh bên trái và chưa bố trí được camera cố định. Ảnh nền cục bộ lưu ở lần B gần nhất có cả bìa vàng; runtime cho thấy giữ B tạo nhiều nền liên tiếp. Không đưa ảnh hoặc runtime đó lên Git. Với một ảnh bìa đã lưu, detector tìm được mép và đọc QR hợp lệ; 24 biến thể nhiễu/độ sáng của ảnh đó vẫn có góc, độ lệch tối đa 5.5 px so với kết quả gốc. Đây là kiểm tra chẩn đoán một ảnh, không là accuracy hay xác nhận mép chuẩn H04.
+
+Root hiển thị: bản trước chỉ annotate khi số frame live trùng frame đã phân tích, nên viền chớp theo hai luồng bất đồng bộ. Bản tiếp nối dùng ba ô LIVE/DETECTED/RECTIFIED: LIVE luôn là ảnh mới chưa ghép góc cũ; DETECTED giữ ảnh nguồn cùng khung; crop/QR vẫn cùng kết quả phân tích. Không giữ geometry/QR quá hạn hoặc giả làm detection mới. Chế độ manual/ảnh tĩnh và mask giữ vùng xem lớn.
+
+Hiệu chuẩn nền bỏ qua B lặp liên tục (khoảng ngắt dưới 1 giây) và từ chối B khi phân tích gần nhất còn QR hợp lệ. Guard không nhận ra mọi vật thể hoặc QR không đọc được, nên vẫn cần bàn trống và camera cố định. Các file nền cũ được giữ nguyên.
+
+Test UI trước sửa tái hiện 4 failure/subtest; sau sửa 21 test module async-preview PASS lúc 2026-11-07T11:21:17+07:00 (2.325s), gồm tách nguồn ảnh khi frame trùng/lệch, không vẽ geometry khi chưa phân tích, vùng manual lớn, guard QR và giữ phím B. Đã xem ảnh render tổng hợp hai frame khác màu để xác nhận nhãn/khung/crop đúng nguồn. Kết quả toàn bộ và phiên mở lại camera nằm trong SESSION_LOG phiên 8. Camera/pilot thật vẫn cần bài thử với bố trí phù hợp.
+
+Bộ đầy đủ follow-up, 2026-11-07T11:24:19–11:24:29+07:00, HEAD e3f3846 + working-tree changes: checker PASS (27 source), validator PASS, **89 tests PASS**, failures/errors/skips=0 (8.681s), git diff --check PASS. Đã mở GUI camera mới lúc 11:25:38+07:00 và quan sát ba ô/nhãn frame đúng bố cục. Nguồn tại lần quan sát đen; người dùng xác nhận chưa cố định camera, nên chưa có phép thử live đủ điều kiện để kết luận mọi bìa sáng đã ổn định.
