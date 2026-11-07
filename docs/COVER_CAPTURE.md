@@ -14,7 +14,7 @@ Hoặc mở `scripts/windows/CaptureCovers.cmd`. Khi dùng launcher `scripts/cap
 
 ## Giao diện tiếng Việt
 
-Trên Windows, giao diện hiển thị tiếng Việt có dấu bằng font Segoe UI có sẵn; không cần cài thêm thư viện. Phím S/D/B/C/M/R/V/Q và [ / ] giữ nguyên. Trạng thái, thông số và hướng dẫn thao tác trên màn hình đã dịch; mã kỹ thuật trong metadata, headless JSON và ảnh debug lưu vẫn giữ để tương thích.
+Trên Windows, nội dung giao diện hiển thị tiếng Việt có dấu bằng font Segoe UI có sẵn; không cần cài thêm thư viện. Riêng thanh tiêu đề cửa sổ dùng tiếng Việt không dấu để tương thích HighGUI/ANSI trên Windows. Phím S/D/B/C/M/R/V/Q và [ / ] giữ nguyên. Trạng thái, thông số và hướng dẫn thao tác trên màn hình đã dịch; mã kỹ thuật trong metadata, headless JSON và ảnh debug lưu vẫn giữ để tương thích.
 
 - **SẴN SÀNG LƯU ẢNH**: đạt điều kiện thu mẫu hiện có; chưa kết luận sách không rách/bẩn.
 - **CHƯA ỔN ĐỊNH**: giữ yên camera và sách, chờ các góc ổn định; góc nhảy cũng gây trạng thái này.

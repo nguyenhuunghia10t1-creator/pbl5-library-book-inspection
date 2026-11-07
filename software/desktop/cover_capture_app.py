@@ -21,7 +21,8 @@ from software.desktop.ui_text import draw_text
 from software.desktop.ui_vietnamese import state_label, qr_label, issue_label, save_error_label
 
 
-WINDOW = "PBL5 | Thu ảnh bìa sách A6"
+# HighGUI uses an ANSI window title on some Windows builds; canvas text is Unicode.
+WINDOW = "PBL5 | Thu anh bia sach A6"
 SIZE = (1280, 800)
 logger = logging.getLogger("cover_capture")
 
