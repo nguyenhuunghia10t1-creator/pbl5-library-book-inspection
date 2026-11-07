@@ -22,6 +22,12 @@ Hoặc mở `scripts/windows/CaptureCovers.cmd`. Khi dùng launcher `scripts/cap
 
 Chọn cửa sổ ứng dụng trước khi dùng phím.
 
+Khi chạy camera, ba ô lần lượt là **LIVE** (ảnh camera hiện tại), **DETECTED** (ảnh đã phân tích, có khung và số frame riêng) và **RECTIFIED** (crop của cùng ảnh DETECTED). Khung nằm ở ô giữa để không chớp tắt theo việc frame live trùng frame phân tích và không bị vẽ nhầm lên ảnh mới. M/ảnh tĩnh và V/mask vẫn dùng vùng bên trái lớn để xem/chọn góc.
+
+Bấm B một lần rồi nhả phím. Phần mềm bỏ qua các sự kiện B lặp cách nhau dưới một giây; nếu kết quả phân tích gần nhất còn QR sách hợp lệ thì từ chối hiệu chuẩn và nhắc lấy sách ra. Đây chỉ là cảnh báo theo QR đã đọc, không tự chứng minh bàn trống khi QR không đọc được. Nếu lỡ hiệu chuẩn khi có sách, bấm C, đưa sách ra khỏi khung, cố định camera rồi bấm B lại sau khi ảnh cập nhật.
+
+Bìa vàng nhạt, xanh nhạt hoặc trắng: vẫn hiệu chuẩn **B khi bàn hoàn toàn trống**, cố định camera và ánh sáng trước khi đặt sách. Detector kết hợp khác màu nền Lab, biên xám và biên ba kênh màu BGR; không yêu cầu bìa phải tối. Phần biên màu có ngưỡng theo gradient/nhiễu để giữ đường viền ít tương phản. Nếu bìa gần như trùng màu nền, đổi sang nền tương phản, tránh bóng/lóa hoặc chọn góc M; không thể khôi phục mép không có tín hiệu trong ảnh. Xem [kiểm chứng V07](LIGHT_COVER_VALIDATION.md).
+
 | Phím | Chức năng |
 |---|---|
 | S | Lưu khung mới đạt điều kiện hình học/chất lượng/QR |
@@ -86,7 +92,7 @@ Cấu hình tại [cover_capture.json](../vision/opencv/configs/cover_capture.js
 
 Timestamp là lúc OpenCV trả khung; bộ đệm driver và độ trễ phơi sáng chưa được hiệu chuẩn. Hướng QR mặc định giả định in cùng chiều bìa; dùng R hoặc tắt orient_by_qr nếu giả định này không phù hợp.
 
-Preview live cập nhật độc lập geometry/QR. Crop/QR bên phải thuộc frame có nhãn Analyzed và tuổi frame; không ghép góc/QR của frame đó lên một frame live mới. Khi worker bận, bỏ qua các frame phân tích trung gian thay vì xếp hàng. S/D chờ frame sau yêu cầu, lưu cùng raw/crop/QR/properties; kết quả quá hạn hoặc thuộc camera/cấu hình cũ bị bỏ. Khi chưa kịp có kết quả trong 3 giây, yêu cầu lưu bị hủy và có thông báo. M giữ đúng ảnh đóng băng; Q/đóng cửa sổ không chờ decoder hoàn tất. Ghi PNG/metadata vẫn đồng bộ nên thao tác lưu có thể gây một khoảng dừng ngắn do ổ đĩa. Bộ chọn tứ giác có thể nhầm đường ron nền hoặc mép hình in với mép giấy; cần kiểm tra crop trước khi lưu và chưa thu hàng loạt khi góc không ổn định.
+Preview live cập nhật độc lập geometry/QR. Khung DETECTED và crop/QR bên phải thuộc frame có nhãn Analyzed và tuổi frame; không ghép góc/QR của frame đó lên một frame live mới. Khi worker bận, bỏ qua các frame phân tích trung gian thay vì xếp hàng. S/D chờ frame sau yêu cầu, lưu cùng raw/crop/QR/properties; kết quả quá hạn hoặc thuộc camera/cấu hình cũ bị bỏ. Khi chưa kịp có kết quả trong 3 giây, yêu cầu lưu bị hủy và có thông báo. M giữ đúng ảnh đóng băng; Q/đóng cửa sổ không chờ decoder hoàn tất. Ghi PNG/metadata vẫn đồng bộ nên thao tác lưu có thể gây một khoảng dừng ngắn do ổ đĩa. Bộ chọn tứ giác có thể nhầm đường ron nền hoặc mép hình in với mép giấy; cần kiểm tra crop trước khi lưu và chưa thu hàng loạt khi góc không ổn định.
 
 ## Ảnh có sẵn
 

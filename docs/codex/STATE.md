@@ -1,38 +1,31 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: fix/preview-v02
-Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
+Branch: fix/light-cover-detection-v07
+Last green commit: e3f3846e4ff32e7f063f49725ac0b53d74c5c7ef
 
 ## Resume notes
 
-Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
+Đọc TASKS → đuôi SESSION_LOG → LIGHT_COVER_VALIDATION/COVER_CAPTURE và DECISIONS liên quan. TASKS là nguồn trạng thái duy nhất.
 
-Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
+V07 hoàn thành phần mềm theo phiên 7–8, cùng nhánh fix/light-cover-detection-v07 và [PR #8](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/8) OPEN/chưa merge, base fix/preview-v02. Phiên 7 bổ sung biên màu BGR cho bìa sáng. Phiên 8 xử lý phản hồi khung xanh nhấp nháy: ba ô LIVE/DETECTED/RECTIFIED giữ đúng nguồn, không ghép góc cũ lên live; manual/frozen/MASK giữ vùng xem lớn. B bỏ qua key-repeat liên tục và từ chối khi kết quả phân tích gần nhất thấy QR sách hợp lệ, nhưng không tự chứng minh bàn trống nếu chưa đọc được QR.
 
-Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
+Đã xem ảnh nền B cục bộ có cả bìa vàng, thấy B lặp nhiều lần; detector trên một ảnh đó vẫn tìm được mép/QR. Người dùng xác nhận camera chưa cố định và phần nhấp nháy là khung bên trái. Không đổi thêm detector hoặc giữ kết quả quá hạn để che lỗi UI. Phiên camera mới đã mở, chưa tự hiệu chuẩn B; người dùng cần bố trí nền thật trống và camera cố định. Kết quả một ảnh/fixture không thay V01/H04 hoặc nghiệm thu V03/V06.
 
-Lệnh bắt đầu ở phiên tiếp theo, sau khi kiểm working tree/PR:
+PR nền #6 (fix/preview-v02 → chore/codex-harness) và #5 chưa merge khi kiểm. V05 vẫn ở nhánh feature/capture-bundle-audit-v05/PR #7 riêng, mã audit không nằm trong V07. Checkout cũ/cấu hình DroidCam và mọi dữ liệu runtime được giữ nguyên. Không force-push hoặc merge.
 
-```powershell
-git status --short --branch
-git fetch origin
-git switch -c feature/capture-bundle-audit-v05 origin/fix/preview-v02
-& $PYTHON scripts/check_repository.py
-& $PYTHON scripts/check_codex_state.py
-& $PYTHON -m unittest discover -s tests -v
-```
-
-Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự chuyển task trong phiên hiện tại.
+Team lấy [nhánh V07](https://github.com/truongthinh994/pbl5-library-book-inspection/tree/fix/light-cover-detection-v07) hoặc [ZIP đúng nhánh](https://github.com/truongthinh994/pbl5-library-book-inspection/archive/refs/heads/fix/light-cover-detection-v07.zip). Tài khoản hiện tại push qua fork, origin vẫn là kho nhóm. Cập nhật PR #8 theo phạm vi cuối, không tự bắt đầu B01; B01 chỉ là task CODEX tiếp theo được đề xuất khi mở phiên mới và xác minh base.
 
 ## Baseline đã đo
 
-Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
+Last green commit e3f3846e4ff32e7f063f49725ac0b53d74c5c7ef đã kiểm sạch lúc 2026-11-07T11:12:04–11:12:14+07:00: checker PASS (27 source), unittest PASS 85 tests/0 failures/0 errors/0 skips (8.987s), git diff --check PASS.
 
-Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
+Follow-up phiên 8 trên HEAD e3f3846 + working-tree changes lúc 2026-11-07T11:24:19–11:24:29+07:00: checker PASS (27 source), validator PASS, unittest PASS 89 tests/0 failures/0 errors/0 skips (8.681s), git diff --check PASS. Module async-preview có 21 tests PASS, 4 test mới và một test nguồn ảnh được cập nhật. Đã xem render tổng hợp hai frame khác màu và GUI ba ô trên phiên camera mới; ảnh live khi quan sát đen, không có phép thử live đủ điều kiện với camera cố định.
 
-Môi trường E1 Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; không thêm dependency. GUI thật với ảnh synthetic và benchmark scheduling PASS; webcam/thiết bị thật NOT_RUN. Chi tiết [PREVIEW_VALIDATION](../PREVIEW_VALIDATION.md) và [SESSION_LOG](../SESSION_LOG.md).
+Môi trường E2: Windows 11 build 26300, PowerShell 7.6.9, Python 3.13.14/OpenCV 5.0.0/NumPy 2.5.4, venv checkout cũ, không thêm dependency. Lịch sử baseline/source/commit sạch của V02 và V07 nằm trong SESSION_LOG; không suy PASS hardware hoặc CI remote từ test local.
 
 ## Human actions pending
+
+- **Thử bìa sáng V07:** mở DroidCam và giữ màn hình điện thoại sáng khi preview đen. Camera cố định, đưa sách ra khỏi khung, bấm B lúc bàn trống; thử vàng nhạt/xanh nhạt/trắng và kiểm mép ngoài/crop/QR. Gửi ví dụ lỗi/đúng qua nguồn riêng ngoài Git để bổ sung H04; không tự đổi V01/V03/V06 chỉ từ fixture hoặc backend mở được.
 
 - **Thử riêng V02, có thể làm ngay:** chạy webcam ở nhánh này theo [COVER_CAPTURE](../COVER_CAPTURE.md#thử-nhanh-preview-v02-trên-webcam). Gửi video thấy Live/Analyzed, thao tác S/D/Q, runtime.log và một bundle ngoài Git; ghi camera/backend/resolution. Đây là kiểm hành vi preview/lưu/thoát, không thay gate đầy đủ V03 và không tự đổi trạng thái nghiệm thu hardware.
 

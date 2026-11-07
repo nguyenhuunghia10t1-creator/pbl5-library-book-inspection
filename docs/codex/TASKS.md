@@ -40,8 +40,9 @@ Ký hiệu chỉ minh họa cho **Status**, không tạo trạng thái riêng. K
 | V02 | ✅ Tách preview khỏi geometry/QR | CODEX | H01 | Test QR chậm/lỗi, frame cũ, đóng cửa sổ và mất camera; preview nhận frame mới độc lập; save liên kết đúng frame; đo latency trước/sau bằng fixture; không đặt ngưỡng HW | DONE | Commit 6a0e1bb; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6; docs/PREVIEW_VALIDATION.md; 71 tests PASS, GUI synthetic PASS; fixture median preview 211.040→10.774 ms; webcam NOT_RUN, gate riêng V03 |
 | V03 | ⛔ Kiểm chứng camera và crop thực tế | USER-HW | V01,V02,H03,H07 | Người dùng gửi video/log/raw/crop/debug, resolution/FPS, thử mất camera và bộ bìa theo gate đã duyệt; đạt gate mới DONE-HW | BLOCKED | Chờ các đầu vào và thực nghiệm người dùng |
 | V04 | ⛔ Chuẩn hóa trạng thái QR tại biên module | CODEX | H12 | Test mọi enum/mapping và nhiều QR/QR lỗi; không dùng VALID_FORMAT làm identity VALID | BLOCKED | Chờ quyết định H12 |
-| V05 | ⬜ Kiểm tra bundle và báo cáo pilot | CODEX | H01 | Lệnh kiểm manifest, hash, nguồn ảnh, accepted/review, thống kê theo cuốn; fixtures lỗi/thiếu file; giữ raw bất biến | TODO | - |
+| V05 | ✅ Kiểm tra bundle và báo cáo pilot | CODEX | H01 | Lệnh kiểm manifest, hash, nguồn ảnh, accepted/review, thống kê theo cuốn; fixtures lỗi/thiếu file; giữ raw bất biến | DONE | Hoàn thành riêng ở commit 11d635d, nhánh feature/capture-bundle-audit-v05; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7; 92 tests PASS; mã audit chưa nằm trong nhánh V07 độc lập này |
 | V06 | ⛔ Thu và xác nhận pilot thật | USER-DATA | V03,V05,H05 | Cung cấp manifest/checksum ngoài Git, số ảnh/cuốn và ca loại; nhãn mẫu được duyệt; không dùng synthetic thay dữ liệu thật | BLOCKED | Chờ mẫu/nhãn/camera đạt gate |
+| V07 | ✅ Bổ sung nhận mép bìa sáng ít tương phản | CODEX | H01,V02 | Tái hiện màu sáng rồi nhận mép ngoài; hồi quy nền/nhiễu/nhiều bìa/chạm viền/QR/quality; LIVE và khung DETECTED đúng nguồn, không nhấp nháy theo trùng số frame; hạn chế giữ B/hiệu chuẩn với QR còn trong ảnh; giữ raw/crop/parser, không thay gate V01/V03 | DONE | PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/8; LIGHT_COVER_VALIDATION; SESSION_LOG phiên 7–8: 89 tests PASS, tách LIVE/DETECTED/CROP và bảo vệ B; 1 ảnh thật cục bộ tìm được mép/QR nhưng camera chưa cố định, chưa kết luận toàn bộ bìa thật |
 | B01 | ⬜ Schema SQLite và migration ban đầu | CODEX | H01 | PR schema tối thiểu copy/title/category và migration/reopen/uniqueness test bằng DB tạm; mẫu dữ liệu fake được đánh dấu; không chốt mapping A/B | TODO | - |
 | B02 | ⛔ Import danh mục và lookup QR | CODEX | B01,H09 | Test import hợp lệ/trùng/lỗi và lookup VALID/UNKNOWN_ID trên fixture theo schema nguồn đã duyệt | BLOCKED | Chờ H09 |
 | B03 | ⬜ Lưu job và truy vết kết quả | CODEX | B01 | Test UUID, transaction/rollback/reopen và truy vết image/model/policy, expected/actual route, simulation/hardware tách biệt | TODO | - |
@@ -80,7 +81,7 @@ Ký hiệu chỉ minh họa cho **Status**, không tạo trạng thái riêng. K
 
 ## Thứ tự đề xuất
 
-**V05** là task CODEX kế tiếp: kiểm manifest/hash/provenance và báo cáo pilot bằng fixture, phụ thuộc H01 đã có bằng chứng. V01 ưu tiên khi H04 được đáp ứng. B01 và S04 là lựa chọn độc lập khác. V02 đã có bằng chứng phần mềm trong bảng; chưa nghiệm thu camera thật V03. Không tự bắt đầu task tiếp theo trong cùng phiên.
+**B01** là task CODEX kế tiếp được đề xuất, Depends H01 đã có bằng chứng; chưa bắt đầu. V07 đã sửa tín hiệu biên yếu bằng fixture, V01 vẫn chờ H04 và V03 vẫn cần nghiệm thu camera thật. V05 hoàn thành ở PR #7 riêng; xác minh các PR/base trước phiên sau. Không tự bắt đầu task tiếp theo trong cùng phiên.
 
 ## Backlog
 
