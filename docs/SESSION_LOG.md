@@ -116,3 +116,11 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - CI remote sẽ kiểm sau push metadata; không suy PASS từ test local. Webcam thật vẫn NOT_RUN. Người dùng thử theo COVER_CAPTURE và gửi video/runtime.log/bundle ngoài Git, không cần quyết định phần cứng mới cho bài smoke V02.
 
 - Kiểm metadata lúc 2026-11-07T09:45:28+07:00, E1, HEAD 6a0e1bb + working-tree changes chỉ tài liệu: scripts/check_repository.py và scripts/check_codex_state.py cùng interpreter E1 đều exit 0 PASS, git diff --check exit 0 PASS. Toàn bộ 14 đường dẫn thuộc V02; không có ảnh/log runtime/dữ liệu thật được stage. Chỉ dẫn webcam và V05 đã có trong STATE, không còn CODEX IN_PROGRESS.
+
+
+## 2026-11-07 — Phiên 5 — Đồng bộ bàn giao V02 cho team
+
+- Yêu cầu người dùng: hoàn tất task nào thì kiểm tra/commit/push ngay và đưa bản mới để team tải. Xác minh worktree sạch trên fix/preview-v02 tại 9cde7af99149d989b9939ac6f66e8ab4dffa6da1; remote đã có cùng SHA. Không có code V02 bị bỏ lại local.
+- Baseline E1 Windows/PowerShell, interpreter D:/smart-vision-inspection/.venv/Scripts/python.exe, commit sạch 9cde7af, 2026-11-07T09:49:40–09:49:47+07:00: scripts/check_repository.py exit 0 PASS (26 source và validator); -m unittest discover -s tests -q exit 0 PASS 71 tests/0 failures/0 errors/0 skips trong 5.797s.
+- Bổ sung quy ước đã được người dùng xác nhận vào AGENTS và WORKFLOW: push ngay sau mỗi task được kiểm, mở/cập nhật PR, xác minh remote và cung cấp link nhánh/ZIP; không merge. Không sửa code hoặc trạng thái nghiệp vụ; Active task NONE, V05 chưa bắt đầu.
+- Bản team cần lấy là nhánh fix/preview-v02 (gồm kế hoạch/harness và V02), không phải main hoặc bản chỉ có kế hoạch. PR #6 vẫn là PR của phần V02; có thể tải archive ZIP của đúng nhánh khi không dùng Git.
