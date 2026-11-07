@@ -1,13 +1,13 @@
 Active task: NONE
 Last updated: 2026-11-07
 Branch: feature/capture-bundle-audit-v05
-Last green commit: 8f9198f0c78030dd21000f4562a0492556c1dce2
+Last green commit: 11d635d29f1bdab111f710b2279e1b8bf176ca4a
 
 ## Resume notes
 
 Đọc TASKS → đuôi SESSION_LOG → CAPTURE_AUDIT và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
 
-Phiên V05 dùng worktree sạch, nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 tại 8f9198f. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) đã xác minh OPEN/chưa merge, base chore/codex-harness; PR harness [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) cũng OPEN/chưa merge. Tài khoản hiện tại không có quyền push kho gốc, đã tạo [fork](https://github.com/truongthinh994/pbl5-library-book-inspection); PR V05 sẽ từ fork về base fix/preview-v02 của kho nhóm. Checkout cũ và cấu hình DroidCam sửa sẵn được giữ nguyên, không đưa vào commit này.
+Phiên V05 dùng worktree sạch, nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 tại 8f9198f. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) đã xác minh OPEN/chưa merge, base chore/codex-harness; PR harness [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) cũng OPEN/chưa merge. Tài khoản hiện tại không có quyền push kho gốc; V05 đã push lên [nhánh fork](https://github.com/truongthinh994/pbl5-library-book-inspection/tree/feature/capture-bundle-audit-v05) và mở [PR #7](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7) về base fix/preview-v02 của kho nhóm. PR #7 xác minh OPEN/chưa merge. Checkout cũ và cấu hình DroidCam sửa sẵn được giữ nguyên, không đưa vào commit này.
 
 Phạm vi đã nhận: V05 kiểm bundle/manifest/hash/provenance và thống kê pilot theo cuốn bằng fixture. Metadata là nguồn chính; báo cáo tách bundle lỗi, lỗi manifest và staging chưa hoàn tất. Audit chỉ đọc, giữ raw/crop/debug/metadata/session/manifest nguyên trạng. Kiểm source chỉ đối chiếu khai báo, không chứng nhận nguồn thật, danh tính DB, crop đúng hoặc nhãn lỗi. Không thêm dependency và không đổi writer/schema, camera, geometry, QR hay firmware.
 
@@ -20,9 +20,11 @@ V05 đã đạt acceptance phần mềm; xem [hướng dẫn audit](../CAPTURE_A
 git diff --check
 ```
 
-Đã chạy baseline sạch rồi mới làm V05; bộ cuối source PASS 92 tests. Phiên này hoàn tất commit/push/PR xếp tầng và cập nhật URL sau khi GitHub xác nhận; không merge và không tự bắt đầu B01.
+Đã chạy baseline sạch rồi mới làm V05; commit triển khai 11d635d đã được kiểm sạch với 92 tests PASS và xác minh SHA trên fork. PR #7 xếp tầng đã mở, không merge; B01 chưa bắt đầu. Team có thể tải [ZIP đúng nhánh V05](https://github.com/truongthinh994/pbl5-library-book-inspection/archive/refs/heads/feature/capture-bundle-audit-v05.zip); không lấy main để thử phần này. CI remote chưa có check được báo ở PR khi truy vấn lúc 10:14:17+07:00, chưa kết luận PASS.
 
 ## Baseline đã đo
+
+Last green commit 11d635d29f1bdab111f710b2279e1b8bf176ca4a đã kiểm nguyên trạng lúc 2026-11-07T10:13:16–10:13:27+07:00, git status sạch trước/sau: checker PASS (29 source), validator PASS, unittest discovery PASS 92 tests/0 failures/0 errors/0 skips (9.492s), git diff --check PASS. Commit metadata tiếp theo chỉ ghi bằng chứng/URL, không tự tham chiếu SHA của chính nó.
 
 V05 trên HEAD 8f9198f + working-tree changes lúc 2026-11-07T10:11:07–10:11:18+07:00: checker PASS (29 source), validator PASS, unittest discovery PASS 92 tests/0 failures/0 errors/0 skips (9.211s), git diff --check PASS. Các test dùng fixture synthetic và DB/collection tạm, không có bằng chứng camera/pilot thật mới.
 
