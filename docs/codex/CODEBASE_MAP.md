@@ -130,3 +130,19 @@ vision/yolo/README.md
 ## Delta V02 — 2026-11-07
 
 Inventory baseline phía trên được giữ làm căn cứ audit ban đầu. V02 bổ sung software/desktop/analysis_worker.py (AnalysisWorker, SnapshotProcessor; gọi từ run_ui, config snapshot, stdlib/thread + CoverVision), tests/opencv/test_async_preview.py (17 regressions synthetic) và scripts/benchmark_preview.py (entry CLI, delay/frames/baseline-ref; dùng dependency hiện có, không camera). Đã đọc/review các tệp mới và diff UI/tests cũ. Luồng live hiện là camera → preview mới nhất song song worker → completion gắn frame → writer; preview không chờ geometry/QR. Xem [báo cáo V02](../PREVIEW_VALIDATION.md), trạng thái chỉ trong TASKS. Các nhận định đồng bộ ở phần baseline không mô tả phiên bản sau V02.
+
+
+## Delta V07 — 2026-11-07
+
+Baseline inventory và các mâu thuẫn ở trên được giữ làm lịch sử; hiện trạng geometry/quality sau V07 đối chiếu [báo cáo](../COLOR_BACKGROUND_VALIDATION.md). Đã đọc toàn bộ file mới và diff liên quan; không audit lại các module không đổi hoặc suy nghiệm thu thiết bị.
+
+| Module/đường dẫn | Mục đích và entry/bên gọi | Config/dependency | Test |
+|---|---|---|---|
+| vision/opencv/geometry.py | detect_cover, prepare_lab và helper góc; CoverVision.detect/calibrate gọi | Config ngưỡng Lab/cạnh/dải mép; OpenCV/NumPy hiện có | test_color_background và GeometryTests cũ |
+| vision/opencv/quality.py | assess_quality; CoverVision.process gọi trước quyết định quality | min_sharpness/detail/clipping; OpenCV/NumPy | CoverQualityTests và test blur cũ |
+| vision/opencv/pipeline.py, config.py | Giữ API, QR, warp, temporal stability; ghép geometry/quality mới và metrics | JSON cũ vẫn hợp lệ, default mới trong Config | Toàn bộ tests/opencv, storage/async vẫn chạy |
+| software/desktop/cover_capture_app.py | render thêm Detail focus/Clip và lý do thiếu chi tiết | Không đổi worker/camera/save; không dependency mới | GUI synthetic và test_async_preview |
+| tests/opencv/color_fixtures.py, test_color_background.py | 25 cảnh × auto/B; góc/crop ground truth và các ca an toàn/quality | Synthetic có seed; QR encoder OpenCV có sẵn | unittest discovery |
+| scripts/benchmark_cover_geometry.py | CLI so baseline Git với hiện tại trên cùng fixtures | baseline-ref/repeats/processing-width; stdlib/OpenCV/NumPy | Lệnh benchmark, 50 ca và báo sai góc; chưa camera |
+
+Luồng camera → worker → geometry/quality/QR → crop/bundle vẫn nối như V02; B so nền theo vị trí và bù dịch Lab chung, mép cần bằng chứng cả bốn cạnh/tương phản gần-xa. Không đổi DB/AI/controller/firmware chưa có. Các mô tả baseline dùng Canny cố định và brightness trung bình chặn trực tiếp đã được thay ở V07; chẩn đoán cũ vẫn giữ để đối chiếu. Enum QR C1/H12 chưa được tự quyết. Không có raw lỗi sáng mới do người dùng cung cấp; H04/V01/V03 chưa được nghiệm thu.

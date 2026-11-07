@@ -1,40 +1,43 @@
 Active task: NONE
 Last updated: 2026-11-07
-Branch: fix/preview-v02
-Last green commit: 6a0e1bbb2421b250297cfe6081cc53607ccc80fe
+Branch: fix/cover-color-background
+Last green commit: cd8b48c7afab2c700d36c6553a78598518453704
 
 ## Resume notes
 
-Đọc TASKS → đuôi SESSION_LOG → COVER_CAPTURE/PREVIEW_VALIDATION và quyết định liên quan. Chỉ TASKS giữ trạng thái; ký hiệu trước tên việc giúp đọc nhanh.
+Đọc TASKS → đuôi SESSION_LOG → COLOR_BACKGROUND_VALIDATION/COVER_CAPTURE và DECISIONS liên quan. Chỉ TASKS giữ tiến độ; không tự chuyển task IN_PROGRESS khi phiên đã bàn giao.
 
-Nhánh fix/preview-v02 từ commit gốc 4d3b402 của chore/codex-harness. PR nền [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) vẫn mở, chưa merge; PR V02 [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) OPEN, base chore/codex-harness, chưa merge; cần người review ngoài tác giả. Checkout chính main và các sửa có sẵn vẫn giữ nguyên. Worktree đang mở chính là nhánh V02.
+Nhánh V07 `fix/cover-color-background` từ V02 `8f9198f0c78030dd21000f4562a0492556c1dce2`. PR nền [#6](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/6) base chore/codex-harness và [#5](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/5) base main còn OPEN khi xác minh GitHub. PR V07 [#9](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/9) OPEN, base fix/preview-v02, đã push và xác minh remote commit nguồn cd8b48c7afab2c700d36c6553a78598518453704. Không merge. Main và sửa có sẵn trong checkout chính giữ nguyên.
 
-Task CODEX kế tiếp đề xuất **V05**, kiểm bundle/manifest/hash/provenance; H01 có bằng chứng, chưa cần dữ liệu thật. Không bắt đầu trong phiên V02. V01 còn chờ H04. Nếu PR V02 chưa merge, phiên tiếp theo có thể tạo nhánh feature/capture-bundle-audit-v05 từ origin/fix/preview-v02 và PR base fix/preview-v02, ghi PR nền. Sau khi các PR nền merge thì xác minh main mới và chọn base phù hợp; không tự merge.
+GitHub đồng thời có [PR #7 V05](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7) và [PR #8 bìa sáng/UI](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/8) từ fork team, cùng base V02. Không chứa mã của hai PR này trong nhánh hiện tại, không tuyên bố đã test chúng. Review #8 vì chồng lấn detector/UI và hồ sơ V07; không merge cả hai bản mà chưa đối chiếu. Không thực hiện lặp V05.
 
-Lệnh bắt đầu ở phiên tiếp theo, sau khi kiểm working tree/PR:
+Bản tải team: [nhánh V07](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/tree/fix/cover-color-background) · [ZIP](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/archive/refs/heads/fix/cover-color-background.zip). Bản này chưa chứa V05/#7 hoặc UI/#8; tránh nhầm với main.
+
+Task CODEX kế tiếp đề xuất **B01** (SQLite/schema/migration với DB tạm): độc lập H04/H03, phụ thuộc H01 đã có bằng chứng. Không bắt đầu trong phiên V07. Đầu phiên sau xác minh lại PR/main mới nhất, baseline và ledger trên đúng nhánh; nếu các PR nền còn mở, có thể tạo nhánh B01 từ origin/fix/cover-color-background và PR base cùng nhánh đó, ghi quan hệ xếp tầng.
 
 ```powershell
 git status --short --branch
 git fetch origin
-git switch -c feature/capture-bundle-audit-v05 origin/fix/preview-v02
+git switch -c feature/sqlite-schema-b01 origin/fix/cover-color-background
 & $PYTHON scripts/check_repository.py
 & $PYTHON scripts/check_codex_state.py
 & $PYTHON -m unittest discover -s tests -v
 ```
 
-Chỉ sau baseline và chọn V05 mới đổi TASKS/Active task; không tự chuyển task trong phiên hiện tại.
+Xác định `$PYTHON` là interpreter venv của checkout thực tế, không giả định worktree có .venv riêng. Chỉ sau baseline/chọn B01 mới đổi TASKS và Active task. Nếu reviewer yêu cầu sửa V07 thì tiếp tục phạm vi V07 trước.
 
 ## Baseline đã đo
 
-Last green commit là 6a0e1bbb2421b250297cfe6081cc53607ccc80fe đã kiểm nguyên trạng lúc 2026-11-07T09:43:51–09:44:03+07:00: checker PASS (26 source), validator PASS, 71 tests PASS/0 failures/0 errors/0 skips trong 11.165s, git diff --check PASS. Commit metadata chỉ bổ sung URL/bằng chứng; không tự tham chiếu hash của chính nó.
+V07 bắt đầu từ commit sạch 8f9198f, 2026-11-07T11:12:05–11:12:13+07:00: checker PASS (26 source), 71 tests PASS/0 failures/errors/skips trong 6.459s. Lượt source trước commit ghi HEAD + working-tree changes, kết quả cuối tham chiếu SESSION_LOG phiên 6; không coi là kiểm nguyên trạng HEAD.
 
-Baseline gốc V02 4d3b402 có checker và 54 tests PASS trên cây sạch. Lượt source trước commit lúc 09:41:08–09:41:20+07:00 ghi HEAD + working-tree changes, 71 tests PASS trong 10.961s. Xem SESSION_LOG để phân biệt từng lượt.
+Last green là commit nguồn V07 cd8b48c7afab2c700d36c6553a78598518453704, đã kiểm nguyên trạng khi working tree sạch lúc 2026-11-07T11:39:13–11:39:44+07:00: checker PASS (31 source), validator PASS, 88 tests PASS/0 failures/errors/skips trong 30.405s, git diff --check PASS. Commit metadata chỉ ghi URL/bằng chứng của commit đã tồn tại; không ghi hash của chính nó.
 
-Môi trường E1 Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3; không thêm dependency. GUI thật với ảnh synthetic và benchmark scheduling PASS; webcam/thiết bị thật NOT_RUN. Chi tiết [PREVIEW_VALIDATION](../PREVIEW_VALIDATION.md) và [SESSION_LOG](../SESSION_LOG.md).
+Môi trường E1: Windows 11/PowerShell 5.1, Python venv 3.14.3, OpenCV 5.0.0, NumPy 2.5.3, không thêm dependency. Benchmark geometry xử lý OpenCV thật trên synthetic, benchmark UI scheduling fake và ba GUI synthetic được ghi riêng trong [báo cáo V07](../COLOR_BACKGROUND_VALIDATION.md). Webcam mới/ESP32/AI/KPI hardware NOT_RUN. H04/V01/V03 không hoàn thành bằng synthetic; mục tiêu thực tế là “đề xuất, chờ tôi xác nhận”.
 
 ## Human actions pending
 
-- **Thử riêng V02, có thể làm ngay:** chạy webcam ở nhánh này theo [COVER_CAPTURE](../COVER_CAPTURE.md#thử-nhanh-preview-v02-trên-webcam). Gửi video thấy Live/Analyzed, thao tác S/D/Q, runtime.log và một bundle ngoài Git; ghi camera/backend/resolution. Đây là kiểm hành vi preview/lưu/thoát, không thay gate đầy đủ V03 và không tự đổi trạng thái nghiệm thu hardware.
+- **Ưu tiên thử V07 ngay:** theo [bài thử bìa sáng/tối](../COVER_CAPTURE.md#thử-bìa-sángtối-v07-trên-webcam): bìa sáng và tối A6, nền sáng/tối/hoa văn; C thử auto rồi B trên nền trống, lấy sách ra kiểm khung biến mất. Gửi video Live/Analyzed, camera/backend/resolution/commit, runtime.log, raw/cover/debug/metadata ngoài Git. Chưa có raw lỗi sáng mới; dữ liệu này hỗ trợ H04/V01, không tự hoàn tất V03 khi gate chưa duyệt.
+- **Review phương án song song:** PR team #8 cũng sửa V07/UI từ V02; chưa tích hợp vào nhánh phiên này. Người review đối chiếu detector/UI và chọn cách tích hợp, không tự merge/đóng PR người khác. V05 có PR #7 riêng nên tránh thực hiện lại; trạng thái trên nhánh này chưa được nâng theo PR chưa audit lại.
 
 - **H04 + H05, ưu tiên dữ liệu:** gửi vị trí gói raw/crop/debug/metadata ngoài Git, mã cuốn/điều kiện chụp và ví dụ nhãn rách/bẩn/ca biên được xác nhận. Mở khóa V01 rồi A01 sau pilot; không đăng ảnh riêng vào PR.
 - **H03, ưu tiên phần cứng:** ảnh/model board, danh mục sensor/driver/motor/servo, điện áp/nguồn/tải, hành trình/home/endstop/feedback, kết nối PC. Gửi bảng IO và tài liệu thiết bị; mở khóa thiết kế S05/F01, chưa nạp khi chưa review.
@@ -61,3 +64,7 @@ HMI đã có câu trả lời: HTML/CSS/JS, qua backend/adapter; giữ hướng 
 ## Quyết định chờ
 
 H06: bảng route/reason và semantics HOLD/STOP (D05/D09/D10 + ví dụ Bước 9 local). H07: mục tiêu/cỡ mẫu/KPI (PLAN phần nghiệm thu). H03: board/IO/giao tiếp (DECISIONS phần cần xác minh và issue #3). H05: quy tắc nhãn (D06/D11 và issue #4). H12: enum QR (D16 + CODEBASE_MAP C1). Chỉ sau phản hồi mới ghi quyết định chính thức vào DECISIONS trong task được phép; phiên H01 giữ nguyên file đó.
+
+## Ghi chú kết nối DroidCam 2026-11-07
+
+Đã nhận khung 1280×720 với camera 1/backend msmf và khởi chạy GUI V07; DirectShow camera 1 không mở được trên máy kiểm tra. Headless một khung trả NO_COVER, QR UNREADABLE: chưa nghiệm thu nhận dạng sách/QR. Người dùng xác nhận client có hình điện thoại; tiếp tục bài thử H04/V01/V03 hiện có, không đổi trạng thái hoàn thành phần cứng. Lệnh dùng lại trong COVER_CAPTURE mục Camera điện thoại qua DroidCam; chỉ số cần kiểm lại theo máy/backend. Không bắt đầu B01 trong phiên hỗ trợ camera.

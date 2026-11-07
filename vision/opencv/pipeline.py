@@ -7,31 +7,8 @@ import cv2
 import numpy as np
 
 from .config import Config
-
-
-def order_quad(points):
-    """Clockwise cyclic order, starting with the upper short edge (no sum/diff ties)."""
-    p = np.asarray(points, np.float32).reshape(4, 2)
-    if not np.isfinite(p).all() or len(np.unique(p, axis=0)) != 4:
-        raise ValueError("Four different finite corners required")
-    center = p.mean(axis=0)
-    p = p[np.argsort(np.arctan2(p[:, 1] - center[1], p[:, 0] - center[0]))]
-    if not cv2.isContourConvex(p) or abs(cv2.contourArea(p)) < 25:
-        raise ValueError("Corners must form a convex quadrilateral")
-    lengths = np.linalg.norm(np.roll(p, -1, axis=0) - p, axis=1)
-    pair = 0 if lengths[0] + lengths[2] < lengths[1] + lengths[3] else 1
-    start = min((pair, pair + 2), key=lambda i: tuple(((p[i] + p[(i + 1) % 4]) / 2)[::-1]))
-    return np.roll(p, -start, axis=0)
-
-
-def quad_ratio(p):
-    d = np.linalg.norm(np.roll(p, -1, axis=0) - p, axis=1)
-    return float((d[0] + d[2]) / (d[1] + d[3])), d
-
-
-def corner_motion(a, b):
-    """Compare cyclic shifts, including canonical edge changes near 90 degrees."""
-    return min(float(np.max(np.linalg.norm(a - np.roll(b, k, axis=0), axis=1))) for k in range(4))
+from .geometry import order_quad, quad_ratio, corner_motion, prepare_lab, detect_cover
+from .quality import assess_quality
 
 
 @dataclass
@@ -104,6 +81,7 @@ class CoverVision:
         self.stable = 0
         self.reader = QRReader()
         self.manual_points = None
+        self.detection_metrics = {}
 
     def reset_tracking(self):
         self.previous = None
@@ -116,64 +94,20 @@ class CoverVision:
 
     def calibrate(self, frame):
         small, _ = self.small_frame(frame)
-        self.background = cv2.cvtColor(cv2.GaussianBlur(small, (7, 7), 0), cv2.COLOR_BGR2LAB).astype(np.float32)
+        self.background = prepare_lab(small)
         self.reset_tracking()
 
     def detect(self, frame):
         small, scale = self.small_frame(frame)
-        h, w = small.shape[:2]
-        smooth = cv2.GaussianBlur(small, (5, 5), 0)
-        lab = cv2.cvtColor(smooth, cv2.COLOR_BGR2LAB).astype(np.float32)
-        if self.background is not None and self.background.shape == lab.shape:
-            bg = self.background
-        else:
-            border = np.concatenate((lab[:8].reshape(-1, 3), lab[-8:].reshape(-1, 3),
-                                     lab[:, :8].reshape(-1, 3), lab[:, -8:].reshape(-1, 3)))
-            bg = np.median(border, axis=0)
-        delta = lab - bg
-        distance = np.sqrt(0.45 * delta[:, :, 0] ** 2 + delta[:, :, 1] ** 2 + delta[:, :, 2] ** 2)
-        mask = np.uint8(distance > self.config.background_tolerance) * 255
-        kernel = np.ones((5, 5), np.uint8)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_CLOSE, kernel, iterations=2)
-        mask = cv2.morphologyEx(mask, cv2.MORPH_OPEN, np.ones((3, 3), np.uint8))
-        edges = cv2.Canny(cv2.cvtColor(smooth, cv2.COLOR_BGR2GRAY), 45, 130)
-        edges = cv2.morphologyEx(edges, cv2.MORPH_CLOSE, np.ones((3, 3), np.uint8))
-        candidates = []
-        for source, binary in (("background", mask), ("edges", edges)):
-            contours, _ = cv2.findContours(binary, cv2.RETR_LIST, cv2.CHAIN_APPROX_SIMPLE)
-            for contour in sorted(contours, key=cv2.contourArea, reverse=True)[:35]:
-                area = cv2.contourArea(contour)
-                if not self.config.min_area_fraction <= area / (w * h) <= self.config.max_area_fraction:
-                    continue
-                perimeter = cv2.arcLength(contour, True)
-                for epsilon in (0.015, 0.025, 0.04):
-                    approx = cv2.approxPolyDP(contour, epsilon * perimeter, True)
-                    if len(approx) != 4 or not cv2.isContourConvex(approx):
-                        continue
-                    p = order_quad(approx)
-                    ratio, _ = quad_ratio(p)
-                    relative_error = abs(ratio / (105 / 148) - 1)
-                    coverage = area / max(1, cv2.contourArea(p))
-                    if relative_error > self.config.aspect_tolerance or not 0.80 <= coverage <= 1.15:
-                        continue
-                    score = area * (1 - relative_error * 0.5)
-                    candidates.append((score, p, source))
-                    break
-        if not candidates:
-            return None, mask, "auto"
-        candidates.sort(key=lambda c: c[0], reverse=True)
-        best = candidates[0]
-        for other in candidates[1:]:
-            overlap, _ = cv2.intersectConvexConvex(best[1], other[1])
-            smaller = min(cv2.contourArea(best[1]), cv2.contourArea(other[1]))
-            if overlap / max(smaller, 1) < 0.20 and other[0] > best[0] * 0.45:
-                return None, mask, "multiple"
-        return best[1] * scale, mask, best[2]
+        previous = None if self.previous is None else self.previous / scale
+        points, mask, method, self.detection_metrics = detect_cover(small, self.background, previous, self.config)
+        return (None if points is None else points * scale), mask, method
 
     def process(self, frame, decode=True, flip=False):
         if frame is None or frame.size == 0 or frame.ndim != 3 or min(frame.shape[:2]) < 32:
             self.reset_tracking()
             return Result("EMPTY_FRAME")
+        self.detection_metrics = {}
         points, mask, method = self.detect(frame) if self.manual_points is None else (
             order_quad(self.manual_points), None, "manual")
         if points is None:
@@ -195,15 +129,9 @@ class CoverVision:
         native_width = max(16, min(ow, int(min(lengths[0], lengths[2]))))
         native = cv2.resize(crop, (native_width, round(native_width * oh / ow)), interpolation=cv2.INTER_AREA)
         gray = cv2.cvtColor(native, cv2.COLOR_BGR2GRAY)
-        sharpness = float(cv2.Laplacian(gray, cv2.CV_64F).var())
-        brightness = float(gray.mean())
-        issues = []
+        quality, issues = assess_quality(gray, self.config)
         if min(lengths[0], lengths[2]) < self.config.min_source_short_edge:
             issues.append("TOO_SMALL")
-        if sharpness < self.config.min_sharpness:
-            issues.append("BLURRY")
-        if not self.config.min_brightness <= brightness <= self.config.max_brightness:
-            issues.append("BAD_LIGHT")
         if abs(ratio / (105 / 148) - 1) > self.config.aspect_tolerance:
             issues.append("BAD_ASPECT")
         if self.previous is not None and corner_motion(points, self.previous) <= self.config.stable_motion_pixels:
@@ -232,7 +160,7 @@ class CoverVision:
         return Result(status, points, crop, mask, qr,
                       {"center_px": points.mean(axis=0).tolist(), "angle_deg": angle,
                        "aspect_ratio": ratio, "area_px": float(cv2.contourArea(points)),
-                       "sharpness": sharpness, "brightness": brightness,
+                       **quality, **self.detection_metrics,
                        "source_short_edge_px": float(min(lengths[0], lengths[2])),
                        "homography_before_rotation": transform.tolist()},
                       issues, self.stable, method, rotation, basis)

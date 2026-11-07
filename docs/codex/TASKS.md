@@ -42,6 +42,7 @@ Ký hiệu chỉ minh họa cho **Status**, không tạo trạng thái riêng. K
 | V04 | ⛔ Chuẩn hóa trạng thái QR tại biên module | CODEX | H12 | Test mọi enum/mapping và nhiều QR/QR lỗi; không dùng VALID_FORMAT làm identity VALID | BLOCKED | Chờ quyết định H12 |
 | V05 | ⬜ Kiểm tra bundle và báo cáo pilot | CODEX | H01 | Lệnh kiểm manifest, hash, nguồn ảnh, accepted/review, thống kê theo cuốn; fixtures lỗi/thiếu file; giữ raw bất biến | TODO | - |
 | V06 | ⛔ Thu và xác nhận pilot thật | USER-DATA | V03,V05,H05 | Cung cấp manifest/checksum ngoài Git, số ảnh/cuốn và ca loại; nhãn mẫu được duyệt; không dùng synthetic thay dữ liệu thật | BLOCKED | Chờ mẫu/nhãn/camera đạt gate |
+| V07 | ✅ Tối ưu bìa sáng/tối và nhiều loại nền | CODEX | H01,V02 | Ma trận synthetic kiểm góc/crop, nhiễu nền/ron/viền in và quality bìa sáng; giữ API/config cũ/QR/bundle/worker; toàn bộ tests/checker/validator, benchmark và GUI synthetic PASS; kiểm webcam do người dùng cung cấp riêng | DONE | Commit cd8b48c; PR https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/9; docs/COLOR_BACKGROUND_VALIDATION.md; SESSION_LOG phiên 6; ma trận 50/50 góc <10px và crop; checker/validator, 88 tests và GUI synthetic PASS; chưa thử webcam, không DONE-HW |
 | B01 | ⬜ Schema SQLite và migration ban đầu | CODEX | H01 | PR schema tối thiểu copy/title/category và migration/reopen/uniqueness test bằng DB tạm; mẫu dữ liệu fake được đánh dấu; không chốt mapping A/B | TODO | - |
 | B02 | ⛔ Import danh mục và lookup QR | CODEX | B01,H09 | Test import hợp lệ/trùng/lỗi và lookup VALID/UNKNOWN_ID trên fixture theo schema nguồn đã duyệt | BLOCKED | Chờ H09 |
 | B03 | ⬜ Lưu job và truy vết kết quả | CODEX | B01 | Test UUID, transaction/rollback/reopen và truy vết image/model/policy, expected/actual route, simulation/hardware tách biệt | TODO | - |
@@ -80,7 +81,7 @@ Ký hiệu chỉ minh họa cho **Status**, không tạo trạng thái riêng. K
 
 ## Thứ tự đề xuất
 
-**V05** là task CODEX kế tiếp: kiểm manifest/hash/provenance và báo cáo pilot bằng fixture, phụ thuộc H01 đã có bằng chứng. V01 ưu tiên khi H04 được đáp ứng. B01 và S04 là lựa chọn độc lập khác. V02 đã có bằng chứng phần mềm trong bảng; chưa nghiệm thu camera thật V03. Không tự bắt đầu task tiếp theo trong cùng phiên.
+**B01** là task CODEX kế tiếp: schema SQLite/migration bằng DB tạm, phụ thuộc H01 đã có bằng chứng. V05 đã có [PR team #7](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/7) ở nhánh riêng, chưa có mã trong nhánh này và chưa xác minh lại toàn bộ acceptance; không triển khai lặp. Review/tích hợp cần đối chiếu ledger từ đúng PR, không suy DONE chỉ từ tiêu đề. V01 ưu tiên khi H04 được đáp ứng. S04 là lựa chọn độc lập khác. V02/V07 có bằng chứng phần mềm trong bảng; chưa nghiệm thu camera thật V03. Không tự bắt đầu task tiếp theo trong cùng phiên.
 
 ## Backlog
 
@@ -90,7 +91,7 @@ Tham chiếu các ID trong bảng: V01/V04/V05; B01–B03; A01–A04; S01–S06;
 
 Nguồn được version control: [PLAN](../PLAN.md). Số M bám Bước trong roadmap local gốc; các đường dẫn gợi ý cũ không phải yêu cầu tạo stub. Không đặt trạng thái mốc thứ hai ở đây.
 
-- M01 → V02, V03; M02 → V01, V03; M03 → V04, E02.
+- M01 → V02, V03; M02 → V01, V03, V07; M03 → V04, E02.
 - M04 → B01, B02; M05 → V05, V06.
 - M06 → H05, A01; M07 → A02; M08 → A03; M09 → H06, S01.
 - M10 → B03, S02; M11 → S03; M12 → S04; M13 → S05, S06.
@@ -103,7 +104,7 @@ Nguồn được version control: [PLAN](../PLAN.md). Số M bám Bước trong 
 
 Kiểm kê GitHub API lúc 2026-11-07T08:53:36+07:00: endpoint issues state=open, per_page=100, page=1 trả 4 issue và không có trang tiếp; từng endpoint comments page=1 trả 0. Đã đọc toàn bộ body; không có trao đổi để đọc thêm. Endpoint pulls state=open trả 0 trước PR harness. Không tạo/sửa/đóng issue.
 
-- [#1 — Mép bìa/đường ron](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues/1) → H04, V01, V03. Cần dữ liệu riêng và kiểm camera theo acceptance của issue.
+- [#1 — Mép bìa/đường ron](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues/1) → H04, V01, V03, V07. V07 chỉ có hồi quy synthetic; cần dữ liệu riêng và kiểm camera theo acceptance của issue.
 - [#2 — Preview độc lập QR](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues/2) → V02, V03. Sửa phần mềm và bằng chứng camera tách riêng.
 - [#3 — Board và IO](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues/3) → H03, F01, F02; không lấy esp32dev scaffold làm board đã xác nhận.
 - [#4 — Pilot/nhãn](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues/4) → H04, H05, V05, V06, A01.
