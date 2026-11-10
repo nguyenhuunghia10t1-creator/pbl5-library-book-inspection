@@ -14,6 +14,10 @@ Các mốc dùng mã M01–M27 để theo dõi từ module độc lập tới ng
 
 ## Công việc trước mắt
 
+Theo kế hoạch được người dùng duyệt ngày 2026-11-10, ưu tiên hiện tại chuyển sang M06: [chuẩn hóa Damaged Books v1](DAMAGED_BOOKS_DATASET.md), bỏ Tag, remap Wornout 5→4, giữ nguồn bất biến; rà nhóm/nhãn/mẫu âm trước khi chia xấp xỉ 70/15/15 seed42. Phiên triển khai đầu chỉ làm dữ liệu; chưa tự bắt đầu Colab hoặc ứng dụng.
+
+Thứ tự sau cổng dữ liệu: Colab YOLO11n (640, tối đa100 epoch, patience20, batch16, seed42) → threshold validation (F2 Ripped, F1 còn lại) → AI/barcode desktop → policy/simulator A/B/C → model thật và kiểm camera. Test chỉ dùng đánh giá cuối. Web HMI/firmware/GPIO/serial thật để đợt riêng; bộ ảnh camera độc lập vẫn cần cho đánh giá miền thực tế. Quyết định mới xem D20–D23; các bài collector/camera cũ dưới đây giữ làm lịch sử và việc chưa nghiệm thu.
+
 - Sửa chọn tứ giác trên nền có đường ron, kiểm thử hồi quy với ảnh đã thu.
 - Cải thiện tốc độ preview; giữ liên kết frame/QR/metadata khi xử lý bất đồng bộ.
 - Thu pilot với camera cố định, ánh sáng ổn định và nhiều thiết kế bìa.

@@ -1,5 +1,13 @@
 # Tiến độ phát triển
 
+## Điểm tiếp tục 2026-11-10 — Damaged Books
+
+Bước đầu đã thực hiện trên nhánh `feat/damaged-books-dataset`: chuyển 620 ảnh sang năm lớp, 3.610 hộp, bỏ 379 Tag, giữ 34 nhãn rỗng; audit toàn bộ ảnh/nhãn khớp ZIP nguồn. Có trang rà nhóm/nhãn và công cụ split theo nhóm. Kiểm tra repository/ledger PASS; 102 unittest PASS, gồm 9 test dataset và 93 hồi quy collector.
+
+Split nguồn 618/1/1 không đủ đánh giá và có cặp cùng cuốn giữa train/test. Chưa tạo split mới: 620 ảnh còn pending nhãn, 618 ảnh chưa có nhóm, 51 ứng viên mẫu âm chưa duyệt. Chưa train, chưa nghiệm thu AI/camera/simulator. Phần nháp các bước sau được giữ riêng cục bộ, không gộp vào nhánh dữ liệu.
+
+**Đúng một việc tiếp theo:** mở `review.html` cục bộ để rà nhóm sách và nhãn, kiểm riêng 51 ứng viên âm; lưu `review.csv`. [Hướng dẫn](docs/DAMAGED_BOOKS_DATASET.md) · [TASKS](docs/codex/TASKS.md) · [STATE](docs/codex/STATE.md). Các bảng bên dưới là lịch sử, không phải trạng thái song song.
+
 Cập nhật: 2026-10-29.
 
 Repository: [pbl5-library-book-inspection](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection). Kiểm tra tự động: [GitHub Actions](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml).
