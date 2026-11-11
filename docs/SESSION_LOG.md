@@ -188,3 +188,60 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - Bàn giao 2026-11-07T22:18:53+07:00: commit nguồn ef4e8987d855a29d990a95b0da5f9a062cf1c084; `git push -u origin feat/vietnamese-capture-ui` exit 0 và `git ls-remote origin refs/heads/feat/vietnamese-capture-ui` exit 0 đúng SHA. GitHub REST xác nhận [PR #10](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/pull/10) OPEN, base fix/cover-color-background, merged=false. Metadata bổ sung URL/commit đã tồn tại, không tự ghi hash của commit metadata. Mở GUI bản Việt với `pythonw -m vision.opencv --camera 1 --backend msmf` để người dùng thử; việc mở ứng dụng không phải nghiệm thu nhận dạng/QR. Không merge, không đổi main.
 
 - Rà cửa sổ thật sau khởi chạy phát hiện HighGUI làm sai dấu riêng thanh tiêu đề. Sửa tên cửa sổ thành `PBL5 | Thu anh bia sach A6` không dấu; nội dung trong canvas vẫn có dấu qua GDI như ảnh đã kiểm. Đây là sửa tương thích nhãn, không đổi camera/pipeline. Cần mở lại ứng dụng để nạp tên cửa sổ mới.
+
+## 2026-11-10 — Phiên 2: Chuẩn hóa Damaged Books năm nhãn
+
+- Yêu cầu triển khai kế hoạch mới, với bước đầu chỉ chuẩn hóa dataset và kiểm tra lại split. Nhánh feat/damaged-books-dataset từ feat/vietnamese-capture-ui bdf0c007331c896ae6ec678b3a6d53ec66b4be17; không sửa collector/geometry/QR/preview, bài học, firmware hoặc dữ liệu nguồn. Main và sửa có sẵn ở checkout chính không bị gộp vào commit.
+- Đọc README/PROGRESS/nhật ký, PLAN/DECISIONS, TASKS/STATE, mã và trạng thái Git. Kế hoạch trực tiếp thay quy tắc hai lớp/QR/HOLD cho luồng mới; đã ghi D20–D23, không coi thiết kế là code đã chạy. Cố gắng giao kiểm toán độc lập cho sub-agent không thành công do model kế thừa không được hỗ trợ; kiểm trực tiếp thay thế.
+- Công cụ vision.yolo.prepare convert/audit/split và review: bỏ dòng Tag ID4, đổi Wornout5→4, giữ tọa độ, ảnh và nhãn rỗng; output riêng không ghi đè; hash/version/license/nguồn. Source ZIP SHA256 dc2a81293b0f841b0fd187a410b869a1fc9021077ffc6221f9f33621ff978197; version damaged-books-v1-five-8f203ddd57d4.
+- Dữ liệu thật: 620 ảnh, 3610 hộp; Barcode194, Notch729, Ripped411, Spot937, Wornout1339; bỏ379 Tag, giữ34 nhãn rỗng,51 ứng viên mẫu âm pending. README nguồn ghi đã stretch640×640; không thể gọi đó là ảnh gốc trước export.
+- Lệnh dùng interpreter collector hiện có E1 Python3.14.3/OpenCV5.0.0: `python -m vision.yolo.prepare convert --source <source-root> --output <local-data>/prepared-verified` PASS; audit620 ảnh/nhãn với ZIP PASS, source_matches_zip=true. Lưu cục bộ manifest.json, review.csv, review.html, audit.json và split-readiness.json, ngoài Git.
+- Split cũ618/1/1: validation chỉ Ripped, test thiếu Spot. Đã xem contact sheet train IMG_1316 / test IMG_7: cùng sách/thiết kế với vết rách và tem tương ứng; gán cùng group nhưng label_review vẫn pending. Còn618 ảnh chưa nhóm và620 ảnh chưa duyệt nhãn. Gọi reviewed_split trên dữ liệu thật trả lỗi dự kiến Need reviewed book groups before splitting; không tạo split/ZIP train giả.
+- 9 test dataset PASS trong1.591s: remap/nguồn ZIP/nhãn rỗng/mẫu âm/quarantine/group disjoint/seed/class coverage/ảnh trùng/ảnh nhãn thay đổi/dữ liệu lỗi. Suite toàn bộ E1 `python -m unittest discover -s tests -q` PASS102 tests,0 failures/errors/skips trong14.975s (11:42:58–11:43:12+07:00); gồm93 hồi quy collector. `python scripts/check_repository.py` PASS38 nguồn và cấu trúc ledger; git diff --check PASS trước cập nhật hồ sơ cuối.
+- Review HTML: `node --check` PASS; Node harness CSV roundtrip (dấu phẩy, ngoặc kép, newline, chuỗi có0 đầu) và từ chối quote chưa đóng PASS. Harness thử đầu viết CSV escape sai nên FAIL, đã sửa dữ liệu fixture theo csv.writer và chạy lại PASS; không sửa nguồn để né test. Kiểm tính năng trình duyệt tương tác trực tiếp NOT_RUN; không coi kiểm JS là thử camera.
+- Đã phát hiện nháp phiên trước triển khai sang app/AI/Colab quá bước đầu; lưu cục bộ feat/damaged-books-abc b46faf8 để không mất công việc, chưa push/chấp nhận. Một test QR legacy trong môi trường AI3.11 của nháp FAIL (AMBIGUOUS thành VALID_FORMAT), chưa sửa và không dùng làm bằng chứng nghiệm thu. Nhánh dữ liệu loại toàn bộ mã/dependency ứng dụng đó; suite E1 hiện tại PASS. Môi trường collector không thay đổi; môi trường AI thử trước đó nằm riêng và chưa dùng trong bản bước này.
+- Không train thật, không đo accuracy/latency model, không thử camera/thiết bị, không nghiệm thu simulator. A05 hoàn thành phạm vi chuyển đổi/kiểm split cũ; H14/A01 còn chờ rà dữ liệu thật. Đúng một việc tiếp theo: mở review.html, rà nhóm/nhãn và51 ứng viên âm rồi lưu CSV. Không tự bắt đầu bước kế tiếp.
+
+### Xuất bản bước dữ liệu
+
+- Commit nguồn10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9 đã push feat/damaged-books-dataset; ls-remote xác nhận đúng SHA. Base bdf0c00 và main d431f10 không đổi. PR #11 OPEN, merged=false, base feat/vietnamese-capture-ui; chỉ13 tệp dataset/test/docs, không có nguồn ảnh/ZIP/weights/venv hoặc app draft. CI nguồn ở lần đọc đầu đang chạy; không suy PASS từ local. Metadata URL/SHA được bổ sung sau khi commit nguồn đã tồn tại.
+
+- Đọc lại GitHub Actions run42758217749: commit nguồn10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9 completed/success. STATE Last green cập nhật đúng SHA đã có CI; metadata bổ sung sau đó chưa tự suy CI PASS. Repository checker/ledger PASS38 nguồn và diff --check PASS sau bổ sung link; không chạy lại unittest vì chỉ đổi hồ sơ. Không merge.
+
+## 2026-11-11 — Phiên 1: Kiểm tra CSV sau khi duyệt 51 mẫu âm
+
+- Người dùng báo đã lưu review.csv. Đọc CSV UTF-8-sig và đối chiếu manifest: PASS620 dòng,620 ID duy nhất, tập ID khớp; cả51 negative_candidate có label_review=approved và negative_review=approved. Còn569 label_review=pending và618 group_id trống; không thay lựa chọn của người dùng hoặc tự duyệt nhãn khác.
+- Đây là xác minh dữ liệu đã lưu, không đánh giá độc lập lại nội dung51 ảnh. H14/A01 chưa hoàn thành; không chia tập hoặc train. Tạo bản sao CSV có SHA trong tên ở cùng thư mục dữ liệu cục bộ, giữ snapshot lựa chọn người dùng.
+- Cập nhật PROGRESS và hồ sơ TASKS/STATE nhánh dataset; giữ sửa có sẵn. Không đổi code, ảnh, hộp nhãn hoặc nguồn ZIP. Không chạy lại unittest vì chỉ kiểm CSV và cập nhật hồ sơ. Đúng một việc tiếp theo: gán nhóm sách theo cuốn/thiết kế; nạp review.csv mới nhất khi mở lại trang để giữ51 kết quả đã duyệt.
+
+## 2026-11-11T17:13:43+07:00 — trợ lý hỗ trợ rà nhóm
+
+Người dùng yêu cầu trợ lý làm phần gán nhóm. Đối chiếu contact sheet và ứng viên SIFT; loại các nối sai do tem thư viện hoặc bố cục nhà xuất bản giống nhau. Đã lưu 334 ảnh vào 124 nhóm trực quan; 286 ảnh còn trống group_id được để riêng. Có thể còn quan hệ cùng sách giữa các nhóm qua mặt trước/mặt sau chưa xác định. 569 nhãn vẫn pending; không tự duyệt nhãn.
+
+PASS: 620 ID duy nhất; toàn bộ label_review/negative_review giữ nguyên so với bản sao ff8f6ed26484; giữ nhóm đã có; 620 checksum ảnh khớp manifest; HTML tái tạo khớp CSV. Không sửa ảnh/nhãn nguồn, không split/train. Báo cáo: data/local/damaged_books_v1/grouping-assist/visual-review-report.json. Bước tiếp theo: trợ lý tiếp tục xử lý góc chụp chưa xác định; không yêu cầu người dùng nhập lại toàn bộ ảnh. H14 chưa hoàn tất; thay đổi dữ liệu cục bộ không đưa vào Git.
+## 2026-11-11T17:22:40+07:00 — rà tiếp 286 ảnh chưa nhóm
+
+Đã xem 10 bảng ảnh chưa nhóm và 9 bảng so sánh lớn. Thêm 65 ảnh qua 30 quyết định nối; tách IMG chỉ mục50/238 (sách lãnh đạo) khỏi18/128 (nuôi cá). Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được ghi quarantine-round2.csv. Giữ nguyên mọi trạng thái nhãn,51 mẫu âm đã duyệt, nhóm train/test xác nhận trước đó. Không sửa hộp nhãn;569 nhãn vẫn pending.
+
+Chạy review_round2.py, tạo lại HTML bằng vision.yolo.review. Kiểm chứng PASS:620 ID và trạng thái duyệt không đổi;620 checksum ảnh và nội dung nhãn khớp manifest;HTML khớp CSV;399 ảnh/151 nhóm;221 ID cách ly khớp ảnh chưa nhóm. Bằng chứng trong data/local/damaged_books_v1/grouping-assist/round2-result.json, round2-validation.txt; bản sao CSV có SHA trong tên. Chưa kiểm khả năng tách độc lập giữa mọi nhóm, chưa split/train. Một việc tiếp theo: rà nhãn phần đã gán nhóm, giữ riêng221 ảnh chưa rõ. H14 chưa hoàn tất. Dữ liệu thật chỉ lưu cục bộ, không stage.
+
+## 2026-11-11T18:22:00+07:00 — rà nhãn 368 ảnh đã gán nhóm
+
+- Đã tạo 46 bảng đối chiếu song song ảnh gốc / ảnh vẽ hộp nhãn tại `data/local/damaged_books_v1/grouping-assist/label-sheets/label-sheet-00.jpg`..`label-sheet-45.jpg` và xem trực tiếp toàn bộ 368 ảnh có `group_id` đang ở trạng thái `label_review=pending`.
+- Kết quả rà 368 ảnh: duyệt `approved` 330 ảnh; đánh dấu `rejected` 38 ảnh có lỗi nhãn rõ (gán nhầm tem chữ Tag thành Barcode/Spot, bỏ sót vết rách/mòn/bẩn hoặc vẽ hàng chục hộp Notch/Spot/Wornout đè lên chữ in, hình minh họa và vệt bóng lóa). Không tự sửa tệp nhãn trong `prepared-verified`.
+- Toàn bộ 399 ảnh có nhóm (151 nhóm): 361 `approved` (330 ảnh mới duyệt + 31 mẫu âm đã duyệt, thuộc 148/151 nhóm, 1.993 hộp đủ 5 lớp: Barcode 115, Notch 335, Ripped 255, Spot 480, Wornout 808), 38 `rejected`, 0 `pending` (3 nhóm chỉ có ảnh bị loại: `visual_group_052`, `visual_group_062`, `visual_group_111`). Toàn bộ 620 ảnh: 381 `approved`, 38 `rejected`, 201 `pending`; giữ nguyên 51/51 mẫu âm đã duyệt và cách ly 221 ảnh chưa rõ nhóm.
+- Sao lưu `review-before-label-review-076f7499062b.csv`, ghi `prepared-verified/review.csv` (SHA256 `42e09cf254e0e8959547fa3ec4445ce5983273aa18c27af8f3ff8707d5972725`), cập nhật `prepared-verified/review.html` và lưu báo cáo tại `grouping-assist/label-review-round3.json`, `questionable-labels-round3.csv`, `label-review-validation.txt`. Kiểm chứng PASS: 620 ID/checksum ảnh/nhãn khớp `manifest.json`, HTML khớp CSV, 221 ID cách ly khớp `quarantine-round2.csv`.
+- Chưa chia tập `A01`, chưa chạy Colab/train. Đúng một việc tiếp theo: xác nhận phương án xử lý 38 ảnh `rejected` (cách ly khi split hay tạo phiên bản sửa nhãn riêng) và rà soát quan hệ cùng cuốn giữa các nhóm trước khi chạy split.
+
+## 2026-11-11T18:52:00+07:00 — kiểm tra độc lập 148 nhóm và tạo split `split-reviewed-v1` (H14, A01)
+
+- Người dùng xác nhận giữ cách ly 38 ảnh nghi vấn (`rejected`) và 221 ảnh chưa rõ nhóm, yêu cầu kiểm tra độc lập giữa 148 nhóm của 361 ảnh đạt, gộp các nhóm cùng sách/thiết kế bìa rồi tạo split khoảng 70/15/15 với `seed=42`.
+- Đã tạo 15 bảng tổng hợp 148 nhóm tại `data/local/damaged_books_v1/grouping-assist/group-independence-sheets/groups-148-00.jpg`..`groups-148-14.jpg`, đối chiếu trực quan và SIFT liên nhóm: tách `idx:282` (gáy sách *다산선생 지식경영법*) khỏi `visual_group_026` sang `visual_group_073`, đồng thời thực hiện 21 phép gộp nhóm (loại bỏ 27 mã nhóm trùng do chụp khác mặt bìa/gáy/mặt sau của cùng cuốn hoặc cùng thiết kế bìa bộ sách như KIPF, 민음사 세계문학전집, 다이제스트 100, 제3인류).
+- Sau khi gộp: 399 ảnh có nhóm thuộc 124 nhóm trực quan; **361 ảnh `approved` thuộc 121 nhóm độc lập** (3 nhóm chỉ chứa ảnh `rejected`); 259 ảnh cách ly (38 `rejected` + 221 chưa rõ nhóm). Sao lưu `review-before-group-merge-42e09cf254e0.csv`, cập nhật `prepared-verified/review.csv` (SHA256 `668f59cfb4b9139896764f11dd7875b6471168c039dab523dda30348882dc183`), lưu báo cáo `grouping-assist/group-independence-round4.json` và tạo lại `prepared-verified/review.html` PASS.
+- Chạy `python -m vision.yolo.prepare split --prepared .../prepared-verified --output .../split-reviewed-v1` PASS: tạo `split-reviewed-v1` và `split-reviewed-v1.zip` (SHA256 `0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1`, version `damaged-books-v1-five-8f203ddd57d4-077edf4cdcbd`, seed `42`).
+- Kết quả thực tế từng tập (361 ảnh / 121 nhóm, giao nhau nhóm = 0, cả 3 tập đủ 5 lớp):
+  - `train`: 253 ảnh (70,08%), 83 nhóm (68,60%) — `Barcode`: 77, `Notch`: 250, `Ripped`: 173, `Spot`: 355, `Wornout`: 544.
+  - `val`: 54 ảnh (14,96%), 18 nhóm (14,88%) — `Barcode`: 25, `Notch`: 53, `Ripped`: 39, `Spot`: 65, `Wornout`: 145.
+  - `test`: 54 ảnh (14,96%), 20 nhóm (16,53%) — `Barcode`: 13, `Notch`: 32, `Ripped`: 43, `Spot`: 60, `Wornout`: 119.
+  - `quarantined`: 259 ảnh.
+- Cập nhật `H14` và `A01` sang `DONE`. Chưa huấn luyện mô hình; bước tiếp theo là `H08`/`A02` trên Colab GPU với gói `split-reviewed-v1.zip`.

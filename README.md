@@ -1,5 +1,7 @@
 # PBL5 · Library Book Inspection
 
+Bước hiện tại: [chuẩn hóa Damaged Books v1 năm nhãn và rà lại split](docs/DAMAGED_BOOKS_DATASET.md). Đã bỏ nhãn Tag trong bản dữ liệu riêng; chưa huấn luyện hay tích hợp AI vào collector. Hướng dẫn collector phía dưới vẫn là luồng QR hiện có.
+
 Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư viện bằng Machine Vision và AI. Camera nhận ảnh bìa, OpenCV xác định vùng sách và đọc QR; phần mềm tổng hợp kết quả để tích hợp với cơ cấu phân loại ESP32.
 
 [![Checks](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml/badge.svg)](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml)
