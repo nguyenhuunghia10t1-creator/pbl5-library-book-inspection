@@ -1,15 +1,21 @@
 Active task: NONE
 Last updated: 2026-11-11
-Branch: feat/damaged-books-dataset
+Branch: feat/damaged-books-colab
 Last green commit: 10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9
 
 ## Resume notes
+
+Hiện tại: đã đồng bộ hồ sơ Gemini cbe14bb và công cụ team b310c53 lên remote. Dataset release damaged-books-reviewed-v1 đã public; tải lại checksum PASS. Notebook tự tải dữ liệu, cấu hình n640/s640/n960, mã thành viên và CSV validation. 111 tests PASS. H08/A02 vẫn chờ GPU thật; một việc tiếp theo: team chạy Colab với mã thành viên/cấu hình riêng. Xem TEAM_TRAINING.md.
 
 2026-11-11 vòng 4 (hiện tại): đã kiểm tra độc lập toàn bộ 148 nhóm của 361 ảnh đạt (`groups-148-00.jpg`..`groups-148-14.jpg`), tách `idx:282` sang `visual_group_073` và gộp 21 cụm nhóm cùng sách/thiết kế bìa thành **121 nhóm độc lập** (361 ảnh `approved`), giữ cách ly **259 ảnh** (38 `rejected` + 221 chưa rõ nhóm). Đã cập nhật `review.csv` (SHA256 `668f59cfb4b9139896764f11dd7875b6471168c039dab523dda30348882dc183`), `review.html` và chạy `vision.yolo.prepare split` tạo `split-reviewed-v1` + `split-reviewed-v1.zip` (SHA256 `0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1`, version `damaged-books-v1-five-8f203ddd57d4-077edf4cdcbd`, seed `42`): `train` 253 ảnh/83 nhóm, `val` 54 ảnh/18 nhóm, `test` 54 ảnh/20 nhóm; đủ 5 lớp ở cả 3 tập, giao nhau nhóm = 0. `H14` và `A01` đã `DONE`.
 
 2026-11-11 vòng 3: đã rà trực tiếp toàn bộ 368 ảnh có nhóm còn pending trên 46 bảng ảnh đối chiếu (`label-sheet-00.jpg`..`label-sheet-45.jpg`); duyệt `approved` 330 ảnh, đánh dấu `rejected` 38 ảnh có nhãn sai lớp/thiếu hộp/hộp nhiễu. Trong 399 ảnh đã gán nhóm (151 nhóm): 361 `approved` (thuộc 148 nhóm, 1.993 hộp đủ 5 lớp), 38 `rejected`, 0 `pending`. Toàn dataset 620 ảnh: 381 `approved`, 38 `rejected`, 201 `pending` (thuộc 221 ảnh chưa rõ nhóm cách ly); giữ nguyên 51/51 mẫu âm đã duyệt. Đã sao lưu CSV, cập nhật `review.csv` và `review.html`; PASS đối chiếu 620 ảnh/nhãn với manifest và CSV/HTML. Báo cáo: `grouping-assist/label-review-round3.json`, `questionable-labels-round3.csv`, `label-review-validation.txt`. Các số 569 pending bên dưới là lịch sử.
 
-2026-11-11 vòng 2: đã rà toàn bộ 286 ảnh còn lại, thêm65 ảnh và tách một nhóm ghép nhầm sách nuôi cá/lãnh đạo. Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được cách ly trong grouping-assist/quarantine-round2.csv. CSV đã sao lưu, HTML tạo lại. PASS620 ảnh/nhãn khớp manifest, mọi trạng thái duyệt giữ nguyên, gồm51 mẫu âm. Báo cáo round2-result.json và round2-validation.txt. Chưa đủ căn cứ tuyên bố split không rò rỉ;569 nhãn vẫn pending. Các số334/286 bên dưới là lịch sử.
+
+
+Hiện tại: notebook Colab đã chuẩn bị, xem docs/COLAB_TRAINING.md. Split thật253/54/54 và checksum đã kiểm; rà nhóm/nhãn dựa trên báo cáo Gemini vòng4. GPU train NOT_RUN, H08/A02 BLOCKED. Việc tiếp theo duy nhất: mở notebook trên Colab GPU và chạy với split-reviewed-v1.zip. Ghi chú rà nhóm bên dưới là lịch sử.
+
+2026-11-11 vòng 2 (hiện tại): đã rà toàn bộ 286 ảnh còn lại, thêm65 ảnh và tách một nhóm ghép nhầm sách nuôi cá/lãnh đạo. Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được cách ly trong grouping-assist/quarantine-round2.csv. CSV đã sao lưu, HTML tạo lại. PASS620 ảnh/nhãn khớp manifest, mọi trạng thái duyệt giữ nguyên, gồm51 mẫu âm. Báo cáo round2-result.json và round2-validation.txt. Chưa đủ căn cứ tuyên bố split không rò rỉ;569 nhãn vẫn pending. Các số334/286 bên dưới là lịch sử.
 
 2026-11-11 (mới nhất): người dùng giao trợ lý rà nhóm. Đã ghi 334 ảnh / 124 nhóm trực quan, giữ nguyên 51 duyệt âm; 286 ảnh chưa có nhóm và 569 nhãn pending. Nhóm có thể cần gộp thêm qua góc chụp khác, chưa dùng để split. Đã sao lưu CSV và tạo lại HTML. Báo cáo local: grouping-assist/visual-review-report.json. Các số 618 chưa nhóm bên dưới là lịch sử.
 
@@ -23,13 +29,7 @@ Last green ở đầu file là commit nguồn đã được CI GitHub xác nhậ
 
 ## Human actions pending
 
-**Đúng một việc tiếp theo: H08 / A02 — xác minh phiên Colab GPU và huấn luyện YOLO11n trên gói `split-reviewed-v1.zip` (version `damaged-books-v1-five-8f203ddd57d4-077edf4cdcbd`, seed `42`).** Giữ nguyên 259 ảnh cách ly ngoài tập chia và giữ tập `test` (54 ảnh / 20 nhóm) độc lập cho đánh giá cuối; chưa chạy huấn luyện trong lượt này.
-
-A02 giữ BLOCKED tới khi có phiên Colab GPU (`H08`). Quy tắc lớp/route và chọn Colab đã được duyệt D20–D23, không hỏi lại quyết định đó. Bộ camera độc lập, model thật, latency và simulator thuộc các bước sau, chưa nghiệm thu. Các gate IO/board/reviewer/KPI chưa có bằng chứng vẫn giữ trong TASKS.
-
-Bản nháp app/Colab/simulator đã được lưu riêng ở nhánh cục bộ feat/damaged-books-abc, commit b46faf8, chưa chấp nhận, chưa xuất bản và không nằm trong nhánh bước dữ liệu. Không tự kích hoạt hoặc coi đó là task hoàn thành.
-
-Các PR nền #5/#6/#9/#10 chưa được merge theo bằng chứng phiên trước; xác minh lại remote khi tiếp tục. Không merge hoặc đóng PR của team. V05/#7 và nhánh detector/UI team/#8 chưa được audit tích hợp ở đây.
+Mở notebooks/damaged_books_colab.ipynb trên Colab, chọn GPU, tải split-reviewed-v1.zip và chạy. Chưa train/threshold/test/camera; A02/H08 chờ bằng chứng GPU. Không yêu cầu rà lại các nhóm đã duyệt trong bước này.
 
 ## Xuất bản bước dữ liệu
 

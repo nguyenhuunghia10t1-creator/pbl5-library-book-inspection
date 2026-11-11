@@ -225,6 +225,23 @@ PASS: 620 ID duy nhất; toàn bộ label_review/negative_review giữ nguyên s
 
 Chạy review_round2.py, tạo lại HTML bằng vision.yolo.review. Kiểm chứng PASS:620 ID và trạng thái duyệt không đổi;620 checksum ảnh và nội dung nhãn khớp manifest;HTML khớp CSV;399 ảnh/151 nhóm;221 ID cách ly khớp ảnh chưa nhóm. Bằng chứng trong data/local/damaged_books_v1/grouping-assist/round2-result.json, round2-validation.txt; bản sao CSV có SHA trong tên. Chưa kiểm khả năng tách độc lập giữa mọi nhóm, chưa split/train. Một việc tiếp theo: rà nhãn phần đã gán nhóm, giữ riêng221 ảnh chưa rõ. H14 chưa hoàn tất. Dữ liệu thật chỉ lưu cục bộ, không stage.
 
+## 2026-11-11T19:22:38.9428063+07:00 — Colab handoff
+
+## Cập nhật 2026-11-11 — notebook Colab YOLO11n
+
+Đã tạo notebook độc lập `notebooks/damaged_books_colab.ipynb` và hướng dẫn `docs/COLAB_TRAINING.md` trên nhánh `feat/damaged-books-colab`, worktree `data/local/worktrees/damaged-books-colab`. Nhánh mới dựa trên commit e75eed1; giữ nguyên bốn hồ sơ chưa commit của Gemini trên worktree dataset.
+
+Đối chiếu trực tiếp split-reviewed-v1.zip: SHA256 0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1;253/54/54 ảnh,83/18/20 nhóm,đủ5 lớp;checksum từng tệp và không giao nhau ID/nhóm/nội dung ảnh PASS. Việc này xác minh cấu trúc split, không rà độc lập lại nhận định nhãn/nhóm của Gemini.
+
+Notebook train từ yolo11n.pt,640px,100 epoch,patience20,batch16,seed42; ghim Ultralytics8.4.208 (đã xác minh PyPI). Lưu checkpoint Drive, best.pt, cấu hình thực tế, phiên bản thư viện, báo cáo validation/confusion và ZIP. YAML chạy chỉ chứa train/val; threshold chưa chọn, test chưa đánh giá. Không triển khai ứng dụng AI.
+
+Kiểm chứng: mã các ô compile PASS; kiểm tra gói thật PASS;6 test cổng dữ liệu PASS. Lần test đầu có lỗi fixture dùng chung list lớp, đã sửa fixture và chạy lại PASS. Chưa chạy GPU Colab, chưa có model đã train, chưa có chất lượng AI hoặc độ trễ camera.
+
+**Một việc tiếp theo:** người dùng mở notebook trên Colab, bật GPU, tải split-reviewed-v1.zip và chạy từng ô. A02/H08 còn chờ phiên GPU thật, không đánh DONE từ notebook.
+
+Kiểm chứng cuối phiên Colab:108 tests PASS (28.187s), check_repository PASS, check_codex_state PASS, diff --check PASS. Ultralytics8.4.208 có trên PyPI; API Metric.ap đã kiểm trên môi trường AI riêng. Không cài thêm vào collector. GPU Colab/train thật NOT_RUN.
+
+
 ## 2026-11-11T18:22:00+07:00 — rà nhãn 368 ảnh đã gán nhóm
 
 - Đã tạo 46 bảng đối chiếu song song ảnh gốc / ảnh vẽ hộp nhãn tại `data/local/damaged_books_v1/grouping-assist/label-sheets/label-sheet-00.jpg`..`label-sheet-45.jpg` và xem trực tiếp toàn bộ 368 ảnh có `group_id` đang ở trạng thái `label_review=pending`.
@@ -245,3 +262,15 @@ Chạy review_round2.py, tạo lại HTML bằng vision.yolo.review. Kiểm ch�
   - `test`: 54 ảnh (14,96%), 20 nhóm (16,53%) — `Barcode`: 13, `Notch`: 32, `Ripped`: 43, `Spot`: 60, `Wornout`: 119.
   - `quarantined`: 259 ảnh.
 - Cập nhật `H14` và `A01` sang `DONE`. Chưa huấn luyện mô hình; bước tiếp theo là `H08`/`A02` trên Colab GPU với gói `split-reviewed-v1.zip`.
+
+## 2026-11-11T21:13:02.8620848+07:00 — GitHub team training publication
+
+## Cập nhật 2026-11-11 — đồng bộ GitHub cho team train song song
+
+Đã push hồ sơ rà nhãn/nhóm còn thiếu của Gemini lên feat/damaged-books-dataset (cbe14bb), hợp nhất lịch sử vào feat/damaged-books-colab và push công cụ team (b310c53). Không merge PR vào main. Giữ bản nháp ứng dụng chưa nghiệm thu ngoài gói train và giữ dữ liệu nguồn tại máy.
+
+Notebook tải split-reviewed-v1.zip từ GitHub Releases, kiểm SHA256 và hỗ trợ n640/s640/n960 với cùng seed42. Mỗi lượt ghi TEAM_MEMBER, EXPERIMENT, GPU, model/dataset hash, cấu hình thực tế và experiment-summary.csv. Tất cả so sánh trên validation; test chỉ đánh giá cuối. Phiên n960 chỉ thay kích thước đầu vào của ảnh nguồn640px.
+
+Dataset361 ảnh và manifest/attribution/SHA256SUMS đã phát hành: https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/releases/tag/damaged-books-reviewed-v1 . Tải công khai ZIP12693288 byte và đối chiếu SHA256 PASS; notebook remote khớp blob commit và JSON local PASS. 111 test PASS (38.097s);check_repository/check_codex_state/diff PASS. GPU train NOT_RUN; chưa có model thắng hoặc nghiệm thu camera.
+
+**Một việc tiếp theo:** team mở notebook trên nhánh feat/damaged-books-colab, chọn TEAM_MEMBER và chia n640/s640/n960, chạy bằng GPU riêng rồi gửi ZIP và experiment-summary.csv để so sánh. H08/A02 còn chờ phiên GPU thật. Xem docs/TEAM_TRAINING.md và docs/COLAB_TRAINING.md trên nhánh Colab.
