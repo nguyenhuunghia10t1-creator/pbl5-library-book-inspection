@@ -3,6 +3,7 @@ import ast
 import hashlib
 import json
 from pathlib import Path
+import re
 import tempfile
 import unittest
 
@@ -88,6 +89,52 @@ class ColabDatasetGateTests(unittest.TestCase):
         self.manifest['file_sha256']['val/images/image_val.jpg'] = hashlib.sha256(file.read_bytes()).hexdigest()
         self.save()
         with self.assertRaises(AssertionError): self.validate()
+
+    def settings(self):
+        source = next(''.join(c['source']) for c in self.notebook['cells']
+                      if 'def experiment_settings' in ''.join(c['source']))
+        tree = ast.parse(source)
+        nodes = [node for node in tree.body if
+                 (isinstance(node, ast.FunctionDef) and node.name == 'experiment_settings') or
+                 (isinstance(node, ast.Assign) and any(isinstance(t, ast.Name) and t.id == 'EXPERIMENTS'
+                                                       for t in node.targets))]
+        namespace = {'re': re}
+        exec(compile(ast.Module(body=nodes, type_ignores=[]), str(NOTEBOOK), 'exec'), namespace)
+        return namespace['experiment_settings']
+
+    def test_team_presets_keep_shared_training_rules(self):
+        settings = self.settings()
+        configs = {}
+        for experiment, weights, size in [('n640', 'yolo11n.pt', 640),
+                                           ('s640', 'yolo11s.pt', 640),
+                                           ('n960', 'yolo11n.pt', 960)]:
+            selected, config = settings('member02', experiment, 16)
+            self.assertEqual(selected, weights)
+            self.assertEqual(config.pop('imgsz'), size)
+            configs[experiment] = config
+        self.assertEqual(configs['n640'], configs['s640'])
+        self.assertEqual(configs['n640'], configs['n960'])
+        self.assertEqual(configs['n640']['seed'], 42)
+
+    def test_invalid_team_settings_rejected(self):
+        settings = self.settings()
+        for args in [('../outside', 'n640', 16), ('', 'n640', 16),
+                     ('member', 'unknown', 16), ('member', 'n640', True),
+                     ('member', 's640', 0)]:
+            with self.subTest(args=args), self.assertRaises(ValueError): settings(*args)
+        self.assertEqual(settings('member', 's640', 8)[1]['batch'], 8)
+
+    def test_release_download_and_summary_record_validation_only(self):
+        source = '\n'.join(''.join(c['source']) for c in self.notebook['cells'] if c['cell_type'] == 'code')
+        self.assertIn('releases/download/', source)
+        self.assertIn('damaged-books-reviewed-v1/split-reviewed-v1.zip', source)
+        self.assertIn('sha256(temporary) == EXPECTED_SHA256', source)
+        tree = ast.parse(source)
+        row = next(node.value for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                   and any(isinstance(t, ast.Name) and t.id == 'row' for t in node.targets))
+        values = {k.value: v for k,v in zip(row.keys, row.values)}
+        self.assertEqual(values['split'].value, 'val')
+        self.assertIs(values['test_evaluated'].value, False)
 
 
 if __name__ == '__main__':

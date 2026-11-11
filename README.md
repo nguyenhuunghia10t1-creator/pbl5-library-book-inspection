@@ -2,7 +2,7 @@
 
 Bước hiện tại: [chuẩn hóa Damaged Books v1 năm nhãn và rà lại split](docs/DAMAGED_BOOKS_DATASET.md). Đã bỏ nhãn Tag trong bản dữ liệu riêng; chưa huấn luyện hay tích hợp AI vào collector. Hướng dẫn collector phía dưới vẫn là luồng QR hiện có.
 
-Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư viện bằng Machine Vision và AI. Camera nhận ảnh bìa, OpenCV xác định vùng sách và đọc QR; phần mềm tổng hợp kết quả để tích hợp với cơ cấu phân loại ESP32.
+Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư viện bằng Machine Vision và AI. Hiện có ứng dụng thu ảnh OpenCV/QR và bộ công cụ chuẩn bị dữ liệu, huấn luyện YOLO trên Colab. AI phân tuyến và cơ cấu ESP32 chưa được nghiệm thu.
 
 [![Checks](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml/badge.svg)](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml)
 ![Python](https://img.shields.io/badge/Python-3.13%2B-3776AB?logo=python&logoColor=white)
@@ -12,10 +12,16 @@ Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư
 
 - Nhận dạng bìa sách A6 và mã QR của từng bản sách.
 - Căn chỉnh phối cảnh, kiểm tra độ nét và ánh sáng, thu ảnh có metadata.
-- Phát triển nhận diện hai nhóm lỗi: `cover_tear` và `surface_stain`.
+- Luồng AI đang phát triển dùng `Barcode`, `Notch`, `Ripped`, `Spot`, `Wornout`; Barcode là vùng mã vạch, không phải lỗi.
 - Tích hợp phần mềm với ESP32 để phân loại sách vào khay.
 
-Hiện tại có ứng dụng thu ảnh OpenCV và firmware mẫu. Mô hình AI, cơ cấu phân loại và luồng tích hợp đang phát triển. [Tiến độ](PROGRESS.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Kế hoạch](docs/PLAN.md).
+Collector A6/QR hiện tại được giữ để thu ảnh. Mô hình AI, cơ cấu phân loại và luồng tích hợp đang phát triển. [Tiến độ](PROGRESS.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Kế hoạch](docs/PLAN.md).
+
+## Team huấn luyện song song
+
+[Mở notebook trên Colab](https://colab.research.google.com/github/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/blob/feat/damaged-books-colab/notebooks/damaged_books_colab.ipynb), chọn GPU, rồi sửa `TEAM_MEMBER` và `EXPERIMENT` tại bước 2. Dataset được tải từ [GitHub Releases](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/releases/tag/damaged-books-reviewed-v1) và kiểm checksum tự động. [Cách chia việc, thu kết quả và so sánh](docs/TEAM_TRAINING.md) · [Hướng dẫn từng ô](docs/COLAB_TRAINING.md).
+
+Ba lượt thử ban đầu: `n640`, `s640`, `n960`. Tất cả giữ cùng split253/54/54 và seed42; mỗi lượt xuất `experiment-summary.csv` và model riêng. Chỉ dùng validation để so sánh; test dành cho đánh giá cuối. Chưa có số đo chất lượng AI hoặc kiểm chứng trên camera thực tế.
 
 ## Cấu trúc repository
 

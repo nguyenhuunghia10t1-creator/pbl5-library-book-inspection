@@ -19,6 +19,7 @@ Cập nhật: 2026-11-10. D20–D23 thay các quyết định hai lớp/QR/HOLD 
 | D21 | ĐÃ DUYỆT: ảnh/camera/model/AI lỗi STOP; Ripped ưu tiên A, lỗi khác B, hợp lệ không thấy lỗi trên mặt đang kiểm C đi thẳng; HOLD không là khay | Thay D05 cho phương án mới. Barcode thiếu/nhiều mã không chặn AI; UUID một job; ACK không là actual_route; STOP cần người vận hành xử lý và xác nhận |
 | D22 | ĐÃ DUYỆT, CHƯA TRIỂN KHAI: Colab GPU fine-tune yolo11n.pt; validation chọn F2 Ripped/F1 lớp khác; CPU Python3.11 riêng để inference | Không thay môi trường collector. Model, threshold và dataset phải có version; chưa có kết quả train/đánh giá hay cam kết accuracy |
 | D23 | ĐÃ DUYỆT, CHƯA TRIỂN KHAI: inspect barcode1D bằng zxing-cpp, ROI ảnh gốc biên5%, giữ tỉ lệ/letterbox; desktop + simulator, không bắt buộc A6/QR/SQLite lookup | Thay yêu cầu D16/D17 cho luồng mới, giữ dữ liệu QR cũ; C chỉ phản ánh một mặt. Chưa triển khai HMI/firmware/GPIO/serial thật; giao diện/preview cũ không đổi trong bước đầu |
+| D24 | ĐÃ DUYỆT: đồng bộ công cụ và split-reviewed-v1 cho team huấn luyện song song; n640 là baseline, thêm s640/n960 để thử | Yêu cầu trực tiếp 2026-11-11: đưa phần chưa đồng bộ lên GitHub để team tìm model phù hợp. Dataset CC BY4.0 ở Release asset, không commit ảnh/weights; cùng split/seed, tên lượt riêng và CSV validation. Test chỉ đánh giá cuối; chưa có cấu hình thắng hoặc nghiệm thu AI. [Hướng dẫn team](TEAM_TRAINING.md) |
 
 ## Trạng thái dữ liệu
 

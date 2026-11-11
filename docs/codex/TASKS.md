@@ -4,7 +4,7 @@ Nguồn sự thật duy nhất về tiến độ từ phiên thiết lập 2026-
 
 BLOCKED ghi đầu vào bên ngoài thiết yếu còn thiếu; TODO có thể chờ dependency nội bộ chưa làm. Chỉ chọn CODEX khi mọi Depends đã hoàn thành và không còn đầu vào thiếu. Không đánh IN_PROGRESS cho người thật khi họ chưa xác nhận đang làm.
 
-Kế hoạch trực tiếp 2026-11-10 ưu tiên A05 → H14/A01 → Colab → app barcode/AI → policy/simulator → camera. Task FastAPI/HMI/firmware/phần cứng bên dưới giữ lộ trình dài hạn, không thuộc đợt desktop/simulation này. Bước triển khai hiện tại chỉ A05; không triển khai task khác dù dependency đã đủ.
+Kế hoạch trực tiếp 2026-11-10 ưu tiên A05 → H14/A01 → Colab → app barcode/AI → policy/simulator → camera. Yêu cầu tiếp nối 2026-11-11 cho phép chuẩn bị/xuất bản công cụ Colab để team thử song song; GPU train vẫn cần bằng chứng H08/A02. Task FastAPI/HMI/firmware/phần cứng bên dưới giữ lộ trình dài hạn, không thuộc bước đồng bộ công cụ hiện tại.
 
 ## Cách đọc nhanh
 
