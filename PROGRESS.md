@@ -1,4 +1,21 @@
 # Tiến độ phát triển
+## Cập nhật 2026-11-11 — rà nhóm vòng 2
+
+Đã xem toàn bộ 286 ảnh chưa nhóm trên bảng ảnh, đối chiếu lớn các cặp có căn cứ: thêm 65 ảnh vào nhóm và tách một nhóm ghép nhầm (sách nuôi cá / sách lãnh đạo). Hiện có 399/620 ảnh trong 151 nhóm trực quan; 221 ảnh chưa xác định được danh tính được liệt kê riêng tại `grouping-assist/quarantine-round2.csv`. Không gán ID giả cho ảnh đơn lẻ chỉ để đủ số lượng. Chưa chứng minh mọi quan hệ giữa các nhóm đã được nhận diện.
+
+Đã lưu review.csv, sao lưu trước sửa và tạo lại review.html. PASS: giữ nguyên 620 ID và mọi trạng thái duyệt, gồm 51 mẫu âm; 620 checksum ảnh và tệp nhãn khớp manifest; HTML khớp CSV. Bằng chứng cục bộ: `data/local/damaged_books_v1/grouping-assist/round2-result.json` và `round2-validation.txt`. Các số 334/286 bên dưới là lịch sử.
+
+**Một việc tiếp theo:** rà nhãn trên phần ảnh đã gán nhóm; 221 ảnh chưa rõ tiếp tục được cách ly. Tổng 569 nhãn còn pending; chưa chia tập, train hay tích hợp AI. Người dùng không cần nhập lại nhóm. H14/A01 chưa hoàn tất.
+
+## Cập nhật 2026-11-11 — rà nhóm hỗ trợ
+
+Đã lưu 334 ảnh vào 124 nhóm trực quan; 286 ảnh chưa xác định nhóm được để riêng. Giữ nguyên 51 mẫu âm đã duyệt; 569 nhãn vẫn pending. CSV đã sao lưu, review.html đã tạo lại. Báo cáo nằm tại vùng dữ liệu cục bộ `grouping-assist/visual-review-report.json`. H14 chưa hoàn tất; chưa chia tập hoặc huấn luyện. Người dùng đã giao việc rà nhóm cho trợ lý; bước tiếp theo là xử lý các góc chụp chưa rõ, không giao lại toàn bộ ảnh cho người dùng.
+
+## Cập nhật 2026-11-11 — mẫu âm đã được người dùng duyệt
+
+Kiểm tra CSV PASS: 620 dòng/620 ID khớp manifest, đủ 51 ảnh có `label_review=approved` và `negative_review=approved`. Đây là xác minh lưu lựa chọn người dùng, không đánh giá độc lập lại nhãn. Còn 569 nhãn pending và 618 ảnh chưa nhóm; H14/A01 chưa hoàn tất.
+
+**Đúng một việc tiếp theo:** gán nhóm sách theo cuốn/thiết kế bìa. Nạp CSV mới nhất khi mở lại trang để giữ kết quả đã duyệt. Chưa chia tập hoặc train; các mục dưới là lịch sử.
 
 ## Điểm tiếp tục 2026-11-10 — Damaged Books
 

@@ -207,3 +207,20 @@ Môi trường E1; cây nguồn d431f10 + working-tree changes (harness), không
 - Commit nguồn10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9 đã push feat/damaged-books-dataset; ls-remote xác nhận đúng SHA. Base bdf0c00 và main d431f10 không đổi. PR #11 OPEN, merged=false, base feat/vietnamese-capture-ui; chỉ13 tệp dataset/test/docs, không có nguồn ảnh/ZIP/weights/venv hoặc app draft. CI nguồn ở lần đọc đầu đang chạy; không suy PASS từ local. Metadata URL/SHA được bổ sung sau khi commit nguồn đã tồn tại.
 
 - Đọc lại GitHub Actions run42758217749: commit nguồn10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9 completed/success. STATE Last green cập nhật đúng SHA đã có CI; metadata bổ sung sau đó chưa tự suy CI PASS. Repository checker/ledger PASS38 nguồn và diff --check PASS sau bổ sung link; không chạy lại unittest vì chỉ đổi hồ sơ. Không merge.
+
+## 2026-11-11 — Phiên 1: Kiểm tra CSV sau khi duyệt 51 mẫu âm
+
+- Người dùng báo đã lưu review.csv. Đọc CSV UTF-8-sig và đối chiếu manifest: PASS620 dòng,620 ID duy nhất, tập ID khớp; cả51 negative_candidate có label_review=approved và negative_review=approved. Còn569 label_review=pending và618 group_id trống; không thay lựa chọn của người dùng hoặc tự duyệt nhãn khác.
+- Đây là xác minh dữ liệu đã lưu, không đánh giá độc lập lại nội dung51 ảnh. H14/A01 chưa hoàn thành; không chia tập hoặc train. Tạo bản sao CSV có SHA trong tên ở cùng thư mục dữ liệu cục bộ, giữ snapshot lựa chọn người dùng.
+- Cập nhật PROGRESS và hồ sơ TASKS/STATE nhánh dataset; giữ sửa có sẵn. Không đổi code, ảnh, hộp nhãn hoặc nguồn ZIP. Không chạy lại unittest vì chỉ kiểm CSV và cập nhật hồ sơ. Đúng một việc tiếp theo: gán nhóm sách theo cuốn/thiết kế; nạp review.csv mới nhất khi mở lại trang để giữ51 kết quả đã duyệt.
+
+## 2026-11-11T17:13:43+07:00 — trợ lý hỗ trợ rà nhóm
+
+Người dùng yêu cầu trợ lý làm phần gán nhóm. Đối chiếu contact sheet và ứng viên SIFT; loại các nối sai do tem thư viện hoặc bố cục nhà xuất bản giống nhau. Đã lưu 334 ảnh vào 124 nhóm trực quan; 286 ảnh còn trống group_id được để riêng. Có thể còn quan hệ cùng sách giữa các nhóm qua mặt trước/mặt sau chưa xác định. 569 nhãn vẫn pending; không tự duyệt nhãn.
+
+PASS: 620 ID duy nhất; toàn bộ label_review/negative_review giữ nguyên so với bản sao ff8f6ed26484; giữ nhóm đã có; 620 checksum ảnh khớp manifest; HTML tái tạo khớp CSV. Không sửa ảnh/nhãn nguồn, không split/train. Báo cáo: data/local/damaged_books_v1/grouping-assist/visual-review-report.json. Bước tiếp theo: trợ lý tiếp tục xử lý góc chụp chưa xác định; không yêu cầu người dùng nhập lại toàn bộ ảnh. H14 chưa hoàn tất; thay đổi dữ liệu cục bộ không đưa vào Git.
+## 2026-11-11T17:22:40+07:00 — rà tiếp 286 ảnh chưa nhóm
+
+Đã xem 10 bảng ảnh chưa nhóm và 9 bảng so sánh lớn. Thêm 65 ảnh qua 30 quyết định nối; tách IMG chỉ mục50/238 (sách lãnh đạo) khỏi18/128 (nuôi cá). Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được ghi quarantine-round2.csv. Giữ nguyên mọi trạng thái nhãn,51 mẫu âm đã duyệt, nhóm train/test xác nhận trước đó. Không sửa hộp nhãn;569 nhãn vẫn pending.
+
+Chạy review_round2.py, tạo lại HTML bằng vision.yolo.review. Kiểm chứng PASS:620 ID và trạng thái duyệt không đổi;620 checksum ảnh và nội dung nhãn khớp manifest;HTML khớp CSV;399 ảnh/151 nhóm;221 ID cách ly khớp ảnh chưa nhóm. Bằng chứng trong data/local/damaged_books_v1/grouping-assist/round2-result.json, round2-validation.txt; bản sao CSV có SHA trong tên. Chưa kiểm khả năng tách độc lập giữa mọi nhóm, chưa split/train. Một việc tiếp theo: rà nhãn phần đã gán nhóm, giữ riêng221 ảnh chưa rõ. H14 chưa hoàn tất. Dữ liệu thật chỉ lưu cục bộ, không stage.
