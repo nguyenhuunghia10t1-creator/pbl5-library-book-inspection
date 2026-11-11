@@ -262,3 +262,15 @@ Kiểm chứng cuối phiên Colab:108 tests PASS (28.187s), check_repository PA
   - `test`: 54 ảnh (14,96%), 20 nhóm (16,53%) — `Barcode`: 13, `Notch`: 32, `Ripped`: 43, `Spot`: 60, `Wornout`: 119.
   - `quarantined`: 259 ảnh.
 - Cập nhật `H14` và `A01` sang `DONE`. Chưa huấn luyện mô hình; bước tiếp theo là `H08`/`A02` trên Colab GPU với gói `split-reviewed-v1.zip`.
+
+## 2026-11-11T21:13:02.8620848+07:00 — GitHub team training publication
+
+## Cập nhật 2026-11-11 — đồng bộ GitHub cho team train song song
+
+Đã push hồ sơ rà nhãn/nhóm còn thiếu của Gemini lên feat/damaged-books-dataset (cbe14bb), hợp nhất lịch sử vào feat/damaged-books-colab và push công cụ team (b310c53). Không merge PR vào main. Giữ bản nháp ứng dụng chưa nghiệm thu ngoài gói train và giữ dữ liệu nguồn tại máy.
+
+Notebook tải split-reviewed-v1.zip từ GitHub Releases, kiểm SHA256 và hỗ trợ n640/s640/n960 với cùng seed42. Mỗi lượt ghi TEAM_MEMBER, EXPERIMENT, GPU, model/dataset hash, cấu hình thực tế và experiment-summary.csv. Tất cả so sánh trên validation; test chỉ đánh giá cuối. Phiên n960 chỉ thay kích thước đầu vào của ảnh nguồn640px.
+
+Dataset361 ảnh và manifest/attribution/SHA256SUMS đã phát hành: https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/releases/tag/damaged-books-reviewed-v1 . Tải công khai ZIP12693288 byte và đối chiếu SHA256 PASS; notebook remote khớp blob commit và JSON local PASS. 111 test PASS (38.097s);check_repository/check_codex_state/diff PASS. GPU train NOT_RUN; chưa có model thắng hoặc nghiệm thu camera.
+
+**Một việc tiếp theo:** team mở notebook trên nhánh feat/damaged-books-colab, chọn TEAM_MEMBER và chia n640/s640/n960, chạy bằng GPU riêng rồi gửi ZIP và experiment-summary.csv để so sánh. H08/A02 còn chờ phiên GPU thật. Xem docs/TEAM_TRAINING.md và docs/COLAB_TRAINING.md trên nhánh Colab.
