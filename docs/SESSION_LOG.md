@@ -224,3 +224,19 @@ PASS: 620 ID duy nhất; toàn bộ label_review/negative_review giữ nguyên s
 Đã xem 10 bảng ảnh chưa nhóm và 9 bảng so sánh lớn. Thêm 65 ảnh qua 30 quyết định nối; tách IMG chỉ mục50/238 (sách lãnh đạo) khỏi18/128 (nuôi cá). Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được ghi quarantine-round2.csv. Giữ nguyên mọi trạng thái nhãn,51 mẫu âm đã duyệt, nhóm train/test xác nhận trước đó. Không sửa hộp nhãn;569 nhãn vẫn pending.
 
 Chạy review_round2.py, tạo lại HTML bằng vision.yolo.review. Kiểm chứng PASS:620 ID và trạng thái duyệt không đổi;620 checksum ảnh và nội dung nhãn khớp manifest;HTML khớp CSV;399 ảnh/151 nhóm;221 ID cách ly khớp ảnh chưa nhóm. Bằng chứng trong data/local/damaged_books_v1/grouping-assist/round2-result.json, round2-validation.txt; bản sao CSV có SHA trong tên. Chưa kiểm khả năng tách độc lập giữa mọi nhóm, chưa split/train. Một việc tiếp theo: rà nhãn phần đã gán nhóm, giữ riêng221 ảnh chưa rõ. H14 chưa hoàn tất. Dữ liệu thật chỉ lưu cục bộ, không stage.
+
+## 2026-11-11T19:22:38.9428063+07:00 — Colab handoff
+
+## Cập nhật 2026-11-11 — notebook Colab YOLO11n
+
+Đã tạo notebook độc lập `notebooks/damaged_books_colab.ipynb` và hướng dẫn `docs/COLAB_TRAINING.md` trên nhánh `feat/damaged-books-colab`, worktree `data/local/worktrees/damaged-books-colab`. Nhánh mới dựa trên commit e75eed1; giữ nguyên bốn hồ sơ chưa commit của Gemini trên worktree dataset.
+
+Đối chiếu trực tiếp split-reviewed-v1.zip: SHA256 0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1;253/54/54 ảnh,83/18/20 nhóm,đủ5 lớp;checksum từng tệp và không giao nhau ID/nhóm/nội dung ảnh PASS. Việc này xác minh cấu trúc split, không rà độc lập lại nhận định nhãn/nhóm của Gemini.
+
+Notebook train từ yolo11n.pt,640px,100 epoch,patience20,batch16,seed42; ghim Ultralytics8.4.208 (đã xác minh PyPI). Lưu checkpoint Drive, best.pt, cấu hình thực tế, phiên bản thư viện, báo cáo validation/confusion và ZIP. YAML chạy chỉ chứa train/val; threshold chưa chọn, test chưa đánh giá. Không triển khai ứng dụng AI.
+
+Kiểm chứng: mã các ô compile PASS; kiểm tra gói thật PASS;6 test cổng dữ liệu PASS. Lần test đầu có lỗi fixture dùng chung list lớp, đã sửa fixture và chạy lại PASS. Chưa chạy GPU Colab, chưa có model đã train, chưa có chất lượng AI hoặc độ trễ camera.
+
+**Một việc tiếp theo:** người dùng mở notebook trên Colab, bật GPU, tải split-reviewed-v1.zip và chạy từng ô. A02/H08 còn chờ phiên GPU thật, không đánh DONE từ notebook.
+
+Kiểm chứng cuối phiên Colab:108 tests PASS (28.187s), check_repository PASS, check_codex_state PASS, diff --check PASS. Ultralytics8.4.208 có trên PyPI; API Metric.ap đã kiểm trên môi trường AI riêng. Không cài thêm vào collector. GPU Colab/train thật NOT_RUN.

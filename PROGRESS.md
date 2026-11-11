@@ -1,4 +1,15 @@
 # Tiến độ phát triển
+## Cập nhật 2026-11-11 — notebook Colab YOLO11n
+
+Đã tạo notebook độc lập `notebooks/damaged_books_colab.ipynb` và hướng dẫn `docs/COLAB_TRAINING.md` trên nhánh `feat/damaged-books-colab`, worktree `data/local/worktrees/damaged-books-colab`. Nhánh mới dựa trên commit e75eed1; giữ nguyên bốn hồ sơ chưa commit của Gemini trên worktree dataset.
+
+Đối chiếu trực tiếp split-reviewed-v1.zip: SHA256 0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1;253/54/54 ảnh,83/18/20 nhóm,đủ5 lớp;checksum từng tệp và không giao nhau ID/nhóm/nội dung ảnh PASS. Việc này xác minh cấu trúc split, không rà độc lập lại nhận định nhãn/nhóm của Gemini.
+
+Notebook train từ yolo11n.pt,640px,100 epoch,patience20,batch16,seed42; ghim Ultralytics8.4.208 (đã xác minh PyPI). Lưu checkpoint Drive, best.pt, cấu hình thực tế, phiên bản thư viện, báo cáo validation/confusion và ZIP. YAML chạy chỉ chứa train/val; threshold chưa chọn, test chưa đánh giá. Không triển khai ứng dụng AI.
+
+Kiểm chứng: mã các ô compile PASS; kiểm tra gói thật PASS;6 test cổng dữ liệu PASS. Lần test đầu có lỗi fixture dùng chung list lớp, đã sửa fixture và chạy lại PASS. Chưa chạy GPU Colab, chưa có model đã train, chưa có chất lượng AI hoặc độ trễ camera.
+
+**Một việc tiếp theo:** người dùng mở notebook trên Colab, bật GPU, tải split-reviewed-v1.zip và chạy từng ô. A02/H08 còn chờ phiên GPU thật, không đánh DONE từ notebook.
 ## Cập nhật 2026-11-11 — rà nhóm vòng 2
 
 Đã xem toàn bộ 286 ảnh chưa nhóm trên bảng ảnh, đối chiếu lớn các cặp có căn cứ: thêm 65 ảnh vào nhóm và tách một nhóm ghép nhầm (sách nuôi cá / sách lãnh đạo). Hiện có 399/620 ảnh trong 151 nhóm trực quan; 221 ảnh chưa xác định được danh tính được liệt kê riêng tại `grouping-assist/quarantine-round2.csv`. Không gán ID giả cho ảnh đơn lẻ chỉ để đủ số lượng. Chưa chứng minh mọi quan hệ giữa các nhóm đã được nhận diện.

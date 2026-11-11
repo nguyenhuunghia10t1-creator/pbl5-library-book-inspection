@@ -1,9 +1,11 @@
 Active task: NONE
 Last updated: 2026-11-11
-Branch: feat/damaged-books-dataset
+Branch: feat/damaged-books-colab
 Last green commit: 10b5a22f73c3d4202b1a21b3d2315e5ed131cbb9
 
 ## Resume notes
+
+Hiện tại: notebook Colab đã chuẩn bị, xem docs/COLAB_TRAINING.md. Split thật253/54/54 và checksum đã kiểm; rà nhóm/nhãn dựa trên báo cáo Gemini vòng4. GPU train NOT_RUN, H08/A02 BLOCKED. Việc tiếp theo duy nhất: mở notebook trên Colab GPU và chạy với split-reviewed-v1.zip. Ghi chú rà nhóm bên dưới là lịch sử.
 
 2026-11-11 vòng 2 (hiện tại): đã rà toàn bộ 286 ảnh còn lại, thêm65 ảnh và tách một nhóm ghép nhầm sách nuôi cá/lãnh đạo. Hiện399 ảnh/151 nhóm,221 ảnh chưa rõ được cách ly trong grouping-assist/quarantine-round2.csv. CSV đã sao lưu, HTML tạo lại. PASS620 ảnh/nhãn khớp manifest, mọi trạng thái duyệt giữ nguyên, gồm51 mẫu âm. Báo cáo round2-result.json và round2-validation.txt. Chưa đủ căn cứ tuyên bố split không rò rỉ;569 nhãn vẫn pending. Các số334/286 bên dưới là lịch sử.
 
@@ -19,13 +21,7 @@ Last green ở đầu file là commit nguồn đã được CI GitHub xác nhậ
 
 ## Human actions pending
 
-**Đúng một việc tiếp theo: H14 — rà nhãn phần ảnh đã gán nhóm.** Giữ riêng221 ảnh chưa rõ; người dùng không cần nhập lại nhóm. Tổng569 nhãn còn pending. Pending/rejected không được đưa vào split; chưa chạy Colab hoặc thử phần cứng.
-
-A01 giữ BLOCKED tới khi H14 đủ đầu vào. Quy tắc lớp/route và chọn Colab đã được duyệt D20–D23, không hỏi lại quyết định đó. Bộ camera độc lập, model thật, latency và simulator thuộc các bước sau, chưa nghiệm thu. Các gate IO/board/reviewer/KPI chưa có bằng chứng vẫn giữ trong TASKS.
-
-Bản nháp app/Colab/simulator đã được lưu riêng ở nhánh cục bộ feat/damaged-books-abc, commit b46faf8, chưa chấp nhận, chưa xuất bản và không nằm trong nhánh bước dữ liệu. Không tự kích hoạt hoặc coi đó là task hoàn thành.
-
-Các PR nền #5/#6/#9/#10 chưa được merge theo bằng chứng phiên trước; xác minh lại remote khi tiếp tục. Không merge hoặc đóng PR của team. V05/#7 và nhánh detector/UI team/#8 chưa được audit tích hợp ở đây.
+Mở notebooks/damaged_books_colab.ipynb trên Colab, chọn GPU, tải split-reviewed-v1.zip và chạy. Chưa train/threshold/test/camera; A02/H08 chờ bằng chứng GPU. Không yêu cầu rà lại các nhóm đã duyệt trong bước này.
 
 ## Xuất bản bước dữ liệu
 

@@ -1,5 +1,9 @@
 # Kế hoạch kỹ thuật
 
+## Bước hiện tại: Colab
+
+Theo yêu cầu tiếp nối ngày 2026-11-11, đã chuẩn bị [notebook Colab](../notebooks/damaged_books_colab.ipynb) và [hướng dẫn chạy](COLAB_TRAINING.md) cho split-reviewed-v1 (253/54/54 ảnh). Chờ người dùng chạy GPU thật; chưa nghiệm thu A02. Notebook chỉ train/validation; chọn ngưỡng và đánh giá test là bước sau. Phần ghi ưu tiên dữ liệu bên dưới là lịch sử trước khi có split.
+
 Các mốc dùng mã M01–M27 để theo dõi từ module độc lập tới nghiệm thu hệ thống. Trạng thái hiện tại xem [PROGRESS.md](../PROGRESS.md).
 
 | Giai đoạn | Mốc | Đầu ra chính |
