@@ -240,3 +240,25 @@ Kiểm chứng: mã các ô compile PASS; kiểm tra gói thật PASS;6 test c�
 **Một việc tiếp theo:** người dùng mở notebook trên Colab, bật GPU, tải split-reviewed-v1.zip và chạy từng ô. A02/H08 còn chờ phiên GPU thật, không đánh DONE từ notebook.
 
 Kiểm chứng cuối phiên Colab:108 tests PASS (28.187s), check_repository PASS, check_codex_state PASS, diff --check PASS. Ultralytics8.4.208 có trên PyPI; API Metric.ap đã kiểm trên môi trường AI riêng. Không cài thêm vào collector. GPU Colab/train thật NOT_RUN.
+
+
+## 2026-11-11T18:22:00+07:00 — rà nhãn 368 ảnh đã gán nhóm
+
+- Đã tạo 46 bảng đối chiếu song song ảnh gốc / ảnh vẽ hộp nhãn tại `data/local/damaged_books_v1/grouping-assist/label-sheets/label-sheet-00.jpg`..`label-sheet-45.jpg` và xem trực tiếp toàn bộ 368 ảnh có `group_id` đang ở trạng thái `label_review=pending`.
+- Kết quả rà 368 ảnh: duyệt `approved` 330 ảnh; đánh dấu `rejected` 38 ảnh có lỗi nhãn rõ (gán nhầm tem chữ Tag thành Barcode/Spot, bỏ sót vết rách/mòn/bẩn hoặc vẽ hàng chục hộp Notch/Spot/Wornout đè lên chữ in, hình minh họa và vệt bóng lóa). Không tự sửa tệp nhãn trong `prepared-verified`.
+- Toàn bộ 399 ảnh có nhóm (151 nhóm): 361 `approved` (330 ảnh mới duyệt + 31 mẫu âm đã duyệt, thuộc 148/151 nhóm, 1.993 hộp đủ 5 lớp: Barcode 115, Notch 335, Ripped 255, Spot 480, Wornout 808), 38 `rejected`, 0 `pending` (3 nhóm chỉ có ảnh bị loại: `visual_group_052`, `visual_group_062`, `visual_group_111`). Toàn bộ 620 ảnh: 381 `approved`, 38 `rejected`, 201 `pending`; giữ nguyên 51/51 mẫu âm đã duyệt và cách ly 221 ảnh chưa rõ nhóm.
+- Sao lưu `review-before-label-review-076f7499062b.csv`, ghi `prepared-verified/review.csv` (SHA256 `42e09cf254e0e8959547fa3ec4445ce5983273aa18c27af8f3ff8707d5972725`), cập nhật `prepared-verified/review.html` và lưu báo cáo tại `grouping-assist/label-review-round3.json`, `questionable-labels-round3.csv`, `label-review-validation.txt`. Kiểm chứng PASS: 620 ID/checksum ảnh/nhãn khớp `manifest.json`, HTML khớp CSV, 221 ID cách ly khớp `quarantine-round2.csv`.
+- Chưa chia tập `A01`, chưa chạy Colab/train. Đúng một việc tiếp theo: xác nhận phương án xử lý 38 ảnh `rejected` (cách ly khi split hay tạo phiên bản sửa nhãn riêng) và rà soát quan hệ cùng cuốn giữa các nhóm trước khi chạy split.
+
+## 2026-11-11T18:52:00+07:00 — kiểm tra độc lập 148 nhóm và tạo split `split-reviewed-v1` (H14, A01)
+
+- Người dùng xác nhận giữ cách ly 38 ảnh nghi vấn (`rejected`) và 221 ảnh chưa rõ nhóm, yêu cầu kiểm tra độc lập giữa 148 nhóm của 361 ảnh đạt, gộp các nhóm cùng sách/thiết kế bìa rồi tạo split khoảng 70/15/15 với `seed=42`.
+- Đã tạo 15 bảng tổng hợp 148 nhóm tại `data/local/damaged_books_v1/grouping-assist/group-independence-sheets/groups-148-00.jpg`..`groups-148-14.jpg`, đối chiếu trực quan và SIFT liên nhóm: tách `idx:282` (gáy sách *다산선생 지식경영법*) khỏi `visual_group_026` sang `visual_group_073`, đồng thời thực hiện 21 phép gộp nhóm (loại bỏ 27 mã nhóm trùng do chụp khác mặt bìa/gáy/mặt sau của cùng cuốn hoặc cùng thiết kế bìa bộ sách như KIPF, 민음사 세계문학전집, 다이제스트 100, 제3인류).
+- Sau khi gộp: 399 ảnh có nhóm thuộc 124 nhóm trực quan; **361 ảnh `approved` thuộc 121 nhóm độc lập** (3 nhóm chỉ chứa ảnh `rejected`); 259 ảnh cách ly (38 `rejected` + 221 chưa rõ nhóm). Sao lưu `review-before-group-merge-42e09cf254e0.csv`, cập nhật `prepared-verified/review.csv` (SHA256 `668f59cfb4b9139896764f11dd7875b6471168c039dab523dda30348882dc183`), lưu báo cáo `grouping-assist/group-independence-round4.json` và tạo lại `prepared-verified/review.html` PASS.
+- Chạy `python -m vision.yolo.prepare split --prepared .../prepared-verified --output .../split-reviewed-v1` PASS: tạo `split-reviewed-v1` và `split-reviewed-v1.zip` (SHA256 `0da9c0710a22cb3260506eb003692ee12ff322db70ddbca7f6687fccbadc56c1`, version `damaged-books-v1-five-8f203ddd57d4-077edf4cdcbd`, seed `42`).
+- Kết quả thực tế từng tập (361 ảnh / 121 nhóm, giao nhau nhóm = 0, cả 3 tập đủ 5 lớp):
+  - `train`: 253 ảnh (70,08%), 83 nhóm (68,60%) — `Barcode`: 77, `Notch`: 250, `Ripped`: 173, `Spot`: 355, `Wornout`: 544.
+  - `val`: 54 ảnh (14,96%), 18 nhóm (14,88%) — `Barcode`: 25, `Notch`: 53, `Ripped`: 39, `Spot`: 65, `Wornout`: 145.
+  - `test`: 54 ảnh (14,96%), 20 nhóm (16,53%) — `Barcode`: 13, `Notch`: 32, `Ripped`: 43, `Spot`: 60, `Wornout`: 119.
+  - `quarantined`: 259 ảnh.
+- Cập nhật `H14` và `A01` sang `DONE`. Chưa huấn luyện mô hình; bước tiếp theo là `H08`/`A02` trên Colab GPU với gói `split-reviewed-v1.zip`.
