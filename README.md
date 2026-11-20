@@ -1,5 +1,7 @@
 # PBL5 · Library Book Inspection
 
+**Bản thử ESP32 độc lập — 2026-11-20 18:17:21 +07:00.** Điều khiển băng tải bằng nút nhấn, dừng khi IR phát hiện vật và gạt servo một lượt trước khi chạy tiếp. [Mã nguồn, sơ đồ chân, cách build và nạp](firmware/manual-tests/README.md).
+
 Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư viện bằng Machine Vision và AI. Camera nhận ảnh bìa, OpenCV xác định vùng sách và đọc QR; phần mềm tổng hợp kết quả để tích hợp với cơ cấu phân loại ESP32.
 
 [![Checks](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml/badge.svg)](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml)
