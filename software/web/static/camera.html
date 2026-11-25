@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="vi">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>PBL5 · Thử camera và AI</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script defer src="/static/camera.js"></script>
+  </head>
+  <body>
+    <header class="camera-bar">
+      <div class="camera-brand"><strong>PBL5</strong><span>Trạm kiểm tra sách</span></div>
+      <a href="/guide">Hướng dẫn vận hành <span aria-hidden="true">↗</span></a>
+    </header>
+    <main>
+      <div class="camera-heading">
+        <h1>Thử camera và AI</h1>
+        <p>Đặt sách giữa khung hình và để lộ toàn bộ bìa. Mô hình vẫn có thể dự đoán khi khung hình trống.</p>
+      </div>
+      <div class="camera-grid">
+        <section class="camera-panel" aria-labelledby="liveHeading">
+          <div class="panel-header">
+            <h2 id="liveHeading">Camera USB</h2>
+            <span id="cameraStatus" class="camera-status" data-state="waiting">Đang kết nối</span>
+          </div>
+          <div class="frame">
+            <img id="preview" alt="Hình trực tiếp từ camera USB" hidden />
+            <span id="cameraMessage" role="status">Đang mở camera USB…</span>
+          </div>
+          <div class="panel-footer">
+            <button type="button" id="capture" disabled>Chụp và nhận diện</button>
+          </div>
+        </section>
+        <section class="camera-panel" aria-labelledby="resultHeading">
+          <div class="panel-header">
+            <h2 id="resultHeading">Kết quả AI</h2>
+          </div>
+          <div class="capture-output">
+            <p id="result" class="prediction" role="status">Chưa chụp ảnh.</p>
+            <img id="snapshot" alt="Ảnh đầu vào của lượt nhận diện này" hidden />
+          </div>
+          <div class="panel-footer result-footer">
+            <a id="download" download="bia-sach.jpg" hidden>Lưu ảnh đã chụp</a>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>PBL5 · Trạm kiểm tra sách</title>
+  <link rel="stylesheet" href="/static/station.css?v=atelier1">
+  <script defer src="/static/app.js?v=atelier1"></script>
+  <script defer src="/static/console-view.js?v=atelier1"></script>
+</head>
+<body>
+  <aside class="rail" aria-label="Điều hướng trạm">
+    <div class="brand"><span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>PBL5</div>
+    <nav>
+      <a class="rail-active" href="#console" aria-current="page"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 4h18v13H3zM8 21h8m-4-4v4M6 13l3-4 3 2 4-4"/></svg> Vận hành</a>
+      <button id="switch"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M4 5h6v6H4zM14 5h6v6h-6zM4 15h6v6H4zM14 15h6v6h-6z"/></svg> Chế độ</button>
+      <button id="configure"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h7m4 0h7M3 12h12m4 0h2M3 18h3m4 0h11M10 3v6m5 0v6M7 15v6"/></svg> Cài đặt</button>
+    </nav>
+    <a class="guide-link" href="/guide" target="_blank" rel="noopener"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 6Q8 3 3 5v14q4-2 9 1 5-3 9-1V5q-5-2-9 1v14"/></svg> Hướng dẫn</a>
+  </aside>
+  <div id="console" class="workspace">
+    <header class="top">
+      <div class="station-title"><h1>Trạm kiểm tra sách</h1><b id="mode">Đang kết nối</b></div>
+      <div class="links"><button id="cameraBadge">Camera</button><button id="connection">ESP32</button></div>
+    </header>
+    <div id="actionStrip" role="status"><i aria-hidden="true"></i><strong id="stationHeading">Trạng thái trạm</strong><span id="warning"></span><button id="tabs">Lịch sử</button></div>
+    <main>
+      <div class="left">
+        <div class="work">
+          <section id="inputPanel">
+            <div class="panel-head"><h2><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M3 6h12v12H3zM15 10l6-3v10l-6-3"/></svg> <span id="inputHeading">Camera trực tiếp</span></h2><button id="retry"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M20 10a8 8 0 1 0-1 7M20 4v6h-6"/></svg> Nối lại hình</button></div>
+            <div class="frame">
+              <img id="preview" alt="Hình trực tiếp từ camera kiểm tra sách" hidden>
+              <div class="standby"><canvas id="stationSketch" width="720" height="320" aria-hidden="true"></canvas><span id="empty">Chờ hình ảnh</span></div>
+              <img id="simulationPreview" alt="Ảnh đang dùng để mô phỏng" hidden>
+            </div>
+<form id="simulationInput" hidden>
+          <label class="choose-file">Chọn ảnh sách<input id="simulationFile" type="file" accept="image/jpeg,image/png,.jpg,.jpeg,.png"></label>
+          <button type="submit" id="uploadImage" disabled>Dùng ảnh mô phỏng</button>
+          <p id="simulationImageResult" role="status"></p>
+        </form>
+      </section>
+<section id="manualDecision" hidden>
+      <h2>Quyết định thủ công</h2>
+      <p id="manualPrompt" role="status">Chờ sách dừng tại cảm biến IR.</p>
+      <button id="manualOK" class="primary" type="button" disabled>OK · Cho đi tiếp</button>
+      <button id="manualNG" class="danger" type="button" disabled>NG · Gạt sách</button>
+    </section>
+<section id="simulation" hidden>
+      <h2>Điều khiển mô phỏng</h2>
+      <p id="simulationSource"></p>
+      <div id="actions"></div>
+      <p id="simulationFeedback" role="status"></p>
+      <div id="demoActions"></div>
+      <details class="inline-details"><summary>Giả lập lỗi</summary><div id="faultActions"></div></details>
+    </section>
+        </div>
+        <section id="inspection">
+          <div class="result-preview"><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M5 3h14v15H7a2 2 0 0 0 0 4h13M5 3v17M8 3v15m3-11h5m-5 3h4"/></svg><img id="decisionImage" hidden alt="Ảnh đã dùng để nhận diện"></div>
+          <div class="result-description"><h2 id="detailHeading">Lượt mới nhất</h2><strong id="decisionText">Chưa có lượt</strong><p id="detail"></p><button id="follow" hidden>Về lượt mới nhất</button></div>
+        </section>
+      </div>
+      <div class="right">
+        <section class="shift"><div class="panel-head"><h2>Tổng quan ca</h2><button id="reset" disabled><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg> Mở ca mới</button></div><div id="counters"></div></section>
+        <section class="equipment"><div class="panel-head"><h2><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M6 6h12v12H6zM9 2v4m6-4v4M9 18v4m6-4v4M2 9h4m-4 6h4m12-6h4m-4 6h4"/></svg> Thiết bị</h2></div><dl id="machine"></dl></section>
+        <section id="history"><div class="panel-head"><h2><svg class="icon" aria-hidden="true" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 1-.01 0M12 7v5l3 2"/></svg> Lịch sử kiểm tra</h2></div><div class="columns"><span>Thời gian</span><span>Quyết định</span><span>Độ tin cậy</span><span>Chu kỳ</span></div><div id="jobs"></div></section>
+      </div>
+    </main>
+    <output id="feedback" aria-live="polite"></output>
+  </div>
+<dialog id="drawer" aria-label="Thiết lập trạm"><h2 class="drawer-title">Thiết lập trạm</h2><button id="closeDrawer" aria-label="Đóng thiết lập">Đóng ×</button><details class="mode-switch" id="modeMenu">
+      <summary>Chế độ chạy</summary><p id="modeGuideActive"></p>
+      <p>Dừng bằng nút vật lý, kiểm tra PWM bằng 0, kết thúc dịch vụ bằng Ctrl+C rồi mở tệp chạy của chế độ cần dùng.</p>
+      <ul><li><strong>AI trực tiếp</strong> · <code>scripts/windows/DirectSorting.cmd</code></li>
+        <li><strong>Cơ khí thủ công</strong> &middot; <code id="manualLauncher">scripts\windows\ManualMechanics.cmd</code></li>
+        <li><strong>AI hiệu chuẩn</strong> &middot; <code>scripts\windows\InspectBooks.cmd</code></li>
+        <li><strong>Mô phỏng</strong> &middot; <code>scripts\windows\SimulateBooks.cmd</code></li>
+        <li><strong>Thử camera và AI</strong> &middot; <code>scripts\windows\TestCameraAI.cmd</code></li>
+      </ul>
+      <p><a href="/guide">Mở hướng dẫn vận hành</a></p>
+    </details>
+<details id="setup" hidden>
+      <summary>Kết nối và hiệu chuẩn</summary>
+      <div class="formgrid">
+        <p id="deviceDiagnostic"></p><form id="serial-connect">
+          <h2>Kết nối ESP32 qua USB</h2>
+          <label>Cổng COM <input name="port" placeholder="Tự dò hoặc nhập COM5" pattern="[Cc][Oo][Mm][1-9][0-9]*" maxlength="16" autocomplete="off"></label>
+          <button type="submit">Kết nối USB</button>
+        </form>
+        <form id="pilot">
+          <h2>Hiệu chuẩn camera và AI</h2>
+          <button type="button" id="background">Lưu nền băng trống</button>
+          <label>Mã sách <input name="book" required placeholder="Ví dụ: Sach-01"></label>
+          <label>Nhãn chuẩn <select name="truth"><option>OK</option><option>NG</option></select></label>
+          <label>Bộ mẫu <select name="split"><option value="cal">Hiệu chuẩn</option><option value="test">Kiểm tra độc lập</option></select></label>
+          <button type="submit">Chụp mẫu</button>
+          <button id="threshold" type="button">Xác nhận và lưu ngưỡng</button>
+          <p id="calibrationResult" role="status"></p>
+        </form>
+      </div>
+    </details>
+    <details id="settings" hidden>
+      <summary>Cài đặt kiểm tra</summary>
+      <p id="settingsInfo">Dừng băng tải trước khi đổi thông số.</p>
+      <p id="simulationSettingsNote" hidden>Ảnh tải lên dùng phép kiểm tra ảnh tĩnh. Khi dùng camera, trạm kiểm tra thêm chuyển động, khung hình đóng băng và độ chênh với nền.</p>
+      <form id="settingsForm">
+        <fieldset id="settingsFields" disabled><legend>Thông số vận hành</legend><div id="settingsInputs" class="settings-grid"></div></fieldset>
+        <button id="settingsSave" class="primary" type="submit" disabled>Lưu cài đặt</button>
+        <button id="settingsReset" type="button" disabled>Khôi phục mặc định</button>
+        <p id="settingsFeedback" role="status"></p>
+      </form>
+    </details>
+<section id="stopDiagnostic" class="stop" aria-labelledby="stopHeading" hidden>
+      <h2 id="stopHeading">Lần dừng gần nhất</h2>
+      <p id="stopMessage"></p>
+      <dl id="stopMetrics"></dl>
+      <p id="stopHelp"></p>
+      <small id="stopMeta"></small>
+    </section>
+</dialog>
+</body>
+</html>

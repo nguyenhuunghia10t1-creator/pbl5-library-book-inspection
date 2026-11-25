@@ -2,15 +2,24 @@
 
 Project PlatformIO tại [esp32/](esp32/). Mã ứng dụng: [main.cpp](esp32/src/main.cpp); cấu hình: [platformio.ini](esp32/platformio.ini).
 
-## Build
+## Build the paired system
+
+Use the existing private pair header for both builds. Follow the role-specific upload commands after verifying each board's MAC address. [Bridge and receiver setup](espnow-bridge/README.md).
+
+```powershell
+pio run --project-dir firmware/espnow-bridge -e esp32dev
+pio run --project-dir firmware/esp32 -e espnow_receiver
+```
+
+## Build the single-board wired fallback
 
 Mở project bằng PlatformIO IDE trong VS Code hoặc sử dụng CLI:
 
 ```powershell
-pio run --project-dir firmware/esp32
+pio run --project-dir firmware/esp32 -e esp32dev
 ```
 
-Môi trường hiện tại: board esp32dev, framework Arduino. Firmware đang là chương trình mẫu; chưa tích hợp cảm biến, động cơ, servo hoặc giao thức điều phối.
+Firmware vận hành trên esp32dev với Arduino. GPIO18 điều khiển BTS7960, GPIO19 đọc IR, GPIO22 phát lệnh góc MG996R, GPIO23 nhận nút bật/tắt. ESP32 quản lý một lượt sách và tự dừng khi mất heartbeat qua USB. [Nạp board, kiểm tra COM và thử cơ cấu](../docs/INSPECTION_STATION.md).
 
 ## Tích hợp
 

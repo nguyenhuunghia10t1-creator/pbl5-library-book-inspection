@@ -1,0 +1,16 @@
+{
+  "model": "weights/best.pt",
+  "classes": {"ảnh bình thường": "OK", "ảnh lỗi": "NG"},
+  "image_size": 448,
+  "min_confidence": {"OK": 0.85, "NG": 0.85},
+  "camera_name": "A4tech HD 720P PC Camera",
+  "serial_port": "",
+  "bridge_diagnostic_port": "COM5",
+  "uncertain_policy": "hold",
+  "min_foreground_fraction": 0.45,
+  "frame_age_s": 0.8,
+  "frozen_s": 1.5,
+  "stabilize_s": 0.35,
+  "inspection_s": 7.0,
+  "heartbeat_s": 0.25
+}

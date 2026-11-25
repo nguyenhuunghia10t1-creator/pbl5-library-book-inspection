@@ -1,2 +1,2 @@
-# Current runnable Python application. AI/backend dependencies are not installed yet.
+# Dependencies of the original OpenCV collector. The station uses requirements-inspection.txt.
 -r vision/opencv/requirements.txt

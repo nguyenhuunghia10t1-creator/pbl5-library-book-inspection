@@ -272,6 +272,9 @@ class AppTests(unittest.TestCase):
             def start(self):
                 return self
             def capture(self):
+                # A real 30 FPS camera delivers the next frame on a later clock tick.
+                # Windows Python 3.11 may otherwise stamp both captures identically.
+                time.sleep(1 / 30)
                 self.sequence += 1
                 return Frame(image, datetime.now(timezone.utc).isoformat(), time.monotonic(),
                              self.sequence, "synthetic-ui-camera"), "LIVE", {"camera_index": 0}
