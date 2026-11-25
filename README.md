@@ -1,89 +1,57 @@
-# PBL5 · Library Book Inspection
+# PBL5 · Book inspection conveyor
 
-Hệ thống thử nghiệm kiểm tra tình trạng và phân loại sách thư viện bằng Machine Vision và AI. Camera nhận ảnh bìa, OpenCV xác định vùng sách và đọc QR; phần mềm tổng hợp kết quả để tích hợp với cơ cấu phân loại ESP32.
+A book stops at the IR sensor while a Windows PC inspects its cover. An OK book continues to the end tray. For NG, the conveyor controller extends the pusher, retracts it and waits before restarting the belt. The PC connects by USB to a bridge ESP32. The bridge exchanges messages with the conveyor ESP32 over ESP-NOW.
 
-[![Checks](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml/badge.svg)](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/actions/workflows/checks.yml)
-![Python](https://img.shields.io/badge/Python-3.13%2B-3776AB?logo=python&logoColor=white)
-![PlatformIO](https://img.shields.io/badge/Firmware-PlatformIO-F5822A?logo=platformio&logoColor=white)
+**Start here:** [Field checklist for 22 November](docs/FIELD_CHECKLIST.md) · [Printable operator guide](docs/STATION_QUICKSTART.html) · [Installation and troubleshooting](docs/INSPECTION_STATION.md).
 
-## Phạm vi
+## Run on Windows
 
-- Nhận dạng bìa sách A6 và mã QR của từng bản sách.
-- Căn chỉnh phối cảnh, kiểm tra độ nét và ánh sáng, thu ảnh có metadata.
-- Phát triển nhận diện hai nhóm lỗi: `cover_tear` và `surface_stain`.
-- Tích hợp phần mềm với ESP32 để phân loại sách vào khay.
+Open one launcher at a time. Both boards in the installed pair already have their role-specific firmware.
 
-Hiện tại có ứng dụng thu ảnh OpenCV và firmware mẫu. Mô hình AI, cơ cấu phân loại và luồng tích hợp đang phát triển. [Tiến độ](PROGRESS.md) · [Kiến trúc](docs/ARCHITECTURE.md) · [Kế hoạch](docs/PLAN.md).
+| To try | Launcher | What decides OK/NG |
+|---|---|---|
+| Actual belt, sensor and pusher | [ManualMechanics.cmd](scripts/windows/ManualMechanics.cmd) | Operator buttons |
+| USB camera and classifier on the PC | [TestCameraAI.cmd](scripts/windows/TestCameraAI.cmd) | Model on a captured frame |
+| Offline practice without devices | [SimulateBooks.cmd](scripts/windows/SimulateBooks.cmd) | Selected outcome or model on a supplied image |
+| Direct OK/NG sorting | [DirectSorting.cmd](scripts/windows/DirectSorting.cmd) | Highest model class on the frame captured after the IR stop |
+| Calibrated sorting | [InspectBooks.cmd](scripts/windows/InspectBooks.cmd) | Model after the known-book checks pass |
 
-## Cấu trúc repository
+For a new PC, install Python 3.11, create `.venv-inspection`, install `requirements-inspection.txt` and supply the trained classifier at `weights/best.pt`. The compatible model path, class mapping and image size are configurable in [station.json](configs/station.json). See the [setup guide](docs/INSPECTION_STATION.md).
 
-```text
-firmware/esp32/           Firmware ESP32, cấu hình PlatformIO
-vision/opencv/           Camera, xử lý bìa, QR, chất lượng ảnh và cấu hình
-vision/yolo/             Phạm vi phát triển mô hình nhận diện lỗi
-software/desktop/        Giao diện và điều phối ứng dụng thu ảnh
-examples/opencv_basics/   Các bài thực hành OpenCV
-scripts/                 Công cụ chạy và kiểm tra
-tests/                  Kiểm thử tự động
-docs/                   Tài liệu kỹ thuật và quyết định thiết kế
-data/                   Hướng dẫn quản lý dữ liệu cục bộ
-```
+## Set up on another Windows PC
 
-## Cài đặt
-
-Yêu cầu: Git, Python và Windows để sử dụng camera DirectShow/MSMF. Firmware sử dụng PlatformIO; không cài chung công cụ firmware vào môi trường Python của ứng dụng.
+From the repository root, install the dependencies with Python 3.11 and open the simulator.
 
 ```powershell
-git clone https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection.git
-cd pbl5-library-book-inspection
-py -m venv .venv
-& '.\.venv\Scripts\python.exe' -m pip install -r requirements.txt
+py -3.11 -m venv .venv-inspection
+& ./.venv-inspection/Scripts/python.exe -m pip install -r requirements-inspection.txt
+& ./scripts/windows/SimulateBooks.cmd
 ```
 
-## Chạy ứng dụng
+The simulator can run a manually selected OK or NG cycle without an ESP32, a camera, or a model. For camera testing or automatic sorting, obtain the team's classifier through a private channel and place it at `weights/best.pt`. Verify it with `Get-FileHash weights/best.pt`. The installed two-class checkpoint has SHA-256 `662e543e1d29538f799a444583682d9f80bce7ad7e5c5f0e4fb67aa42bf0c357`. For a different camera, update the device name in [station.json](configs/station.json). For physical operation, follow the [connection guide](docs/INSPECTION_STATION.md) to select the actual COM port and configure the radio bridge.
 
-```powershell
-& '.\.venv\Scripts\python.exe' -m vision.opencv --camera 0
-```
+The [Colab notebook](vision/yolo/train_book_defect_v23_colab.ipynb) documents how to train a two-class classifier on the book-defect-v23 dataset.
 
-Có thể chạy `scripts/windows/CaptureCovers.cmd`. Cấu hình camera và ngưỡng xử lý nằm trong [cover_capture.json](vision/opencv/configs/cover_capture.json).
+## Repository map
 
-| Phím | Chức năng |
+| Location | Purpose |
 |---|---|
-| `B` | Hiệu chuẩn khi nền trống |
-| `S` | Xử lý và lưu khung mới đạt điều kiện |
-| `D` | Lưu mẫu cần kiểm tra lại |
-| `M` | Chọn bốn góc trên ảnh tĩnh |
-| `R` | Lật ảnh đầu ra 180° |
-| `Q` | Thoát |
+| `firmware/esp32/` · `firmware/espnow-bridge/` | Conveyor receiver and PC bridge. [Pairing and build instructions](firmware/espnow-bridge/README.md) |
+| `software/controller/` · `software/inspection/` · `software/web/` | Transport and simulator, decisions and SQLite, operator screen |
+| `vision/opencv/` · `vision/yolo/` | Camera acquisition, cover preparation and classifier inference |
+| `configs/` · `weights/` | Station settings, fixed damaged-cover check and local model |
+| `data/local/station/` · `data/local/espnow/` | Local inspection records and private board pairing |
+| `scripts/windows/` · `tests/` | Launchers and software regression tests |
+| `docs/` · [PROGRESS.md](PROGRESS.md) | Operator instructions, engineering decisions and dated results |
 
-Dữ liệu được lưu tại `data/opencv/collection/`: ảnh gốc, ảnh đã căn, ảnh chẩn đoán và metadata. [Hướng dẫn sử dụng](docs/COVER_CAPTURE.md) · [Quy định dữ liệu](data/README.md).
+## Development and earlier work
 
-## Kiểm thử
-
-```powershell
-& '.\.venv\Scripts\python.exe' scripts/check_repository.py
-& '.\.venv\Scripts\python.exe' -m unittest discover -s tests -v
-```
-
-Các test dùng ảnh tổng hợp và thiết bị mô phỏng, không yêu cầu camera hoặc ESP32. Kiểm thử thiết bị thật được ghi riêng trong [báo cáo kiểm chứng](docs/COVER_CAPTURE_VALIDATION.md).
-
-## Firmware
-
-Mở `smart-vision-inspection.code-workspace` bằng VS Code hoặc mở trực tiếp `firmware/esp32` trong PlatformIO.
+Run the station checks from the repository root with the station environment active and `httpx` installed for the HTTP tests.
 
 ```powershell
-pio run --project-dir firmware/esp32
+python scripts/check_repository.py
+python -B -m unittest discover -s tests -v
+node --test tests/web/station_ui.test.js
 ```
 
-Cấu hình hiện tại: `esp32dev`, Arduino. [Hướng dẫn firmware](firmware/README.md).
-
-## Phát triển cùng nhóm
-
-Mỗi thay đổi thực hiện trên nhánh riêng, gửi pull request vào `main` và cần ít nhất một reviewer. Thành viên chưa có quyền ghi có thể fork repository rồi gửi pull request.
-
-[Quy trình đóng góp](CONTRIBUTING.md) · [Issues](https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/issues) · [Quyết định thiết kế](docs/DECISIONS.md).
-
-## Hạn chế hiện tại
-
-Preview còn phụ thuộc thời gian xử lý QR. Trên nền có đường ron hoặc bìa có viền gần màu nền, bộ chọn góc có thể nhảy giữa các ứng viên. Cần xử lý hai vấn đề này trước khi thu dữ liệu hàng loạt. Nhãn ảnh đạt điều kiện thu không đồng nghĩa với kết luận sách không có lỗi.
+The [QR cover collector](docs/COVER_CAPTURE.md) still has its own [launcher](scripts/windows/CaptureCovers.cmd) and `.venv`. The [Damaged Books detector study](docs/DAMAGED_BOOKS_RUN1_ANALYSIS.md) and [annotation rules](docs/DAMAGED_BOOKS_ANNOTATION_RULES.md) document earlier training work. Original lessons remain in `examples/opencv_basics/`. For team changes, see the [contribution guide](CONTRIBUTING.md) and [design decisions](docs/DECISIONS.md).

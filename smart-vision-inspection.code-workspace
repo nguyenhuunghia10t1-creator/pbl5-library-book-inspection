@@ -1,6 +1,7 @@
 {
   "folders": [
     { "name": "smart-vision-inspection", "path": "." },
-    { "name": "ESP32 (PlatformIO)", "path": "firmware/esp32" }
+    { "name": "Conveyor ESP32 (PlatformIO)", "path": "firmware/esp32" },
+    { "name": "PC bridge ESP32 (PlatformIO)", "path": "firmware/espnow-bridge" }
   ]
 }

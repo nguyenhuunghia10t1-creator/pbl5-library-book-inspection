@@ -6,4 +6,4 @@ Giao diện desktop tại [cover_capture_app.py](desktop/cover_capture_app.py) q
 & '.\.venv\Scripts\python.exe' -m vision.opencv --camera 0
 ```
 
-Backend, database, decision policy, Web HMI và ControllerTransport sẽ được phát triển theo [kế hoạch](../docs/PLAN.md). Phần mềm không gọi GPIO trực tiếp. [Kiến trúc](../docs/ARCHITECTURE.md).
+Trạm tự động dùng FastAPI trong `software/web`, SQLite và điều phối lượt sách trong `software/inspection`, bộ giao tiếp USB Serial và mô phỏng trong `software/controller`. [Hướng dẫn trạm](../docs/INSPECTION_STATION.md) · [Kiến trúc](../docs/ARCHITECTURE.md).

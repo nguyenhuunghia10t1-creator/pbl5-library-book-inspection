@@ -4,16 +4,17 @@
 
 `Camera → OpenCV/QR → kiểm tra dữ liệu sách → AI → quyết định phân loại → lưu kết quả → ESP32 → xác nhận đầu ra`
 
-Ứng dụng hiện triển khai camera, xử lý bìa, QR và thu ảnh. Các bước database, AI và điều khiển tích hợp thuộc giai đoạn tiếp theo.
+Trạm OK/NG dùng luồng IR trên ESP32 → ảnh mới và ổn định trên PC → phân loại → quyết định có mã lượt → ESP32 đưa sách ra hoặc gạt → ghi trạng thái vào SQLite. Web HMI đọc nguồn hình và nhật ký chung. Collector QR là ứng dụng riêng cho việc thu ảnh. [Vận hành trạm](INSPECTION_STATION.md).
 
 ## Thành phần
 
 | Module | Chức năng |
 |---|---|
 | vision/opencv | Thu frame, chất lượng ảnh, bốn góc/crop, QR và bundle dữ liệu |
-| vision/yolo | Huấn luyện, đánh giá và suy luận lỗi rách/bẩn |
+| vision/yolo | Kiểm tra ảnh và chạy model phân loại OK/NG của trạm |
 | software | Giao diện, điều phối, database, policy và adapter thiết bị |
-| firmware/esp32 | State machine, sensor, interlock, cơ cấu và xác nhận đầu ra |
+| firmware/esp32 | Conveyor receiver with button, IR, PWM, pusher sequence and heartbeat enforcement. Builds for paired ESP-NOW or direct USB. |
+| firmware/espnow-bridge | PC-side bridge between USB Serial at 115200 baud and the paired conveyor receiver. |
 
 Desktop collector nằm tại `software/desktop/cover_capture_app.py`; sử dụng API từ `vision/opencv`. Điểm chạy là `python -m vision.opencv`. Cấu hình OpenCV thuộc module; chưa có định nghĩa dùng chung cần tách ra shared.
 

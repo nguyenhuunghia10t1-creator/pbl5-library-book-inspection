@@ -1,5 +1,28 @@
 # Kế hoạch kỹ thuật
 
+## HMI vận hành — 2026-11-23
+
+Nghiệm thu phần mềm theo từng chế độ, bằng dữ liệu lịch sử và kích thước viewport. Nghiệm thu cơ khí còn cần receiver và webcam online, một lượt OK và một lượt NG có quan sát tại khay.
+
+
+## Chạy hai tuyến theo nhãn trực tiếp — 2026-11-23
+
+Dùng [DirectSorting.cmd](../scripts/windows/DirectSorting.cmd) để thử cơ cấu bằng quyết định hai lớp của model. Nghiệm thu bằng lượt OK và NG trên băng, ghi phản hồi ESP32 và quan sát sách đến khay. Chế độ hiệu chỉnh riêng vẫn dùng InspectBooks.cmd.
+
+## Two-board radio link — 2026-11-21
+
+The paired boards returned six status replies with the conveyor receiver installed. Firmware reported complete manual OK and NG cycles. Recheck the physical NG route after the fourth job stopped with `NG_NOT_CLEAR`, then verify camera freshness and run the known-book checks before enabling automatic operation. [Progress](../PROGRESS.md) · [Bridge protocol](../firmware/espnow-bridge/README.md).
+
+## Trạm OK/NG một vị trí — thiết kế USB ban đầu, 2026-11-18
+
+Bước thử riêng trên PC theo yêu cầu 2026-11-19 dùng [TestCameraAI.cmd](../scripts/windows/TestCameraAI.cmd). Nghiệm thu khi người dùng đặt một cuốn sách trước camera USB, bấm chụp và thấy đúng ảnh vừa chụp cùng nhãn và độ tin cậy. [Tiến độ](../PROGRESS.md).
+
+Phần mềm Windows, HMI, mô phỏng và firmware MG996R dùng USB Serial 115200 giữa ESP32 và PC theo cập nhật ngày 2026-11-19. M01–M02, M08–M09 và M14–M24 cần bằng chứng trên đúng camera, nguồn và cơ cấu. Kiểm tra bắt tay COM khi chưa cấp nguồn tải, kiểm tra camera và AI tại vị trí dừng, sau đó thử từng tải, rút USB giữa lượt và pilot 30 lượt. [Tiêu chí từng bước](INSPECTION_STATION.md).
+
+## Cập nhật 2026-11-11 — lượt rà nhãn 20 ảnh
+
+Theo kế hoạch người dùng duyệt, bước hiện tại của dữ liệu AI là khóa 12 ảnh val + 8 ảnh train, áp dụng [quy tắc năm lớp](DAMAGED_BOOKS_ANNOTATION_RULES.md) và lập đề xuất riêng, chưa xuất nhãn v2. Lượt rà đầu đã hoàn thành; còn 17 ảnh có câu hỏi, ưu tiên 9 ảnh cần phân biệt Ripped với lỗi khác. Bước tiếp theo là xử lý các ca chưa rõ trên trang đối chiếu cục bộ. Rà rộng 307 ảnh và pilot Colab chưa bắt đầu; các mục collector bên dưới giữ làm lịch sử kế hoạch checkout legacy.
+
 Các mốc dùng mã M01–M27 để theo dõi từ module độc lập tới nghiệm thu hệ thống. Trạng thái hiện tại xem [PROGRESS.md](../PROGRESS.md).
 
 | Giai đoạn | Mốc | Đầu ra chính |

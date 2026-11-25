@@ -1,0 +1,1993 @@
+{
+  "schema_version": 1,
+  "dataset_version": "damaged-books-v1-five-8f203ddd57d4-077edf4cdcbd",
+  "manifest_sha256": "8130fe6ec07962d6c49601d35b8bd95dd61aa3c6ea11debc07d295aec29c4a94",
+  "classes": [
+    "Barcode",
+    "Notch",
+    "Ripped",
+    "Spot",
+    "Wornout"
+  ],
+  "reviewer": "Codex; visual proposal, not operator approval",
+  "scope": "Fixed20 train/val only. No source label modifications. No model predictions used as ground truth.",
+  "records": [
+    {
+      "split": "val",
+      "image_id": "train__IMG_1174_jpg.rf.150e452512bc5b0270247d17e32764e1",
+      "group_id": "visual_group_087",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "d97a3556844f8f5a41ed4d87278c66e5aec46ed0f3b83fe160110a1d79485631",
+      "label_sha256": "42835637afcf1a4525bfb227deccfd4c41bfedadd72ec52fbf2e59d3631eac08",
+      "expected_class_counts": [
+        0,
+        2,
+        0,
+        0,
+        1
+      ],
+      "observation": "Mặt sau bìa trắng có mã vạch sọc đen ở dưới phải chưa có nhãn. Ba hộp lỗi ở mép trên/trái rất nhẹ; ảnh này chưa cho thấy rõ mất vật liệu.",
+      "actions": [
+        {
+          "action": "needs_review",
+          "source_lines": [
+            1
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 1. Hộp mép trên và trái quá nhẹ để phân biệt vật liệu mất với cấu trúc bìa từ ảnh hiện tại."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Hộp mép trên và trái quá nhẹ để phân biệt vật liệu mất với cấu trúc bìa từ ảnh hiện tại."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Hộp mép trên và trái quá nhẹ để phân biệt vật liệu mất với cấu trúc bìa từ ảnh hiện tại."
+        },
+        {
+          "action": "add",
+          "source_lines": [],
+          "class_id": 0,
+          "xyxy_px": [
+            394,
+            551,
+            498,
+            578
+          ],
+          "reason": "Dãy sọc barcode in ở dưới phải nhìn rõ nhưng không có nhãn nguồn; bổ sung vùng sọc và biên trắng sát sọc."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Ba vùng mép là sờn/khuyết thật hay cạnh bìa/lớp bọc?",
+          "reason": "Hộp mép trên và trái quá nhẹ để phân biệt vật liệu mất với cấu trúc bìa từ ảnh hiện tại."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1359_jpg.rf.21b7d1f92a68815a84681fa4f0b82e2b",
+      "group_id": "visual_group_076",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "972463f2a8f551e9a6d606a473c76cb8dc2b72553e69d0e474a7d067696ffead",
+      "label_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_class_counts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "observation": "Mã vạch nhìn rõ trên đai trắng giữa mặt sau; nhãn hiện tại rỗng. Trên phần sách đang nhìn không thấy lỗi hư hỏng rõ để bổ sung.",
+      "actions": [
+        {
+          "action": "add",
+          "source_lines": [],
+          "class_id": 0,
+          "xyxy_px": [
+            291,
+            377,
+            383,
+            414
+          ],
+          "reason": "Dãy sọc barcode trên đai trắng giữa mặt sau nhìn rõ; nhãn rỗng vẫn thiếu Barcode dù không thấy lỗi rõ."
+        }
+      ],
+      "questions": []
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1446_jpg.rf.7c5e4f5a6a8d4afd8fdf84d098dea71e",
+      "group_id": "visual_group_013",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "259e32fc75b9b9d0ed8fddd5441db65a53805972a021d939af46279222bdbc1e",
+      "label_sha256": "7204305dc46ebe5aba0da6cd55ef002485b1523e0d2578c58d4e9796288040cf",
+      "expected_class_counts": [
+        1,
+        0,
+        0,
+        0,
+        0
+      ],
+      "observation": "Hộp Barcode sát trái bao tem chữ bị cắt; trong phần hộp nhìn thấy không có dãy sọc mã vạch. Chữ META VERSE kẻ sọc là hình in.",
+      "actions": [
+        {
+          "action": "delete",
+          "source_lines": [
+            1
+          ],
+          "reason": "Hộp nguồn chỉ bao phần tem chữ nhìn thấy, không có sọc barcode; không suy diễn vùng mã ở ngoài ảnh."
+        }
+      ],
+      "questions": []
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1201_jpg.rf.222bf0fbb2b3e9da5bb50d95b71416d7",
+      "group_id": "visual_group_020",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "2c74c546d052b19b76e56b50392cdb84ca12ac5d1825d85732f79a7a6eccc493",
+      "label_sha256": "0145b4a920f062bd8eb2995e896758925af67af746e77375c98b0aff7b427f9f",
+      "expected_class_counts": [
+        0,
+        0,
+        2,
+        7,
+        3
+      ],
+      "observation": "Bìa đỏ có mép trên bạc/sờn liên tục, tem và băng dính ở gáy. Các đốm nhỏ trên nền đỏ không đồng đều về độ rõ.",
+      "actions": [
+        {
+          "action": "merge",
+          "source_lines": [
+            1,
+            2,
+            4
+          ],
+          "reason": "Ba hộp Wornout nối cùng dải sờn mép trên; gộp một vùng liên tục, không gộp các đốm khác ở mặt bìa.",
+          "class_id": 4,
+          "xyxy_px": [
+            278,
+            199,
+            639,
+            218
+          ]
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Dải bạc/sờn ở mép và hai vùng giấy tách ở gáy nhìn thấy; chưa coi mọi đốm nền đỏ là vết bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            9
+          ],
+          "reason": "Dải bạc/sờn ở mép và hai vùng giấy tách ở gáy nhìn thấy; chưa coi mọi đốm nền đỏ là vết bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            10
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 10. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            11
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 11. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            12
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 12. Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Các đốm trên bìa đỏ là bẩn hay trầy/bọt khí dưới băng dính?",
+          "reason": "Không phải mọi vùng nằm trong hộp Spot đều có dấu bẩn chắc chắn."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1129_jpg.rf.2c673a20905717fed0cf55f4c14fd371",
+      "group_id": "visual_group_060",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "de4af45b8012fd2d0918805c83daed0cf24aa2ee66a4968323eedbe15d4cef21",
+      "label_sha256": "c51fa2b697543249112f56e43a160191b8c835e6398b389f3bdd38f166c5992f",
+      "expected_class_counts": [
+        1,
+        0,
+        0,
+        1,
+        11
+      ],
+      "observation": "Bìa xanh có barcode bị cắt một phần ở trên; vùng sọc vẫn thấy. Mép trái và dưới bị tróc trắng; các hộp Wornout bám những đoạn mép khác nhau.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            4
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            5
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            6
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            7
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            8
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            9
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            10
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            11
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            12
+          ],
+          "reason": "Thu hộp vào vùng sọc barcode còn nhìn thấy, bỏ phần chữ và khoảng trắng lớn của tem; mã bị cắt vẫn là vùng barcode.",
+          "xyxy_px": [
+            196,
+            0,
+            283,
+            101
+          ]
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            13
+          ],
+          "reason": "Các vùng tróc trắng ở mép khác nhau nhìn thấy rõ; chấm cong đen ở vùng xanh không trùng chữ in."
+        }
+      ],
+      "questions": []
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1736_jpg.rf.d422877808581b2810764b2ba6d0053e",
+      "group_id": "visual_group_060",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "037d497c27008ff283de22de320202859a4aed31b4c801b98a818686a3492eeb",
+      "label_sha256": "e482645c95f57b8b5a83c550a15f0fffbe26fce1f33c421bef5603f2feee4642",
+      "expected_class_counts": [
+        0,
+        3,
+        2,
+        0,
+        0
+      ],
+      "observation": "Gáy xanh có giấy trắng bị bật/rách rõ ở đầu và cạnh phải. Ba hộp Notch chủ yếu bám dải trắng mảnh hoặc vùng sát nhãn đỏ, không đủ chứng cứ rằng đều mất vật liệu.",
+      "actions": [
+        {
+          "action": "needs_review",
+          "source_lines": [
+            1
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 1. Giữ nguyên ba hộp chưa rõ; hai Ripped rõ không bị thay thế."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Hai vùng giấy trắng bật và mép rách ở đầu gáy nhìn rõ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Giữ nguyên ba hộp chưa rõ; hai Ripped rõ không bị thay thế."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            4
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 4. Giữ nguyên ba hộp chưa rõ; hai Ripped rõ không bị thay thế."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            5
+          ],
+          "reason": "Hai vùng giấy trắng bật và mép rách ở đầu gáy nhìn rõ."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Ba Notch ở dải trắng có mất vật liệu hay chỉ màng/tape phản sáng?",
+          "reason": "Giữ nguyên ba hộp chưa rõ; hai Ripped rõ không bị thay thế."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1330_jpg.rf.56bd3678a78279742ce541f7530b0c16",
+      "group_id": "visual_group_023",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "15d9ddd035e9e1327da749dfa25335f9a9b0a5298097d42830a9e7e6b8ac11a7",
+      "label_sha256": "bfbe49af51b5b6c62b891fd8ff163d16add7a41fd644125886c2174cdb5aa643",
+      "expected_class_counts": [
+        1,
+        2,
+        3,
+        1,
+        5
+      ],
+      "observation": "Mặt sau nâu có hai mã vạch thật nhưng chỉ một hộp nguồn. Mép bìa mòn dài và có mảng giấy trắng lộ ra bên phải.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            4
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 4. Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            8
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            9
+          ],
+          "reason": "Thu hộp barcode vào dãy sọc và biên trắng sát sọc, không bao cả chữ trên tem.",
+          "xyxy_px": [
+            188,
+            273,
+            236,
+            387
+          ]
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            10
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            11
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            12
+          ],
+          "reason": "Các dải mép mòn dài là tổn thương có thật; vùng giấy trắng bật bên phải có mép rách nhìn rõ."
+        },
+        {
+          "action": "add",
+          "source_lines": [],
+          "class_id": 0,
+          "xyxy_px": [
+            98,
+            408,
+            132,
+            500
+          ],
+          "reason": "Mã vạch thứ hai in ở dưới trái là dãy sọc riêng, chưa được gán nhãn."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Hai vùng mép trên đang gán Ripped có khe rách hay chỉ sứt/mòn?",
+          "reason": "Vết giấy bật ở mép phải khác các vết mép trên; không áp cùng nhãn theo mức độ bạc màu."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "test__IMG_7_jpg.rf.b0eda460f02c08b90d5530fafd1d8fe0",
+      "group_id": "visually_confirmed_same_book_001",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "872b8cd6257a14ad28b7636756152a4b6ceb29a50f0f54936aab3682077783f0",
+      "label_sha256": "7ec38e7bc78e8ed3119ec7f356bfe1ab46c0f088e042ff78a42901cde7abfdc6",
+      "expected_class_counts": [
+        1,
+        6,
+        1,
+        0,
+        2
+      ],
+      "observation": "Bìa nâu có barcode giữa ảnh và các nếp gấp chéo. Hộp Ripped ở mép trên không cho thấy khe tách rõ trên góc này.",
+      "actions": [
+        {
+          "action": "needs_review",
+          "source_lines": [
+            1
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 1. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Mép góc trên phải và đoạn mép dưới có vùng bạc/sờn; không dùng nếp gấp làm bằng chứng tự động cho Notch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            4
+          ],
+          "reason": "Thu hộp từ toàn tem trắng vào vùng sọc mã vạch nằm ngang và biên sát sọc.",
+          "xyxy_px": [
+            236,
+            224,
+            389,
+            267
+          ]
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            9
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 9. Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn. Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            10
+          ],
+          "reason": "Mép góc trên phải và đoạn mép dưới có vùng bạc/sờn; không dùng nếp gấp làm bằng chứng tự động cho Notch."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Vùng mép trên của cặp #8/#9 là Ripped hay Wornout?",
+          "reason": "Cùng tổn thương nhưng nhãn khác; ảnh không cho thấy khe tách chắc chắn."
+        },
+        {
+          "priority": "label",
+          "question": "Các nếp gấp giữa bìa có mất vật liệu không?",
+          "reason": "Nếp gấp không mặc nhiên là Notch; chưa có lớp riêng cho nếp gấp."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1316_jpg.rf.faff4976751925a381bcd15b93a6342c",
+      "group_id": "visually_confirmed_same_book_001",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "5f9bf9ab3846290f0653c5a0993c64a22b0a6dffb509e13a5ac001592b7dc46f",
+      "label_sha256": "95442dbc6d6e2d8ef01376bd582cfbf508d5f9c8445df25b2e3e44748882db23",
+      "expected_class_counts": [
+        1,
+        5,
+        0,
+        1,
+        8
+      ],
+      "observation": "Cùng cuốn và gần cùng góc với ảnh #8; barcode ở giữa, nếp gấp chéo bên phải. Mép trên đang mang Wornout thay cho Ripped ở ảnh #8.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            4
+          ],
+          "reason": "Áp dụng cùng quy tắc vùng sọc như ảnh #8; tọa độ đo theo ảnh này, không chép hộp ảnh #8.",
+          "xyxy_px": [
+            257,
+            224,
+            409,
+            270
+          ]
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            9
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 9. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            10
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 10. Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn. Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            11
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            12
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            13
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            14
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            15
+          ],
+          "reason": "Các đoạn mép bạc/sờn có thể tách biệt; giữ để đối chiếu, không suy ra Ripped từ ảnh gần giống."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Đối chiếu mép trên với ảnh #8 để chốt một định nghĩa rách/mòn.",
+          "reason": "Không chuyển Wornout thành Ripped chỉ vì nhãn ở ảnh cùng cuốn."
+        },
+        {
+          "priority": "label",
+          "question": "Các Notch bám nếp gấp/gáy có thực sự khuyết vật liệu?",
+          "reason": "Ảnh tĩnh chưa xác nhận các vết gấp là khuyết hay rách."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_128_jpg.rf.e8f2e585c235d04383d46d45089b203e",
+      "group_id": "visual_group_020",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "b3e759d55212fd87a83a14b8d63147667f70c0fdfb5a6192728fb232a483cfa9",
+      "label_sha256": "a3bfb1ab29b09e0acea7f6c5e3c504182e0cb38f582e3ef15c3080de4ba570bc",
+      "expected_class_counts": [
+        0,
+        1,
+        1,
+        7,
+        3
+      ],
+      "observation": "Bìa đỏ chụp phần dưới; đường bạc mảnh dọc mép dưới có thể nhìn thấy. Không loại hộp 486×12 chỉ vì quá dẹt.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Mép trái và mép dưới bạc/sờn nhìn thấy; đoạn gáy có vết tách dọc dưới băng dính."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            4
+          ],
+          "reason": "Mép trái và mép dưới bạc/sờn nhìn thấy; đoạn gáy có vết tách dọc dưới băng dính."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            9
+          ],
+          "reason": "Mép trái và mép dưới bạc/sờn nhìn thấy; đoạn gáy có vết tách dọc dưới băng dính."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            10
+          ],
+          "reason": "Mép trái và mép dưới bạc/sờn nhìn thấy; đoạn gáy có vết tách dọc dưới băng dính."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            11
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 11. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            12
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 12. Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Các Spot mờ và Notch ở góc dưới là bẩn, sứt hay phản sáng?",
+          "reason": "Hộp dẹt ở mép dưới vẫn được giữ vì có đường sờn nhìn thấy."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1666_jpg.rf.870f66f26b2a08772ee56261e4fd2b8f",
+      "group_id": "visual_group_060",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "5f9e945e2846894e6d504fc6f617c9e09fe25a556d639208c314d5fcdb65dafc",
+      "label_sha256": "2468b00419057b796b54a390d3ccb86860e12ee4d0b9785f1d3cd87338d81bf3",
+      "expected_class_counts": [
+        0,
+        3,
+        2,
+        1,
+        2
+      ],
+      "observation": "Gáy xanh bị rách bật giấy trắng rõ ở đầu dưới. Hộp Notch dài chạy dọc một cạnh và chứa Wornout nhỏ; hình học lồng nhau chưa chứng minh hai nhãn sai.",
+      "actions": [
+        {
+          "action": "needs_review",
+          "source_lines": [
+            1
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 1. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            4
+          ],
+          "reason": "Các mảng giấy trắng bật ở đầu gáy có rìa rách rõ; hai vùng sờn nhỏ ở cạnh được giữ để đối chiếu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            6
+          ],
+          "reason": "Các mảng giấy trắng bật ở đầu gáy có rìa rách rõ; hai vùng sờn nhỏ ở cạnh được giữ để đối chiếu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc. Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Notch dài và Wornout nhỏ chứa bên trong mô tả cùng tổn thương hay hai tổn thương?",
+          "reason": "Chỉ quan hệ IoA=1 không đủ để xóa hộp; đoạn mép có thể là màng bọc."
+        },
+        {
+          "priority": "label",
+          "question": "Vùng Spot sát đầu gáy là bẩn hay giấy tróc trắng?",
+          "reason": "Chưa đổi lớp khi chưa tách rõ giấy tróc và bẩn."
+        }
+      ]
+    },
+    {
+      "split": "val",
+      "image_id": "train__IMG_1122_jpg.rf.1d6cdbb6339ffde5cd835aeffca1ff07",
+      "group_id": "visual_group_076",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "83f98f5bd916b79ed8a83535f9e819eb01cca470d9ace51a0e08b4c409a371bf",
+      "label_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_class_counts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "observation": "Nhãn rỗng, không thấy barcode; gáy trắng có chữ và ảnh in. Chỗ nối gần đầu ảnh minh họa có nếp/cấn nhẹ nhưng chưa phân biệt được với cấu trúc bìa.",
+      "actions": [],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Nếp/cấn nhẹ gần đầu ảnh minh họa là cấu trúc gáy hay hư hỏng thật?",
+          "reason": "Giữ nhãn rỗng nguồn nhưng chưa duyệt mẫu âm; cần góc cận/ảnh rõ hơn để kết luận."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1654_jpg.rf.44c01b9543050b1d6f37194005a3743d",
+      "group_id": "visual_group_010",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "a915ab8a2f86ea932c66c33846818c86bf2210a58941f3c6b0f72046e5b492fc",
+      "label_sha256": "5760506ce4ab27cc33126a3620d602c92ea00b22248c88a4d3c80d935aba630e",
+      "expected_class_counts": [
+        0,
+        8,
+        2,
+        0,
+        3
+      ],
+      "observation": "Bìa đen có chân dung; mép trái tróc trắng rất rõ. Một số Notch nằm trên mặt chân dung thay vì chỗ mất vật liệu.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Mép trên và mép trái có các vùng tróc/sờn nhìn thấy; góc trên trái có mép giấy xơ bật."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Mép trên và mép trái có các vùng tróc/sờn nhìn thấy; góc trên trái có mép giấy xơ bật."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            4
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 4. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            7
+          ],
+          "reason": "Hộp nằm trên vùng mũi/kính của chân dung in, không có khuyết góc/mép hay mất vật liệu để gán Notch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            9
+          ],
+          "reason": "Hộp nằm trên đường nét má/miệng của chân dung in; không có bằng chứng mất vật liệu cho Notch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            10
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 10. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            11
+          ],
+          "reason": "Mép trên và mép trái có các vùng tróc/sờn nhìn thấy; góc trên trái có mép giấy xơ bật."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            12
+          ],
+          "reason": "Mép trên và mép trái có các vùng tróc/sờn nhìn thấy; góc trên trái có mép giấy xơ bật."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            13
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 13. Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt. Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Dải tróc trắng ở mép trái là rách bật giấy hay mòn bề mặt liên tục?",
+          "reason": "Ripped dài và các Notch con có thể đang mô tả cùng tổn thương; chưa gộp hoặc đổi lớp hàng loạt."
+        },
+        {
+          "priority": "label",
+          "question": "Các Notch còn lại trên chân dung/mép có bằng chứng mất vật liệu không?",
+          "reason": "Vùng tối/sáng in trên ảnh và vết trầy cần được phân biệt."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1081_jpg.rf.f8a5c130159a65ab4198e96038593125",
+      "group_id": "visual_group_018",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "bfe6bb21a9f552129c3f24709825aa107981804fe4a139a6303d2d577963461c",
+      "label_sha256": "5323cd42e4af5f6920712c6a9f0d5da3087bc38fcfa09fc19537c36882c86fd7",
+      "expected_class_counts": [
+        1,
+        6,
+        1,
+        5,
+        12
+      ],
+      "observation": "Mặt sau sách Automatic Control có hai mã vạch rõ, chỉ một hộp nguồn. Các hộp Notch giữa mặt bìa chủ yếu bao vùng phản sáng hoặc chữ trên tem.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            2
+          ],
+          "reason": "Hộp bao vùng chữ/in trên tem, không phải phần vật liệu bị khuyết để gán Notch."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            4
+          ],
+          "reason": "Vùng sáng nằm giữa mặt bìa; không có khuyết/mất vật liệu. Bỏ nhãn Notch; câu hỏi sờn màng hay phản sáng vẫn được lưu riêng."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            5
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            6
+          ],
+          "reason": "Thu hộp vào dãy sọc của barcode thư viện, không bao chữ trên tem.",
+          "xyxy_px": [
+            429,
+            178,
+            471,
+            247
+          ]
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            7
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 8. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            9
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 9. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            10
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            11
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 11. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            12
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            13
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 13. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            14
+          ],
+          "reason": "Mảng sáng giữa mặt bìa không có khuyết vật liệu; nhãn Notch sai định nghĩa. Chưa tự đổi sang Wornout."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            15
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 15. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            16
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            17
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 17. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            18
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            19
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            20
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            21
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            22
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            23
+          ],
+          "reason": "Hộp rất mảnh bám chữ/viền in ở mép gáy, không thấy phần khuyết vật liệu."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            24
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 24. Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới. Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            25
+          ],
+          "reason": "Các cạnh bìa có đoạn sờn và giấy bật rõ ở góc dưới phải; các chấm nhỏ giữa bìa cần phân biệt bẩn với bề mặt bóng."
+        },
+        {
+          "action": "add",
+          "source_lines": [],
+          "class_id": 0,
+          "xyxy_px": [
+            75,
+            268,
+            125,
+            350
+          ],
+          "reason": "Mã vạch in sẵn phía trái khác mã thư viện bên phải; bổ sung vùng sọc, không gộp hai mã."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Các vùng bóng giữa bìa là sờn màng thật hay phản sáng?",
+          "reason": "Đã bỏ nhãn Notch sai định nghĩa ở các mảng giữa bìa, nhưng không tự gán Wornout mới."
+        },
+        {
+          "priority": "label",
+          "question": "Đường ngang gần gáy và các chấm Spot có phải lỗi riêng?",
+          "reason": "Nếp gấp và phản sáng không tự động trở thành khuyết/bẩn."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1118_jpg.rf.c43d7c0edde6436aa66e3e1c21d27414",
+      "group_id": "visual_group_011",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "e30e946a2d55740ab94c0f3d2d39cc8ec88b78cc9839e6b9ba844979ab80b4fb",
+      "label_sha256": "c656c0a9f0784486dc9f9e9f68ab8c3bb9a4f16e4eaaa3fdb861f9dbc5d9d695",
+      "expected_class_counts": [
+        1,
+        5,
+        0,
+        8,
+        5
+      ],
+      "observation": "Bìa nâu Digest100 có barcode thật trong tem trắng. Nhiều Notch trên rãnh gáy hoặc chấm bạc giữa bìa không cho thấy mất vật liệu; đường trắng chéo dưới phải chưa rõ là xước hay rách.",
+      "actions": [
+        {
+          "action": "delete",
+          "source_lines": [
+            1
+          ],
+          "reason": "Hộp bám rãnh dập gáy nguyên vẹn, không thấy mất vật liệu; không gán rãnh đóng sách là Notch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            4
+          ],
+          "reason": "Mép phải/dưới có đường sờn liên tục; hộp dài không tự động bị loại."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            5
+          ],
+          "reason": "Hộp bám cùng rãnh dập gáy kéo dài, không thấy mất vật liệu để gán Notch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            7
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 7. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "change_class",
+          "source_lines": [
+            8
+          ],
+          "reason": "Chấm/vệt bạc trên mặt bìa là tróc bề mặt nhìn thấy, không có mất vật liệu mép; đề xuất Wornout thay Notch.",
+          "class_id": 4
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            9
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 9. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            10
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 10. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "change_class",
+          "source_lines": [
+            11
+          ],
+          "reason": "Vệt trắng trầy bề mặt giữa bìa không có khuyết mép; đề xuất Wornout thay Notch.",
+          "class_id": 4
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            12
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 12. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            13
+          ],
+          "reason": "Thu hộp vào vùng sọc barcode và biên sát sọc, bỏ chữ tên trường và phần trắng tem.",
+          "xyxy_px": [
+            236,
+            394,
+            373,
+            434
+          ]
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            14
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 14. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            15
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 15. Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng. Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            16
+          ],
+          "reason": "Mép phải/dưới có đường sờn liên tục; hộp dài không tự động bị loại."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            17
+          ],
+          "reason": "Mép phải/dưới có đường sờn liên tục; hộp dài không tự động bị loại."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            18
+          ],
+          "reason": "Mép phải/dưới có đường sờn liên tục; hộp dài không tự động bị loại."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            19
+          ],
+          "reason": "Mép phải/dưới có đường sờn liên tục; hộp dài không tự động bị loại."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Đường trắng chéo dưới phải là khe rách hay chỉ vết xước màng?",
+          "reason": "Nếu có khe tách thật sẽ ảnh hưởng lớp Ripped; chưa đổi Notch thành Ripped chỉ dựa màu trắng."
+        },
+        {
+          "priority": "label",
+          "question": "Các Spot nhạt trên bìa nâu là bẩn hay tróc bề mặt?",
+          "reason": "Giữ các hộp chưa rõ thay vì tự đổi hết sang Wornout."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1102_jpg.rf.b19e8d2ce131dbfe3f424409da4ea7e6",
+      "group_id": "visual_r2_007",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "d2f7f3bf1989232f2d8c0af2cfca6dccb2c867a78bc1980f8761f02c012861b1",
+      "label_sha256": "be705724a1e285129f463bb3c204fd8a78ef420780f3dd794e49b51c3e2cc213",
+      "expected_class_counts": [
+        0,
+        2,
+        1,
+        0,
+        4
+      ],
+      "observation": "Cận cảnh góc bìa xanh bị bạc/tróc trắng. Notch, Ripped và Wornout cùng bao vùng góc dưới phải; từ ảnh tĩnh chưa xác nhận được khe rách riêng.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Đường mép phải có vùng bạc/tróc bề mặt nhìn rõ."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Đường mép phải có vùng bạc/tróc bề mặt nhìn rõ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Ripped, Notch và Wornout chồng trên cùng góc; không đủ bằng chứng để ép nhãn Ripped hoặc xóa chỉ theo IoA."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            4
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 4. Ripped, Notch và Wornout chồng trên cùng góc; không đủ bằng chứng để ép nhãn Ripped hoặc xóa chỉ theo IoA."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Ripped, Notch và Wornout chồng trên cùng góc; không đủ bằng chứng để ép nhãn Ripped hoặc xóa chỉ theo IoA."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Ripped, Notch và Wornout chồng trên cùng góc; không đủ bằng chứng để ép nhãn Ripped hoặc xóa chỉ theo IoA."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            7
+          ],
+          "reason": "Đường mép phải có vùng bạc/tróc bề mặt nhìn rõ."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Góc dưới phải có rách tách/lật giấy thật hay chỉ mòn/tróc bề mặt?",
+          "reason": "Ripped, Notch và Wornout chồng trên cùng góc; không đủ bằng chứng để ép nhãn Ripped hoặc xóa chỉ theo IoA."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1474_jpg.rf.d0452b6eee2b416445b3dbb131c22be6",
+      "group_id": "visual_group_093",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "4e7a8ee0b0e18c2bdfff85986a747cc929ab7f06ca281a731e7f53e5ef220155",
+      "label_sha256": "4a2da42324722f8e2ef1d24b0f01272b0e9f2acd424d25858a62ee7eeb317200",
+      "expected_class_counts": [
+        0,
+        2,
+        1,
+        2,
+        2
+      ],
+      "observation": "Bìa trắng Escape from Freedom có góc trên trái sờn/tróc, mép trái có vài chấm. Hộp Notch dài chứa Spot nhỏ; không được xóa Spot chỉ vì nằm trong hộp khác.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Mép trên có vùng sờn nhỏ; chấm tối gần mép dưới trái không phải chữ in."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            2
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 2. Góc bị tróc nhìn rõ nhưng chưa thấy khe tách/lật giấy từ góc chụp này. Cho phép giao hộp khi hai hiện tượng thật; không áp cấm hộp lồng nhau."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Mép trên có vùng sờn nhỏ; chấm tối gần mép dưới trái không phải chữ in."
+        },
+        {
+          "action": "change_class",
+          "source_lines": [
+            4
+          ],
+          "reason": "Đoạn bạc mảnh ở mép trái là sờn bề mặt; chưa thấy khuyết vật liệu, đề xuất Wornout thay Notch.",
+          "class_id": 4
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Góc bị tróc nhìn rõ nhưng chưa thấy khe tách/lật giấy từ góc chụp này. Cho phép giao hộp khi hai hiện tượng thật; không áp cấm hộp lồng nhau."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            6
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 6. Góc bị tróc nhìn rõ nhưng chưa thấy khe tách/lật giấy từ góc chụp này. Cho phép giao hộp khi hai hiện tượng thật; không áp cấm hộp lồng nhau."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            7
+          ],
+          "reason": "Mép trên có vùng sờn nhỏ; chấm tối gần mép dưới trái không phải chữ in."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Góc trên trái là Ripped, Notch hay Wornout?",
+          "reason": "Góc bị tróc nhìn rõ nhưng chưa thấy khe tách/lật giấy từ góc chụp này."
+        },
+        {
+          "priority": "label",
+          "question": "Spot nhỏ nằm trong Notch dài là chấm bẩn độc lập hay cùng vết tróc?",
+          "reason": "Cho phép giao hộp khi hai hiện tượng thật; không áp cấm hộp lồng nhau."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1634_jpg.rf.2089ffa600282ed7ddfa0de71454a74b",
+      "group_id": "visual_group_056",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "eb114037a6173b4a310f7b8cc6cb14a1fb38f63d946d99f2e9dd9988d588614e",
+      "label_sha256": "e5b30d6304b473b3644954b066da0823b95a4e4cfa6eddc72dc47987386c61b2",
+      "expected_class_counts": [
+        0,
+        7,
+        1,
+        9,
+        3
+      ],
+      "observation": "Bìa bạc có phản sáng mạnh và dấu trầy bề mặt. Các hộp Notch nằm giữa mặt bìa không có dấu khuyết/mất vật liệu; chưa kết luận mọi vùng sáng đều là vết bẩn.",
+      "actions": [
+        {
+          "action": "keep",
+          "source_lines": [
+            1
+          ],
+          "reason": "Góc trên trái có rìa giấy xơ bật; mép trên/trái có sờn; chấm tối nhỏ riêng ở phần bạc không trùng chữ."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            2
+          ],
+          "reason": "Góc trên trái có rìa giấy xơ bật; mép trên/trái có sờn; chấm tối nhỏ riêng ở phần bạc không trùng chữ."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            3
+          ],
+          "reason": "Góc trên trái có rìa giấy xơ bật; mép trên/trái có sờn; chấm tối nhỏ riêng ở phần bạc không trùng chữ."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            4
+          ],
+          "reason": "Hộp Spot bao mảng phản sáng trắng lớn của bìa bóng; không đủ bằng chứng vết bẩn ngoại lai, không gán ánh sáng thành Spot."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            5
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            6
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            7
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            8
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            9
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            10
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "delete",
+          "source_lines": [
+            11
+          ],
+          "reason": "Hộp nằm giữa bề mặt bìa bạc, trên vệt sáng/trầy nhưng không có phần khuyết mất vật liệu; bỏ Notch, giữ câu hỏi về Wornout/phản sáng riêng."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            12
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 12. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            13
+          ],
+          "reason": "Góc trên trái có rìa giấy xơ bật; mép trên/trái có sờn; chấm tối nhỏ riêng ở phần bạc không trùng chữ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            14
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 14. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            15
+          ],
+          "reason": "Góc trên trái có rìa giấy xơ bật; mép trên/trái có sờn; chấm tối nhỏ riêng ở phần bạc không trùng chữ."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            16
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 16. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            17
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 17. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            18
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 18. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            19
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 19. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            20
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 20. Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "label",
+          "question": "Những vệt còn lại là vết bẩn hoặc trầy thật hay phản sáng bìa bạc?",
+          "reason": "Ảnh hiện tại có lóa mạnh; bỏ Notch sai định nghĩa không có nghĩa đã xác nhận vùng này sạch."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_204_jpg.rf.2876d2153d9ae9fd2ab452f9f8941fa1",
+      "group_id": "visual_group_038",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "a3110ade0bd5bf7669ff5319d434db2c19ffecf84dc91263cd772df804f57dde",
+      "label_sha256": "a925c8af9605f9d570c9cfba9e445af4402911036a6440f3a50f5517506f93ea",
+      "expected_class_counts": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "observation": "Gáy vàng có barcode in sẵn trên mặt sau và vùng sờn đầu dưới. Chấm trong hộp Spot chồng lên vùng nhãn barcode chưa đủ rõ để kết luận bẩn hay chữ/ảnh in.",
+      "actions": [
+        {
+          "action": "needs_review",
+          "source_lines": [
+            1
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 1. Nhãn Ripped hiện tại chưa có khe tách rõ ở góc chụp này. Không xóa Spot chỉ vì nằm trong Barcode; trường hợp này cần xác nhận chính chấm đó."
+        },
+        {
+          "action": "adjust_box",
+          "source_lines": [
+            2
+          ],
+          "reason": "Thu hộp vào dãy sọc barcode in trên mặt sau và biên sát sọc; không xóa Spot chỉ vì giao với Barcode.",
+          "xyxy_px": [
+            514,
+            376,
+            599,
+            441
+          ]
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            3
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 3. Nhãn Ripped hiện tại chưa có khe tách rõ ở góc chụp này. Không xóa Spot chỉ vì nằm trong Barcode; trường hợp này cần xác nhận chính chấm đó."
+        },
+        {
+          "action": "keep",
+          "source_lines": [
+            4
+          ],
+          "reason": "Đầu dưới gáy có vùng bạc/sờn nhìn thấy; không xóa nhãn chỉ dựa quan hệ lồng nhau."
+        },
+        {
+          "action": "needs_review",
+          "source_lines": [
+            5
+          ],
+          "reason": "Chưa xác nhận lớp nguồn ở dòng 5. Nhãn Ripped hiện tại chưa có khe tách rõ ở góc chụp này. Không xóa Spot chỉ vì nằm trong Barcode; trường hợp này cần xác nhận chính chấm đó."
+        }
+      ],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Đầu dưới gáy vàng là rách hay mòn/tróc bề mặt?",
+          "reason": "Nhãn Ripped hiện tại chưa có khe tách rõ ở góc chụp này."
+        },
+        {
+          "priority": "label",
+          "question": "Chấm trong vùng barcode là bẩn thật hay chi tiết in?",
+          "reason": "Không xóa Spot chỉ vì nằm trong Barcode; trường hợp này cần xác nhận chính chấm đó."
+        }
+      ]
+    },
+    {
+      "split": "train",
+      "image_id": "train__IMG_1078_jpg.rf.ad6d792160e893cba0b959eddb89616f",
+      "group_id": "visual_group_069",
+      "image_size": [
+        640,
+        640
+      ],
+      "image_sha256": "cdb87141f64887c046eb60082fc41a286a2e520c9073e052ec8dc9268c8a7dee",
+      "label_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "expected_class_counts": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "observation": "Gáy đen có tem chữ số, không thấy dãy sọc barcode. Mép phải vùng xanh/hồng và lớp giấy nhô ra có thể là lớp bọc/thiết kế hoặc hư hỏng; chưa đủ căn cứ gọi là mẫu âm chuẩn.",
+      "actions": [],
+      "questions": [
+        {
+          "priority": "route",
+          "question": "Mép phải vùng xanh/hồng có giấy rách/bật hay chỉ lớp bọc/thiết kế?",
+          "reason": "Nhãn đang rỗng nhưng phần nhô chưa rõ; không tự gọi mẫu âm chuẩn hoặc thêm Ripped."
+        }
+      ]
+    }
+  ]
+}

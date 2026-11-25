@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PBL5 · Hướng dẫn vận hành trạm kiểm tra sách</title>
+<style>
+  * { box-sizing: border-box }
+  :root {
+    --charcoal: #151917;
+    --paper: #f3f4ec;
+    --lime: #d4f576;
+    --line: #d7dacd;
+    --muted: #535951;
+    color: var(--charcoal);
+    background: var(--paper);
+    font: 16px/1.52 "Segoe UI", system-ui, sans-serif;
+  }
+  body { margin: 0 }
+  main {
+    width: min(100% - 48px, 1040px);
+    margin: 24px auto;
+    background: #fcfcf7;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  header {
+    padding: clamp(20px, 4vw, 40px);
+    background: var(--charcoal);
+    color: var(--paper);
+  }
+  header strong {
+    display: inline-block;
+    padding: 3px 9px;
+    border-radius: 4px;
+    background: var(--lime);
+    color: var(--charcoal);
+    letter-spacing: .05em;
+  }
+  h1 {
+    margin: 12px 0 8px;
+    font-size: clamp(1.7rem, 4vw, 2.7rem);
+    line-height: 1.12;
+    letter-spacing: -.035em;
+  }
+  header p { max-width: 64ch }
+  .content { padding: clamp(16px, 3vw, 32px) }
+  h2 {
+    margin: 0 0 8px;
+    font-size: 1.2rem;
+    line-height: 1.2;
+    letter-spacing: -.015em;
+  }
+  p { margin: 0 }
+  p + p { margin-top: 8px }
+  code, kbd {
+    overflow-wrap: anywhere;
+    font: .9em Consolas, monospace;
+    font-weight: 600;
+  }
+  .launchers {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin: 10px 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--paper);
+  }
+  .launchers > div { min-width: 0; padding: 9px 10px }
+  .launchers > div + div { border-left: 1px solid var(--line) }
+  dt { font-weight: 700 }
+  dd { margin: 3px 0 0; color: var(--muted) }
+  .steps {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 16px;
+    gap: 14px;
+  }
+  section { min-width: 0 }
+  .card {
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+  }
+  ol { margin: 0; padding-left: 1.4em }
+  li { padding-left: .15em }
+  li + li { margin-top: 6px }
+  .stop {
+    margin-top: 16px;
+    border-left: 4px solid #a34332;
+    padding: 12px 16px;
+    background: #f8ebe6;
+  }
+  footer {
+    margin-top: 14px;
+    border-top: 1px solid var(--line);
+    padding-top: 8px;
+    color: var(--muted);
+    font-size: .86rem;
+  }
+  a { color: #31571d; text-underline-offset: 2px }
+  a:focus-visible { outline: 2px solid #557025; outline-offset: 3px }
+  @media screen and (max-width: 800px) {
+    main { width: calc(100% - 32px); margin: 16px auto }
+    .launchers { grid-template-columns: repeat(2, minmax(0, 1fr)) }
+    .launchers > div { border-bottom: 1px solid var(--line) }
+    .launchers > div:nth-child(odd) { border-left: 0 }
+    .launchers > div:last-child { border-bottom: 0 }
+  }
+  @media screen and (max-width: 550px) {
+    .steps { grid-template-columns: 1fr }
+  }
+  @page { size: A4; margin: 10mm }
+  @media print {
+    :root { background: white; font-size: 10pt; line-height: 1.35 }
+    main { width: auto; margin: 0; background: white; border: 0 }
+    header { color: var(--charcoal); background: white; border-bottom: 1px solid var(--line) }
+    header, .content { padding: 0 }
+    header { padding-bottom: 8pt }
+    header p { max-width: none }
+    header strong { padding: 0 }
+    h1 { margin: 4pt 0; font-size: 24pt }
+    .content { padding-top: 8pt }
+    .launchers { margin: 5pt 0 8pt }
+    .launchers > div, .card { padding: 6pt }
+    .steps, .stop, footer { margin-top: 8pt }
+    .steps { gap: 8pt }
+    .stop { padding: 5pt 8pt }
+    section, .launchers { break-inside: avoid }
+  }
+</style>
+</head>
+<body>
+<main>
+  <header>
+    <strong>PBL5</strong>
+    <h1>Hướng dẫn vận hành trạm kiểm tra sách</h1>
+    <p>Khi đổi chế độ, dừng băng tải bằng nút vật lý, kiểm tra PWM bằng 0 và nhấn <kbd>Ctrl+C</kbd> trong cửa sổ dịch vụ. Sau đó mở tệp của chế độ cần dùng.</p>
+  </header>
+  <div class="content">
+    <section aria-labelledby="launchersHeading">
+      <h2 id="launchersHeading">Chọn chế độ</h2>
+      <p>Mở một tệp trong thư mục <code>scripts/windows/</code>.</p>
+      <dl class="launchers">
+        <div><dt>Mô phỏng</dt><dd><code>SimulateBooks.cmd</code></dd></div>
+        <div><dt>Cơ khí thủ công</dt><dd><code>ManualMechanics.cmd</code></dd></div>
+        <div><dt>Thử camera và AI</dt><dd><code>TestCameraAI.cmd</code></dd></div>
+        <div><dt>AI trực tiếp</dt><dd><code>DirectSorting.cmd</code></dd></div>
+        <div><dt>AI hiệu chuẩn</dt><dd><code>InspectBooks.cmd</code></dd></div>
+      </dl>
+    </section>
+
+    <section class="card" aria-labelledby="simulationHeading">
+      <h2 id="simulationHeading">Mô phỏng trên máy tính</h2>
+      <p>Bật băng tải mô phỏng. Chọn OK/NG hoặc tải ảnh bìa JPG/PNG đã cắt rồi bấm <strong>Dùng ảnh mô phỏng</strong>. Ví dụ dùng ảnh bìa rách <code>configs/reference/IMG_7.jpg</code>. Chế độ dùng ảnh chạy mô hình thật với ngưỡng riêng.</p>
+      <p>Đặt từng cuốn sách vào IR. Với OK, lấy sách ra khi băng chạy tiếp. Với NG, lấy sách ra khi tay gạt đang thu. Để nguyên sách tại IR để thử lỗi kẹt. Có thể giả lập mất kết nối ESP32 trong mục <strong>Giả lập lỗi</strong>.</p>
+    </section>
+
+    <div class="steps">
+      <section class="card" aria-labelledby="manualHeading">
+        <h2 id="manualHeading">Kết nối và chạy tay</h2>
+        <ol>
+          <li>Ngắt nguồn motor và servo. Cấp nguồn riêng cho ESP32 trên băng tải và cắm bridge USB vào máy tính. Hai ESP32 dùng firmware theo vai trò. Đóng cửa sổ theo dõi cổng COM. <code>FlashInspection.cmd</code> dùng cho cấu hình một ESP32 nối dây.</li>
+          <li>Mở <strong>Cơ khí thủ công</strong>. Kiểm tra cổng COM và trạng thái dừng (<code>OFF</code>). Che rồi bỏ che cảm biến để xác nhận IR đổi trạng thái. GPIO18 điều khiển RPWM của BTS7960, GPIO19 đọc IR mức thấp, GPIO22 điều khiển servo, GPIO23 đọc nút vật lý.</li>
+          <li>Kiểm tra khoảng trống của tay gạt. Dùng nguồn motor 12 V, nguồn servo 5 V, GND chung và một nguồn cấp cho ESP32. Giữ tay ngoài vùng chuyển động. Khi IR trống, bấm nút vật lý và đưa một cuốn sách vào. Chọn OK khi băng dừng và kiểm tra khay cuối. Thử NG và quan sát tay gạt đẩy một lần, thu hết rồi băng chạy lại. Thử nút dừng. Nếu hết thời gian chọn, lấy sách ra rồi bấm nút vật lý để bắt đầu lại.</li>
+        </ol>
+      </section>
+
+      <section class="card" aria-labelledby="aiHeading">
+        <h2 id="aiHeading">Thử camera và chạy AI</h2>
+        <ol>
+          <li>Cố định camera USB A4tech phía trên vị trí dừng và cắm vào máy tính. Mở <strong>Thử camera và AI</strong>. Di chuyển sách trong khung để kiểm tra hình trực tiếp. Chụp và kiểm tra ảnh, nhãn và độ tin cậy.</li>
+          <li><strong>AI trực tiếp</strong> dùng nhãn có điểm cao nhất trên toàn khung sau khi ESP32 dừng tại IR. Để IR trống, bấm nút vật lý và đưa từng cuốn vào.</li>
+          <li>Trong <strong>AI hiệu chuẩn</strong>, khi trạm dừng, lưu nền băng trống. Dùng ít nhất bốn cuốn với mã riêng và nhãn đã biết. Chụp một OK và một NG để hiệu chuẩn, rồi chụp hai cuốn OK/NG khác để kiểm tra độc lập. Ưu tiên nhiều kiểu bìa và lỗi thực tế. Xác nhận và lưu ngưỡng khi kiểm tra đạt.</li>
+          <li>Ở cả hai chế độ AI, thử sách OK và NG đã biết nhãn. Quan sát hành trình tay gạt và ghi khay sách thật sự đến. Sau khi xử lý nguyên nhân dừng, dùng nút vật lý để chạy lại.</li>
+        </ol>
+      </section>
+    </div>
+
+    <section class="stop" aria-labelledby="stopHeading">
+      <h2 id="stopHeading">Khi trạm dừng hoặc phân loại sai</h2>
+      <p>Đọc lý do dừng, giá trị đo và ngưỡng. Nếu gặp <code>NG_NOT_CLEAR</code>, ngắt nguồn tải trước khi lấy sách hoặc kiểm tra tay gạt. Xác nhận IR trống trước khi bấm nút vật lý. Xử lý lỗi hình ảnh hoặc kết nối rồi thử lại bằng sách đã biết nhãn sau khi đổi cài đặt, mô hình hoặc ảnh nền.</p>
+      <p>Nếu sách NG bị nhận thành OK, chuyển sang <strong>Cơ khí thủ công</strong>. Trong AI hiệu chuẩn, chính sách đưa ảnh hợp lệ có điểm thấp sang NG chỉ áp dụng cho ảnh dưới ngưỡng. Sách NG bị nhận OK với điểm cao vẫn làm kiểm tra độc lập thất bại. Muốn thử mô hình phân loại Ultralytics tương thích, sửa <code>model</code>, <code>classes</code> và <code>image_size</code> trong <code>configs/station.json</code> hoặc dùng <code>PBL5_MODEL</code> để chỉ định đường dẫn. Khởi động lại ứng dụng và kiểm tra lại.</p>
+    </section>
+    <footer>Chế độ độc lập gạt mọi vật đủ điều kiện tại IR. Xem
+      <a href="https://github.com/nguyenhuunghia10t1-creator/pbl5-library-book-inspection/tree/43b2c580e935b40601065e7d5df83859693a5e7a/firmware/manual-tests">firmware độc lập và hướng dẫn nạp</a>.
+    </footer>
+  </div>
+</main>
+</body>
+</html>
